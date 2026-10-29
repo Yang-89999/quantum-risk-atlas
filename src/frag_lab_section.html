@@ -1,0 +1,137 @@
+<!-- ============ 06 QUANTUM LAB ============ -->
+<section class="mod" id="quantum-lab" data-module="lab"><div class="wrap">
+  <div class="sphere sphere-lab" aria-hidden="true"></div>
+  <div class="sec-head">
+    <div class="n">06</div>
+    <div>
+      <h2>Quantum Lab: AI agents for cryptographic security research</h2>
+      <p>A proposed system of coordinated AI agents that helps researchers investigate cryptographic risk in the quantum era: the quantum threat to today's cryptography, the security of post-quantum schemes, and the defences and migration that follow.</p>
+      <div class="lab-status"><span class="pill warn">Research proposal · Framework in development</span><span class="small muted">Nothing described here is running, and no vulnerability has been found by it.</span></div>
+    </div>
+  </div>
+
+  <div class="lab-key" aria-label="How statements on this page are labelled">
+    <div><span class="ev proposed">Proposed</span>an idea of this project, not yet built or tested</div>
+    <div><span class="ev published">Published</span>a finding by others, linked in the references</div>
+    <div><span class="ev future">Future</span>a result this system has not yet produced</div>
+  </div>
+
+  <h3 class="sub-h">Mission <span class="ev proposed">Proposed</span></h3>
+  <div class="lab-two">
+    <p class="lab-lead">Cryptographic security questions in the quantum era arrive faster than they can be answered one paper at a time: which deployed systems a quantum computer could threaten first, whether the assumptions behind a post-quantum scheme hold up, and whether a chosen defence removes a risk or only moves it. The Quantum Lab proposes a team of AI agents that works alongside researchers to investigate those risks, test security assumptions and evaluate potential defences, with every experiment reproducible and every significant conclusion reviewed by a person.</p>
+    <ul class="lab-list">
+      <li><b>Investigate risks.</b> Map which systems a quantum computer, or a new classical attack, could threaten, and under which assumptions.</li>
+      <li><b>Test assumptions.</b> Turn a security assumption into an experiment on a public toy example or a sandboxed replica, and run it.</li>
+      <li><b>Evaluate defences.</b> Check whether a proposed mitigation or migration choice removes the risk, reduces it, or moves it elsewhere.</li>
+    </ul>
+  </div>
+  <div class="lab-bounds" aria-label="Boundaries of the proposal">
+    <div><b>Not an operational platform.</b> The roles, workflow and tools on this page are a design. No agent is deployed and no backend exists.</div>
+    <div><b>Not a proof of security.</b> An AI assessment can produce evidence against a system. It cannot, by itself, show that a system is secure.</div>
+    <div><b>Only authorised targets.</b> Future tests run on public toy examples, sandboxed replicas, or targets with explicit written authorisation.</div>
+    <div><b>Two questions, kept apart.</b> Classical cryptanalysis of a post-quantum algorithm is a different question from estimating the quantum resources an attack on RSA or ECC would need. Results are labelled with which question they answer.</div>
+  </div>
+
+  <h3 class="sub-h">The agent teams <span class="ev proposed">Proposed</span></h3>
+  <p class="lab-note">Five roles, three of them AI agents, one an independent checking agent, and one a person. Each hands its output to the next, and the human expert decides what any of it means. These are proposed roles; none is running.</p>
+  <figure class="lab-fig">
+    <svg class="lab-svg" viewBox="0 0 760 470" role="img" aria-label="Diagram of five proposed roles: a Planner hands a research question to a Red team and a Blue team, which exchange findings and responses; both report to an Independent evaluator, whose checked results go to a Human expert, who can send the work back to the Planner for a new question or a retest." aria-describedby="labRolesDesc">
+      <defs><marker id="lab-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="lab-arrowhead"/></marker></defs>
+      <text x="740" y="30" text-anchor="end" class="lab-quiet">Proposed roles · none running</text>
+      <g class="lab-edges">
+        <path d="M330 88 V112 H170 V136" marker-end="url(#lab-arrow)"/>
+        <path d="M430 88 V112 H590 V136" marker-end="url(#lab-arrow)"/>
+        <path d="M300 172 H460" marker-start="url(#lab-arrow)" marker-end="url(#lab-arrow)"/>
+        <path d="M170 208 V232 H290 V256" marker-end="url(#lab-arrow)"/>
+        <path d="M590 208 V232 H470 V256" marker-end="url(#lab-arrow)"/>
+        <path d="M380 328 V376" marker-end="url(#lab-arrow)"/>
+        <path d="M230 412 H18 V52 H260" marker-end="url(#lab-arrow)" class="lab-loop"/>
+      </g>
+      <text x="380" y="164" text-anchor="middle" class="lab-quiet">findings ↔ responses</text>
+      <text x="130" y="44" text-anchor="middle" class="lab-quiet">new question · retest</text>
+      <text x="392" y="356" class="lab-quiet">checked results</text>
+      <g class="lab-box"><rect x="260" y="16" width="240" height="72" rx="8"/><text x="276" y="42" class="lab-name">Planner</text><text x="276" y="60" class="lab-body">question · target · threat model</text><text x="276" y="76" class="lab-body">scope · evaluation criteria</text></g>
+      <g class="lab-box red"><rect x="40" y="136" width="260" height="72" rx="8"/><text x="56" y="162" class="lab-name">Red team</text><text x="56" y="180" class="lab-body">proposes and tests potential</text><text x="56" y="196" class="lab-body">attacks or weaknesses</text></g>
+      <g class="lab-box blue"><rect x="460" y="136" width="260" height="72" rx="8"/><text x="476" y="162" class="lab-name">Blue team</text><text x="476" y="180" class="lab-body">analyses findings and</text><text x="476" y="196" class="lab-body">investigates defensive responses</text></g>
+      <g class="lab-box"><rect x="230" y="256" width="300" height="72" rx="8"/><text x="246" y="282" class="lab-name">Independent evaluator</text><text x="246" y="300" class="lab-body">checks both teams' methods,</text><text x="246" y="316" class="lab-body">calculations and evidence</text></g>
+      <g class="lab-box human"><rect x="230" y="376" width="300" height="72" rx="8"/><text x="246" y="402" class="lab-name">Human expert</text><text x="246" y="420" class="lab-body">reviews significant findings;</text><text x="246" y="436" class="lab-body">decides what conclusions are justified</text></g>
+    </svg>
+    <figcaption id="labRolesDesc">Work flows down from the Planner through the Red and Blue teams to the Independent evaluator and the Human expert; the dashed line returns it to the Planner for a new question or a retest.</figcaption>
+  </figure>
+  <div class="roles">
+    <div class="role"><span class="tag">Proposed role · agent</span><h4>Planner</h4><p>Defines the research question, the target, the threat model, the scope and the evaluation criteria before any test begins.</p><div class="out"><b>Hands over:</b> a written research brief</div></div>
+    <div class="role red"><span class="tag">Proposed role · agent</span><h4>Red team</h4><p>Proposes potential attacks or weaknesses and tests them on the authorised target, recording code, parameters and outcomes.</p><div class="out"><b>Hands over:</b> hypotheses, test results, evidence</div></div>
+    <div class="role blue"><span class="tag">Proposed role · agent</span><h4>Blue team</h4><p>Analyses the red team's findings and investigates defensive responses, including their cost and what they leave uncovered.</p><div class="out"><b>Hands over:</b> analysis, candidate defences</div></div>
+    <div class="role"><span class="tag">Proposed role · checking agent</span><h4>Independent evaluator</h4><p>Re-checks both teams' methods, calculations and evidence, reproducing results where it can and flagging what it cannot.</p><div class="out"><b>Hands over:</b> reproduction status, verdict on evidence</div></div>
+    <div class="role human"><span class="tag">Proposed role · person</span><h4>Human expert</h4><p>Reviews significant findings and determines what conclusions are justified, what is published, and what goes back for a retest.</p><div class="out"><b>Decides:</b> conclusions, publication, retest</div></div>
+  </div>
+
+  <h3 class="sub-h">Research workflow <span class="ev proposed">Proposed</span></h3>
+  <figure class="lab-fig">
+    <svg class="lab-svg" viewBox="0 0 760 236" role="img" aria-label="Seven-step workflow: research question, threat model, red-team test, blue-team response, independent evaluation, expert review, retest; the retest step loops back to the red-team test when results are inconclusive or a defence has changed.">
+      <g class="lab-edges">
+        <path d="M180 68 H200" marker-end="url(#lab-arrow)"/>
+        <path d="M370 68 H390" marker-end="url(#lab-arrow)"/>
+        <path d="M560 68 H580" marker-end="url(#lab-arrow)"/>
+        <path d="M665 96 V150" marker-end="url(#lab-arrow)"/>
+        <path d="M580 178 H560" marker-end="url(#lab-arrow)"/>
+        <path d="M390 178 H370" marker-end="url(#lab-arrow)"/>
+        <path d="M285 150 V123 H475 V96" marker-end="url(#lab-arrow)" class="lab-loop"/>
+      </g>
+      <text x="380" y="117" text-anchor="middle" class="lab-quiet">inconclusive · defence changed</text>
+      <g class="lab-box"><rect x="10" y="40" width="170" height="56" rx="8"/><text x="22" y="58" class="lab-num">1</text><text x="95" y="80" text-anchor="middle" class="lab-name">Research question</text></g>
+      <g class="lab-box"><rect x="200" y="40" width="170" height="56" rx="8"/><text x="212" y="58" class="lab-num">2</text><text x="285" y="80" text-anchor="middle" class="lab-name">Threat model</text></g>
+      <g class="lab-box red"><rect x="390" y="40" width="170" height="56" rx="8"/><text x="402" y="58" class="lab-num">3</text><text x="475" y="80" text-anchor="middle" class="lab-name">Red-team test</text></g>
+      <g class="lab-box blue"><rect x="580" y="40" width="170" height="56" rx="8"/><text x="592" y="58" class="lab-num">4</text><text x="665" y="80" text-anchor="middle" class="lab-name">Blue-team response</text></g>
+      <g class="lab-box"><rect x="580" y="150" width="170" height="56" rx="8"/><text x="592" y="168" class="lab-num">5</text><text x="665" y="190" text-anchor="middle" class="lab-name">Independent evaluation</text></g>
+      <g class="lab-box human"><rect x="390" y="150" width="170" height="56" rx="8"/><text x="402" y="168" class="lab-num">6</text><text x="475" y="190" text-anchor="middle" class="lab-name">Expert review</text></g>
+      <g class="lab-box"><rect x="200" y="150" width="170" height="56" rx="8"/><text x="212" y="168" class="lab-num">7</text><text x="285" y="190" text-anchor="middle" class="lab-name">Retest</text></g>
+    </svg>
+    <figcaption>The loop from step 7 back to step 3 repeats the test when results are inconclusive or when a defence proposed in step 4 needs further testing. Every pass leaves its brief, code, parameters and evidence on record.</figcaption>
+  </figure>
+  <ol class="flow-list" aria-label="Workflow steps">
+    <li>Research question</li><li>Threat model</li><li>Red-team test</li><li>Blue-team response</li><li>Independent evaluation</li><li>Expert review</li><li>Retest <span class="muted">↺ returns to step 3 when results are inconclusive or a defence changed</span></li>
+  </ol>
+
+  <h3 class="sub-h">Research areas <span class="ev proposed">Proposed</span></h3>
+  <div class="cards lab-cards">
+    <div class="card"><span class="tag">Area 1 · quantum resources</span><h3>Quantum threat assessment</h3><p>Estimating the quantum resources an attack on existing cryptography would need, and when hardware might supply them. This is a question about a future quantum computer, not about the mathematics of the scheme.</p><dl><dt>Builds on</dt><dd><a href="#estimator">01 Resource estimator</a> (provisional model)</dd><dt>Targets</dt><dd>RSA, elliptic curves, finite-field Diffie–Hellman, AES key search</dd></dl><div class="lab-ph"><span class="pill">Placeholder</span> Methods, tools and first research questions to be added.</div></div>
+    <div class="card"><span class="tag">Area 2 · classical analysis</span><h3>Post-quantum security research</h3><p>Studying the assumptions behind post-quantum algorithms and the implementations that carry them: lattice, hash-based, code-based, multivariate and isogeny schemes. This is classical cryptanalysis and implementation review, a different question from area 1.</p><dl><dt>Builds on</dt><dd><a href="#pqc">04 PQC Benchmark Suite</a> (data model, no results yet)</dd><dt>Targets</dt><dd>Public reference implementations and toy-scale instances</dd></dl><div class="lab-ph"><span class="pill">Placeholder</span> Methods, tools and first research questions to be added.</div></div>
+    <div class="card"><span class="tag">Area 3 · defence</span><h3>Migration and defence</h3><p>Assessing defensive choices and the transition to post-quantum cryptography: hybrid versus pure PQC, crypto-agility, key and certificate management, and what each choice leaves exposed.</p><dl><dt>Builds on</dt><dd><a href="#migration">02 Migration and readiness</a></dd><dt>Targets</dt><dd>Protocol configurations, migration plans, sandboxed replicas</dd></dl><div class="lab-ph"><span class="pill">Placeholder</span> Methods, tools and first research questions to be added.</div></div>
+  </div>
+
+  <h3 class="sub-h">Example research case <span class="ev future">Future</span> <span class="pill">Illustrative placeholder</span></h3>
+  <p class="lab-note">This is where a future case would be documented. It names a candidate target so that the fields are concrete; no question has been set, no experiment run and no result recorded. ML-KEM is a NIST standard (FIPS 203) and nothing here claims a weakness, a result or a risk score.</p>
+  <div class="case">
+    <div class="case-head"><span class="tag">Case QL-0000 · illustrative</span><h4>A toy-scale question about ML-KEM-512</h4><span class="pill">Not started</span></div>
+    <dl class="kv case-kv">
+      <dt>Research question</dt><dd><span class="pend">to be defined by the Planner</span></dd>
+      <dt>Candidate target</dt><dd>ML-KEM-512, public reference implementation or a toy-scale instance (public toy example only)</dd>
+      <dt>Threat model</dt><dd><span class="pend">to be defined: attacker capabilities, access, classical or quantum, assumptions</span></dd>
+      <dt>Red-team hypothesis</dt><dd><span class="pend">none proposed</span></dd>
+      <dt>Red-team test and evidence</dt><dd><span class="pend">no experiment has been run</span></dd>
+      <dt>Blue-team response</dt><dd><span class="pend">none</span></dd>
+      <dt>Independent evaluation</dt><dd><span class="pend">not performed</span></dd>
+      <dt>Expert review status</dt><dd><span class="pend">not started</span></dd>
+      <dt>Classification of any result</dt><dd><span class="pend">would be labelled Future until reviewed, then Published only if the expert review justifies it</span></dd>
+    </dl>
+  </div>
+
+  <h3 class="sub-h">Roadmap <span class="ev proposed">Proposed</span></h3>
+  <div class="phases lab-phases">
+    <div class="phase"><div class="k">Stage 1 · now</div><h3>Framework</h3><ul><li>Establish the research vision, the roles and the workflow</li><li>Set the page structure and the labelling rules used here</li></ul><div class="out"><span class="pill warn">In progress</span> this page</div></div>
+    <div class="phase"><div class="k">Stage 2</div><h3>Prototype</h3><ul><li>Connect agents to the literature and to computational tools</li><li>Toy examples and sandboxed replicas only</li></ul><div class="out"><span class="pill">Planned</span></div></div>
+    <div class="phase"><div class="k">Stage 3</div><h3>Evaluation</h3><ul><li>Reproduce known published results before attempting anything new</li><li>Test the red-team / blue-team workflow end to end</li></ul><div class="out"><span class="pill">Planned</span></div></div>
+    <div class="phase"><div class="k">Stage 4</div><h3>Research platform</h3><ul><li>Expand to new questions with independent evaluation and expert review on every finding</li><li>Publish what survives review</li></ul><div class="out"><span class="pill">Planned</span></div></div>
+  </div>
+
+  <h3 class="sub-h">References <span class="ev published">Published</span></h3>
+  <ol class="refs lab-refs" id="labRefs">
+    <li>Anthropic Frontier Red Team, <a href="https://www.anthropic.com/research/discovering-cryptographic-weaknesses" rel="noopener">“Discovering cryptographic weaknesses with Claude”</a>, July 2026. Reports two agent-driven results, each verified with computational experiments and published code or a paper: a faster enumeration attack on HAWK, a candidate in NIST's additional-signatures process, exploiting a symmetry of its lattice; and a chosen-plaintext meet-in-the-middle attack on a 7-round version of AES-128 (full AES-128 has 10 rounds). The post states that neither result affects production systems and that the AES result does not break the full cipher. Cited here as inspiration for the pattern of agents, computational experiments and verification; it is not evidence that the system proposed on this page works.</li>
+    <li>NIST, <a href="https://csrc.nist.gov/pubs/fips/203/final" rel="noopener">FIPS 203, Module-Lattice-Based Key-Encapsulation Mechanism Standard (ML-KEM)</a>, August 2024. The standard named in the example case above.</li>
+    <li>NIST, <a href="https://csrc.nist.gov/projects/pqc-dig-sig" rel="noopener">Post-Quantum Cryptography: additional digital signature schemes</a>. The process in which HAWK is a candidate.</li>
+    <li>Resource-estimation and surface-code sources used by the provisional model on page 01 are listed in <a href="#refs">§ References</a>.</li>
+  </ol>
+</div></section>
+<!-- ============ 06 END ============ -->
+

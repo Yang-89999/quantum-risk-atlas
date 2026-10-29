@@ -1,0 +1,80 @@
+<!-- ============ 04 PQC BENCHMARK SUITE ============ -->
+<section class="mod" id="pqc" data-module="pqc"><div class="wrap">
+  <div class="sphere sphere-pqc" aria-hidden="true"></div>
+  <div class="sec-head">
+    <div class="n">04</div>
+    <div>
+      <h2>PQC Benchmark Suite</h2>
+      <p>Explore cryptographic schemes, known attacks, and reproducible resource-estimation benchmarks.</p>
+      <p class="intro-small">The suite organises four things that are usually scattered: what is known about attacks on each post-quantum scheme, the assumptions behind every resource estimate, the benchmark cases that pin a scheme, parameter set and attack to a cost model, and the evidence that a reported number can be reproduced. It is a project-level research framework, not a standard, and nothing in it is endorsed by NIST.</p>
+    </div>
+  </div>
+  <div class="flow" aria-label="Workflow">
+    <span>Cryptographic scheme</span><i>→</i><span>Applicable attacks</span><i>→</i><span>Benchmark cases</span><i>→</i><span>Resource estimates</span><i>→</i><span>Security interpretation</span>
+  </div>
+  <div class="stats" id="bsStats" aria-label="Suite contents"></div>
+
+  <div class="views" role="tablist" aria-label="Views">
+    <button type="button" role="tab" data-view="schemes" aria-selected="true"><b>A</b>Schemes<small id="cntSchemes"></small></button>
+    <button type="button" role="tab" data-view="attacks" aria-selected="false"><b>B</b>Attacks<small id="cntAttacks"></small></button>
+    <button type="button" role="tab" data-view="benchmarks" aria-selected="false"><b>C</b>Benchmarks<small id="cntCases"></small></button>
+  </div>
+
+  <div class="view" id="view-schemes">
+    <div class="toolbar">
+      <input type="search" id="sSearch" placeholder="Search schemes, problems, standards…" aria-label="Search schemes">
+      <select id="sFamily" aria-label="Family"></select>
+      <select id="sStatus" aria-label="Status"></select>
+      <select id="sObjective" aria-label="Objective"><option value="">All objectives</option><option>Key encapsulation</option><option>Digital signature</option></select>
+      <button type="button" class="btn" id="sReset">Reset</button>
+    </div>
+    <div class="tbl-wrap"><table class="bs-tbl" id="sTable"><thead><tr><th>Scheme</th><th>Family</th><th>Status</th><th>Objective</th><th>Parameter sets · category</th><th class="num">Attacks</th><th class="num">Cases</th><th>Evidence</th><th><span class="sr">Action</span></th></tr></thead><tbody></tbody></table></div>
+    <p class="empty" id="sEmpty" hidden>No scheme matches these filters.</p>
+  </div>
+
+  <div class="view" id="view-attacks" hidden>
+    <div class="toolbar">
+      <input type="search" id="aSearch" placeholder="Search attacks, techniques…" aria-label="Search attacks">
+      <select id="aModel" aria-label="Attack model"><option value="">All models</option><option value="classical">Classical</option><option value="quantum">Quantum</option><option value="hybrid">Hybrid classical–quantum</option></select>
+      <select id="aTechnique" aria-label="Technique"></select>
+      <select id="aScheme" aria-label="Affected scheme"></select>
+      <select id="aEvidence" aria-label="Validation status"></select>
+      <button type="button" class="btn" id="aReset">Reset</button>
+    </div>
+    <div class="tbl-wrap"><table class="bs-tbl" id="aTable"><thead><tr><th>ID</th><th>Attack</th><th>Model</th><th>Technique</th><th>Target</th><th>Applies to</th><th class="num">Cases</th><th>Estimation</th><th>Validation</th></tr></thead><tbody></tbody></table></div>
+    <p class="empty" id="aEmpty" hidden>No attack matches these filters.</p>
+    <p class="small muted" style="margin-top:12px">Applicability is recorded per scheme and parameter set in the data; an attack listed for one scheme of a family is not assumed to apply to the others. Implementation attacks (side channels, fault injection) are out of scope for this catalogue.</p>
+  </div>
+
+  <div class="view" id="view-benchmarks" hidden>
+    <div class="toolbar">
+      <input type="search" id="bSearch" placeholder="Search cases…" aria-label="Search benchmark cases">
+      <select id="bScheme" aria-label="Scheme"></select>
+      <select id="bModel" aria-label="Attack model"><option value="">All models</option><option value="classical">Classical</option><option value="quantum">Quantum</option><option value="hybrid">Hybrid</option></select>
+      <select id="bMethod" aria-label="Estimation method"></select>
+      <select id="bEvidence" aria-label="Evidence status"></select>
+      <select id="bValidation" aria-label="Validation status"></select>
+      <button type="button" class="btn" id="bReset">Reset</button>
+    </div>
+    <div class="tbl-wrap"><table class="bs-tbl" id="bTable"><thead><tr><th><span class="sr">Select for comparison</span></th><th>Benchmark ID</th><th>Scheme</th><th>Parameter set</th><th>Attack</th><th>Model</th><th>Method</th><th>Evidence</th><th>Validation</th></tr></thead><tbody></tbody></table></div>
+    <p class="empty" id="bEmpty" hidden>No benchmark case matches these filters.</p>
+    <div class="tray" id="tray" hidden>
+      <span class="eyebrow">Compare</span><div class="chips" id="trayChips"></div>
+      <button type="button" class="btn primary" id="cmpBtn">Compare selected</button><button type="button" class="btn" id="cmpClear">Clear</button>
+    </div>
+    <div class="compare" id="compare" hidden></div>
+  </div>
+
+  <h3 class="sub-h">Security interpretation <span class="pill warn">Reserved · no automatic classification</span></h3>
+  <p class="small muted" style="max-width:70ch;margin-bottom:14px">A NIST security category is a claim about the cost of the best known attack relative to a reference attack on AES or SHA, judged across several metrics. It is not a scalar that can be recomputed from one resource number. This table keeps the claimed category, the recorded estimates and their assumptions side by side; the interpretation column stays pending until a separately defined and validated methodology exists.</p>
+  <div class="tbl-wrap"><table class="bs-tbl" id="interpTable"><thead><tr><th>Scheme</th><th>Parameter set</th><th>Claimed category</th><th>Recorded estimates</th><th>Assumptions</th><th>Evidence</th><th>Interpretation</th></tr></thead><tbody></tbody></table></div>
+  <p class="small muted" style="margin-top:10px">Data module: <code>data/pqc-benchmark.json</code>, schema <span id="schemaV" class="num"></span>, updated <span id="schemaU" class="num"></span>. Records whose evidence status is <em>placeholder</em> are illustrative and carry no numbers.</p>
+
+  <!-- detail drawer shared by the three views -->
+  <div class="drawer-scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" hidden aria-label="Detail panel">
+    <div class="drawer-bar"><button type="button" class="btn" id="dBack">← Back</button><span class="crumbs" id="crumbs"></span><button type="button" class="btn" id="dClose">Close ✕</button></div>
+    <div class="drawer-body" id="dBody"></div>
+  </aside>
+</div></section>
+

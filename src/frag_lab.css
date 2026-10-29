@@ -1,0 +1,71 @@
+/* ---- Quantum Lab (page 06) ---- */
+#quantum-lab .lab-status { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 18px; }
+#quantum-lab .lab-status .pill.warn { border-color: var(--warn); }
+#quantum-lab .ev { display: inline-block; font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); vertical-align: middle; margin-right: 8px; white-space: nowrap; }
+#quantum-lab .ev.proposed { color: var(--accent); border-color: var(--accent); }
+#quantum-lab .ev.published { color: var(--blue); border-color: var(--blue); }
+#quantum-lab .ev.future { color: var(--muted); border-style: dashed; }
+#quantum-lab .sub-h .ev { font-weight: 500; }
+#quantum-lab .lab-key { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px 28px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--line); padding: 14px 0; margin: -24px 0 56px; font-size: .9rem; color: var(--muted); }
+#quantum-lab .lab-two { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px 48px; align-items: start; }
+#quantum-lab .lab-lead { font-size: 1.15rem; line-height: 1.6; font-weight: 300; max-width: none; }
+#quantum-lab .lab-list { margin: 0; padding-left: 18px; font-size: 1rem; line-height: 1.55; color: var(--muted); }
+#quantum-lab .lab-list li { margin-bottom: 10px; }
+#quantum-lab .lab-list b { color: var(--fg); font-weight: 500; }
+#quantum-lab .lab-bounds { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px 28px; margin-top: 40px; }
+#quantum-lab .lab-bounds > div { border-top: 1px solid var(--rule); padding-top: 12px; font-size: .92rem; line-height: 1.5; color: var(--muted); }
+#quantum-lab .lab-bounds b { display: block; color: var(--fg); font-weight: 500; margin-bottom: 4px; }
+#quantum-lab .lab-note { font-size: 1rem; line-height: 1.55; color: var(--muted); max-width: 72ch; margin-bottom: 20px; }
+#quantum-lab .lab-fig { padding: 24px 20px 16px; }
+#quantum-lab .lab-svg { display: block; width: 100%; max-width: 820px; height: auto; margin: 0 auto; font-family: var(--body); font-size: 13px; }
+#quantum-lab .lab-fig figcaption { margin: 14px 0 0; font-size: .9rem; color: var(--muted); max-width: 72ch; }
+#quantum-lab .lab-box rect { fill: var(--surface); stroke: var(--rule); stroke-width: 1.25; }
+#quantum-lab .lab-box.red rect { stroke: var(--accent); stroke-width: 2; fill: var(--accent-soft); }
+#quantum-lab .lab-box.blue rect { stroke: var(--blue); stroke-width: 2; }
+#quantum-lab .lab-box.human rect { stroke: var(--rule); stroke-dasharray: 5 4; }
+#quantum-lab .lab-name { font-weight: 600; fill: var(--fg); }
+#quantum-lab .lab-body { font-size: 11.5px; fill: var(--muted); }
+#quantum-lab .lab-num { font-family: var(--mono); font-size: 11px; fill: var(--accent); font-weight: 500; }
+#quantum-lab .lab-quiet { font-size: 11.5px; fill: var(--muted); }
+#quantum-lab .lab-edges path { fill: none; stroke: var(--muted); stroke-width: 1.25; }
+#quantum-lab .lab-edges path.lab-loop { stroke-dasharray: 5 4; stroke: var(--accent); }
+#quantum-lab .lab-arrowhead { fill: var(--muted); }
+#quantum-lab .flow-list { display: none; }
+#quantum-lab .roles { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 24px 24px; margin-top: 28px; }
+#quantum-lab .role { border-top: 1px solid var(--rule); padding-top: 12px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+#quantum-lab .role.red { border-top-color: var(--accent); }
+#quantum-lab .role.blue { border-top-color: var(--blue); }
+#quantum-lab .role.human { border-top-style: dashed; }
+#quantum-lab .role .tag { font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+#quantum-lab .role h4 { font-family: var(--display); font-weight: 400; font-size: 1.3rem; line-height: 1.2; margin: 2px 0 4px; }
+#quantum-lab .role p { font-size: .92rem; line-height: 1.5; color: var(--muted); max-width: none; }
+#quantum-lab .role .out { margin-top: auto; padding-top: 8px; border-top: 1px dashed var(--line); font-size: .78rem; color: var(--muted); }
+#quantum-lab .role .out b { color: var(--fg); font-weight: 500; }
+#quantum-lab .lab-cards .card dl { font-size: .86rem; margin-top: 8px; }
+#quantum-lab .lab-cards .card a { color: var(--accent); }
+#quantum-lab .lab-ph { margin-top: auto; border: 1px dashed var(--line); border-radius: 4px; padding: 10px 12px; font-size: .84rem; color: var(--muted); }
+#quantum-lab .lab-ph .pill, #quantum-lab .case .pill, #quantum-lab .lab-phases .pill { color: var(--muted); border-style: dashed; margin-right: 6px; }
+#quantum-lab .lab-phases .pill.warn { color: var(--warn); border-style: solid; }
+#quantum-lab .case { border: 1px dashed var(--line); border-radius: 4px; padding: 20px 24px; }
+#quantum-lab .case-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 14px; }
+#quantum-lab .case-head .tag { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+#quantum-lab .case-head h4 { font-family: var(--display); font-weight: 400; font-size: 1.4rem; margin: 0; flex: 1 1 auto; min-width: 0; }
+#quantum-lab .case-kv { font-size: .92rem; row-gap: 10px; }
+#quantum-lab .case-kv dt { padding-top: 2px; }
+#quantum-lab .pend { display: inline-block; font-family: var(--mono); font-size: .76rem; color: var(--faint); border: 1px dashed var(--line); border-radius: 3px; padding: 2px 7px; }
+#quantum-lab .lab-phases .phase h3 { font-size: 1.5rem; }
+#quantum-lab .lab-refs { padding-left: 20px; }
+#quantum-lab .lab-refs a { color: var(--accent); }
+#quantum-lab a:focus-visible, #quantum-lab summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 2px; }
+@media (max-width: 900px) {
+  #quantum-lab .lab-key { grid-template-columns: 1fr; gap: 8px; }
+  #quantum-lab .lab-two { grid-template-columns: 1fr; }
+  #quantum-lab .lab-bounds { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  #quantum-lab .roles { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 700px) {
+  #quantum-lab .lab-fig { display: none; }
+  #quantum-lab .flow-list { display: block; margin: 0 0 8px; padding-left: 22px; font-size: 1rem; line-height: 1.6; }
+  #quantum-lab .flow-list li { margin-bottom: 6px; }
+  #quantum-lab .lab-bounds, #quantum-lab .roles { grid-template-columns: 1fr; }
+}

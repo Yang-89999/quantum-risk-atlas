@@ -1,0 +1,22 @@
+/* ---- estimator anchors and variant notes (page 01) ---- */
+#estimator .variant-note { margin-top: -4px; font-size: .8rem; line-height: 1.5; max-width: none; }
+#estimator .op-anchors { margin: 0 0 22px; }
+#estimator .op-anchors .eyebrow { display: block; margin-bottom: 8px; color: var(--muted); }
+#estimator .op-anchors p { max-width: none; margin-top: 10px; line-height: 1.5; }
+#estimator .anch-tbl { font-size: .8rem; }
+#estimator .anch-tbl th { white-space: nowrap; }
+#estimator .anch-tbl td { vertical-align: top; line-height: 1.45; }
+#estimator .anch-tbl td.name { font-weight: 500; color: var(--fg); min-width: 16ch; max-width: 26ch; }
+#estimator .anch-tbl .sm { display: block; font-weight: 300; color: var(--muted); font-size: .76rem; margin-top: 3px; line-height: 1.4; }
+#estimator .anch-tbl td.muted { min-width: 24ch; }
+#estimator .anch-tbl td.num { font-family: var(--mono); font-size: .76rem; white-space: normal; min-width: 12ch; text-align: left; }
+#estimator .anch-tbl tr.grp td { text-align: left; font-family: var(--mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); padding-top: 18px; border-bottom: 1px solid var(--rule); }
+#estimator .anch-tbl tr.sel td { background: var(--accent-soft); }
+#estimator .anch-tbl tr.sel td.name { box-shadow: inset 3px 0 0 var(--accent); }
+#estimator .pq-tbl td.name, #estimator .op-tbl td:first-child { white-space: normal; min-width: 12ch; }
+#estimator .anch-intro { max-width: 78ch; margin: 8px 0 12px; line-height: 1.55; }
+#estimator .verdict .pill + .pill { margin-left: 6px; }
+#estimator .ctrl-group .variant-note { color: var(--muted); }
+@media (max-width: 900px) {
+  #estimator .anch-tbl { font-size: .76rem; }
+}

@@ -1,0 +1,149 @@
+<!-- ============ 01 RESOURCE ESTIMATOR ============ -->
+<section class="mod" id="estimator" data-module="estimator"><div class="wrap">
+  <div class="sec-head">
+    <div class="n">01</div>
+    <div>
+      <h2>Resource estimator</h2>
+      <p>What size of fault-tolerant machine does the attack need, and when does hardware get there? Choose the target cryptosystem and the attacker's assumptions; the model scales published logical-level estimates and then wraps them in a surface-code layer.</p>
+    </div>
+  </div>
+
+  <div class="est-top">
+    <p class="small muted"><span class="pill warn">Provisional outputs</span>&nbsp; The fault-tolerance layer is a placeholder model so the page reads as it will when finished; the computation is isolated in one <code>estimate()</code> function and will be replaced. The logical-level inputs, the anchors and the sub-operation counts were refreshed on 3 November 2026 from the project literature review (search date 1 November 2026) and are quoted in each paper's own units, with per-run and expected costs kept apart.</p>
+    <div class="presets-row"><span class="eyebrow">Start from a published scenario</span><div class="presets" id="presets" aria-label="Presets"></div></div>
+  </div>
+  <div class="setting-bar">
+    <span class="eyebrow">Estimation setting</span>
+    <div class="seg" id="seg" role="tablist" aria-label="Estimation setting"></div>
+    <span class="small muted" id="segName"></span>
+  </div>
+  <div class="setting-tbl tbl-wrap"><table id="settingTbl">
+    <thead><tr><th>Setting</th><th>Task being estimated</th><th>Operation or goal</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <div class="op-anchors" id="opAnch" aria-live="polite"></div>
+
+  <div class="ctrl-grid">
+    <div class="panel">
+      <div class="ctrl-group">
+        <span class="eyebrow">Target</span>
+        <div class="ctrl"><label for="alg">Algorithm family</label><select id="alg"></select></div>
+        <div class="ctrl"><label for="variant">Published circuit (variant)<small id="variantHint"></small></label><select id="variant"></select></div>
+        <div class="ctrl"><label for="keyBits">Key / field size<small id="keyHint"></small></label><select id="keyBits"></select></div>
+        <p class="variant-note small muted" id="variantNote"></p>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="eyebrow">Attacker's algorithmic assumptions</span>
+        <div class="ctrl"><label for="arithOpt">Future gate-count improvement<small>Divides the Toffoli/iteration count. 1 = as published.</small></label><div class="rv"><input type="range" id="arithOpt" min="1" max="20" step="1" value="1"><output for="arithOpt" id="arithOptV">1×</output></div></div>
+        <div class="ctrl"><label for="parallel">Toffoli parallelism<small>Concurrent non-Clifford ops (Shor only).</small></label><input type="number" id="parallel" min="1" max="64" step="1" value="1"></div>
+        <div class="ctrl" data-only="aes"><label for="machines">Parallel machines<small>Grover gains only √P from P machines.</small></label><input type="number" id="machines" min="1" max="1000000" step="1" value="1"></div>
+        <div class="ctrl" data-setting="I"><label for="window">Attack time budget<small>One run must finish within this window.</small></label><select id="window"><option value="0">No limit</option><option value="3600">1 hour</option><option value="86400">1 day</option><option value="604800">1 week</option><option value="2592000">30 days</option><option value="31536000">1 year</option></select></div>
+      </div>
+
+    </div>
+    <div class="panel">
+      <div class="ctrl-group">
+        <span class="eyebrow">Hardware &amp; error correction</span>
+        <div class="ctrl"><label for="pPhys">Physical error rate<small>Per gate / cycle. Threshold assumed 1%.</small></label><div class="rv"><input type="range" id="pPhys" min="0" max="100" step="1" value="50"><output for="pPhys" id="pPhysV">1.0e-3</output></div></div>
+        <div class="ctrl"><label for="cycleUs">Surface-code cycle time (µs)<small>~1 superconducting · ~100–1000 ions/atoms</small></label><input type="number" id="cycleUs" min="0.1" step="0.1" value="1"></div>
+        <div class="ctrl"><label for="reactionUs">Reaction time (µs)<small>Decode + feed-forward per logical op.</small></label><input type="number" id="reactionUs" min="1" step="1" value="10"></div>
+        <div class="ctrl"><label for="dAuto">Choose code distance automatically</label><input type="checkbox" id="dAuto" checked></div>
+        <div class="ctrl"><label for="d">Code distance d<small>Odd. Used when auto is off.</small></label><input type="number" id="d" min="3" max="201" step="2" value="27"></div>
+        <div class="ctrl"><label for="eps">Allowed failure probability<small>Per run from logical errors; retries = 1/(1−ε).</small></label><select id="eps"><option value="0.5">50%</option><option value="0.1" selected>10%</option><option value="0.01">1%</option></select></div>
+      </div>
+
+    </div>
+    <div class="panel">
+      <div class="ctrl-group">
+        <span class="eyebrow">Architecture</span>
+        <div class="ctrl"><label for="factories">Magic-state factories<small>More factories: faster, bigger.</small></label><input type="number" id="factories" min="1" max="500" step="1" value="28"></div>
+        <div class="ctrl"><label for="magic">Magic-state production</label><select id="magic"><option value="distill">Distillation (Litinski-style)</option><option value="cultivate">Cultivation (Gidney et al. 2024)</option></select></div>
+        <div class="ctrl"><label for="storage">Idle-qubit storage</label><select id="storage"><option value="surface">Plain surface code</option><option value="yoked">Yoked surface codes (≈3× denser)</option></select></div>
+        <div class="ctrl"><label for="routing">Routing / layout overhead</label><div class="rv"><input type="range" id="routing" min="1" max="2" step="0.05" value="1.4"><output for="routing" id="routingV">1.40×</output></div></div>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="eyebrow">Hardware trajectory (for Q-day)</span>
+        <div class="ctrl"><label for="q0">Largest physical-qubit count today<small>Editable; set to the platform you track.</small></label><input type="number" id="q0" min="10" step="100" value="6000"></div>
+        <div class="ctrl"><label for="doubling">Doubling period (years)</label><input type="number" id="doubling" min="0.25" step="0.25" value="1.5"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results">
+      <div class="tiles">
+        <div class="tile"><span class="eyebrow" id="tPhysL">Physical qubits</span><div class="v" id="tPhys">—</div><div class="sub" id="tPhysSub"></div></div>
+        <div class="tile"><span class="eyebrow" id="tTimeL">Runtime per run</span><div class="v" id="tTime">—</div><div class="sub" id="tTimeSub"></div></div>
+        <div class="tile"><span class="eyebrow" id="tLL">Logical qubits</span><div class="v" id="tL">—</div><div class="sub" id="tLSub"></div></div>
+        <div class="tile"><span class="eyebrow" id="tDL">Code distance</span><div class="v" id="tD">—</div><div class="sub" id="tDSub"></div></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+
+      <figure class="wide">
+        <figcaption><b>Runtime vs physical qubits.</b> The space–time frontier for the complete attack on the current target: each point on the curve is a different number of magic-state factories (parallel machines for Grover). Other key sizes of the family are shown at the current factory count. Published anchors are plotted at the runtime each paper reports (per run or expected, as listed in the table below). Hover the curve to read values.</figcaption>
+        <div class="chart-wrap"><svg class="chart" id="chartTO" viewBox="0 0 1040 400" role="img" aria-label="Runtime against physical qubits for the complete attack"></svg><div class="tip" id="tipTO" hidden></div></div>
+        <div class="legend"><span><i class="a"></i>Frontier, current target</span><span><i class="b"></i>Other key sizes</span><span><i class="g"></i>Published anchors</span><span><i class="f"></i>Largest machine today</span></div>
+      </figure>
+
+      <div class="charts">
+        <figure>
+          <figcaption><b>Physical qubits vs physical error rate</b> for the complete attack (setting I). Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.</figcaption>
+          <svg class="chart" id="chartP" viewBox="0 0 520 300" role="img" aria-label="Physical qubits needed as a function of physical error rate"></svg>
+          <div class="legend"><span><i class="a"></i>This configuration</span><span><i class="g"></i>Published anchors</span></div>
+        </figure>
+        <figure>
+          <figcaption><b>Q-day projection.</b> Hardware growth at the chosen doubling period against the qubits the complete attack (setting I) needs.</figcaption>
+          <svg class="chart" id="chartQ" viewBox="0 0 520 300" role="img" aria-label="Projected hardware qubit count over years against the requirement"></svg>
+          <div class="legend"><span><i class="b"></i>Hardware trajectory</span><span><i class="a"></i>Qubits required</span><span><i class="g"></i>NIST deprecation (2030) / disallow (2035)</span></div>
+        </figure>
+      </div>
+
+      <details open>
+        <summary>Published anchors (literature review, search date 1 November 2026)</summary>
+        <p class="small muted anch-intro">Every number is quoted as the paper reports it. <b>Coverage</b> says what the number describes: a complete attack at expected cost, one run or shot, or a formula. Gate counts stay in the paper's own unit; Toffoli, T and CCZ counts are never converted into one another. <b>Evidence</b> records how the figure was obtained and whether the review could verify it in the primary source. Rows of the selected family are highlighted.</p>
+        <div class="tbl-wrap"><table id="anchors" class="anch-tbl">
+          <thead><tr><th>Source · target · coverage</th><th>Logical qubits</th><th>Gate count (paper's unit)</th><th>Physical qubits</th><th>Runtime</th><th>Hardware assumptions · evidence</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </details>
+
+      <details>
+        <summary>Beyond RSA and ECC: what estimates exist for the post-quantum families</summary>
+        <p class="small muted anch-intro">Only RSA and ECC have end-to-end estimates that run from a named parameter set to physical qubits and wall-clock time under stated hardware assumptions. The post-quantum families have logical-level circuit costs for subroutines or single iterations, asymptotic exponents and model-based security levels in bits; none has a complete physical-level attack estimate that threatens a standardised parameter set. Their records compare on cost model, exponent, QRAM assumption and depth limit rather than on qubits and runtime, which is why they live in the <a href="#pqc">PQC Benchmark Suite</a> and not in this estimator.</p>
+        <div class="tbl-wrap"><table class="anch-tbl pq-tbl">
+          <thead><tr><th>Family</th><th>Complete attack, logical level</th><th>Complete attack, physical level</th><th>Subroutine or one-iteration circuits</th><th>Asymptotic or model-based bits</th><th>Independently reproduced or tested</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Lattices (ML-KEM / ML-DSA)</td><td>None on a named parameter set</td><td>Doriguello et al. 2024/26 only: ≈10¹³ physical qubits and ≈10³¹ years for an SVP-400 sieve (surface code, p = 10⁻⁵, bucket-brigade QRAM costed); per-sieve tables not verified</td><td>Grover SVP oracle compiled to n = 50 (Prokop et al. 2025); nearest-neighbour popcount oracle (Albrecht et al. 2020); enumeration lower bounds under MAXDEPTH (Bindel et al. 2024)</td><td>The dominant form: core-SVP 0.265β (Kyber-512: 107 bits quantum against 118 classical, round-3 spec Table 4); sieve exponents 0.2653 → 0.2563 under QRAM assumptions</td><td>Scripted estimators with public code; no attack circuit compiled at cryptographic size</td></tr>
+            <tr><td class="name">HQC</td><td>Logical level only: Prange or Lee–Brickell + Grover whole-attack counts (Perriello, Barenghi, Pelosi 2023/24): HQC-1 ≈2¹⁰⁴ gates, depth 2⁸⁹, 2³⁰ qubits, all gates weighted equally</td><td>One abstract-level claim (Kim, Jang, Seo 2026: ≈2⁴³ physical qubits, ≈2⁵³ years for HQC-128; body not readable, version unknown)</td><td>One amplitude-amplification iterate (Chevignard, Fouque, Schrottenloher 2024); Gauss–Jordan circuits (Jang, Oh, Seo 2024)</td><td>Specification rule: classical bits divided by two; MAXDEPTH-aware margins of 19 / 28 / 28 bits over the AES references (Esser and Bellini 2022)</td><td>Small instances simulated; no independent reproduction found; every estimate predates the 12 October 2026 parameter change (w and w_r raised by one)</td></tr>
+            <tr><td class="name">CSIDH-512</td><td>Bonnetain and Schrottenloher 2020: 2^71.6 T-gates plus 2⁸⁶ classical operations, no QRAM; Peikert 2020: ≈2⁵⁶–2⁶⁰ T-gates with 2⁴⁰ bits of QRACM</td><td>Depth-width cost 2⁶³ with a flat 2¹⁰ error-correction factor (Chávez-Saab et al. 2022); no architecture-level estimate</td><td>Group-action oracle: ≈2⁴⁰ nonlinear bit operations (Bernstein, Lange, Martindale, Panny 2019), 2^52.6 T (Bonnetain and Schrottenloher 2020)</td><td>Query counts with the oracle ignored (CSIDH authors 2018); all three cost models place CSIDH-512 below NIST level 1</td><td>Oracle computer-verified at bit level; collimation sieve simulated classically on the exact CSIDH-512 group order</td></tr>
+            <tr><td class="name">SIDH / SIKE</td><td>Claw-finding cost models only (Jaques and Schanck 2019; Jaques and Schrottenloher 2020)</td><td>None</td><td>None</td><td>G-cost and depth-width cost in bits under MAXDEPTH</td><td>Moot: broken classically in 2022 (Castryck and Decru; Maino et al.; Robert); a SIKEp751 key was recovered in about 3 h 15 min on one core. The break does not transfer to CSIDH, CSI-FiSh or SQIsign</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+
+      <details>
+        <summary>Comparability rules the anchors follow</summary>
+        <ul class="notes">
+          <li><b>Same unit.</b> Häner et al. 2020 report T-count, Roetteler et al. 2017 Toffoli, Gidney and Ekerå "Toffoli + T/2", Schrottenloher "Toffoli = CCX + CCZ + And", Perriello et al. weight all gates equally. None of these belong in one column, so the table names the unit on every row.</li>
+          <li><b>Per run against expected.</b> Gidney and Ekerå's 5.1 h per run against the 8 h in their title; Gidney 2025's 12.07 h shot against 4.96 days expected over 9.2 shots; Chevignard et al.'s 2³⁶ Toffoli per run against 40 to 60 runs. A runtime table that mixes these is wrong by a factor of 5 to 60, so the tiles above show one run and the verdict multiplies by the stated runs.</li>
+          <li><b>Subroutine against attack.</b> An ECDSA.Fail score (one classical-addend point addition) is not an ECDLP cost; the windowed variant costs 29.6 % more Toffoli, the full schedule multiplies by 28 and compounds the per-call failure. Settings II–IV keep such counts apart from setting I.</li>
+          <li><b>Physical counts need the cycle time.</b> Cain et al.'s ≈11,000 atoms and Pinnacle's 94,000 qubits are counted at 1 ms and 1 µs cycles respectively; their runtimes differ by a factor of about a thousand. Quoting qubit counts without the runtime column inverts the ranking, which is why the frontier chart plots both.</li>
+          <li><b>Attested is not demonstrated.</b> Google's zero-knowledge-attested point addition, IonQ's withheld compiled circuits and ECDSA.Fail's sampled validation are evidence of circuit correctness on samples, not demonstrated attacks. Nothing on this page is a demonstrated attack on a deployed parameter set.</li>
+          <li><b>Pairs that do compare.</b> Gidney and Ekerå 2021 against Gidney 2025 (same error rate, cycle, code family and accounting); Pinnacle 2026 against Gidney 2025 at p = 10⁻³ and 1 µs (identical logical circuit); the 256-bit ECDLP logical lineage Roetteler 2017 → Häner 2020 → Litinski 2023 → Babbush, IonQ and Schrottenloher 2026; Babbush 2026 against IonQ 2026 at the logical level only.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>How the model works and where it is rough</summary>
+        <ul class="notes">
+          <li><b>Logical layer.</b> Each variant is one published circuit, costed per run in the paper's unit: RSA by Gidney–Ekerå 2021 windowed arithmetic (3n + 0.002 n log₂n qubits, 0.3n³ + 0.0005 n³ log₂n Toffoli + T/2, ≈1.4 expected runs at n = 2048), Chevignard–Fouque–Schrottenloher 2024 residue arithmetic (1,730 qubits, 2³⁶ Toffoli per run, 40 runs) or Gidney 2025 approximate residue arithmetic (1,399 qubits, Table 5 Toffoli totals spread over 9.2 shots). ECC by Roetteler et al. 2017 (9n + 2⌈log₂n⌉ + 10 qubits, 448n³log₂n + 4090n³ Toffoli), Luo et al. 2026 (3n + 6⌊log₂n⌋ + 19 qubits, 1056 n³/log₂n Toffoli), Chevignard et al. 2026 (3.12n qubits, 2^38.98 Toffoli per run, 22 runs) or, for 256-bit curves only, the 28-windowed-addition circuits of Schrottenloher 2026, Babbush et al. 2026 and IonQ 2026 at their published counts. Finite-field DLP reuses the Gidney–Ekerå arithmetic with the exponent length set by the variant (a project scaling with no published count). AES uses Grassl et al. 2016 logical qubits and per-iteration T-depth with ⌈π/4·√(2ⁿ/P)⌉ Grover iterations; the review did not cover symmetric key search.</li>
+          <li><b>Key sizes the source does not tabulate</b> are extrapolated with the paper's own leading-order formula and flagged "scaled" under the variant; the 256-bit-only variants offer no other size.</li>
+          <li><b>Fault-tolerance layer (placeholder).</b> Logical error per cycle p_L = 0.1·(p/p_th)^((d+1)/2) with p_th = 1%. The distance is the smallest odd d such that L × cycles × p_L stays below the allowed failure probability. Physical qubits = L·2d²·storage·routing + factories × footprint·d² (footprint 300d² for distillation, 30d² for cultivation). Runtime per run = T × max(reaction time / parallelism, 10·d·t_cycle / factories). Expected total = runtime × stated runs / (1 − ε). This layer does not reproduce any paper's physical number: it is a uniform surface-code wrapper applied to every circuit so that the variants can be compared under one set of hardware assumptions.</li>
+          <li><b>Settings II–IV.</b> Where the review records a published count for the operation (ECDSA.Fail point additions, Schrottenloher's windowed addition, Häner et al.'s controlled addition, Kahanamoku-Meyer and Yao's modular multiplication) it is listed under the setting table. The live figure is still derived from the complete attack: for the windowed 256-bit circuits by the published rule Toffoli_ECDLP ≈ (2n/w − 4) × (Toffoli_PA + 3·2^w) with w = 16, so that one window-selected addition is 1/28 of the attack and the classical-addend addition of setting IV is that divided by the benchmark's measured 1.296 windowing overhead; for the other circuits by placeholder ratios (one controlled operation is 1/(2n) of the attack, a window-selected one w times that with w = 16 for curves and 5 for modular arithmetic, a fixed one 0.9 of a controlled one; one Grover iteration is total T-depth / iterations, the oracle 97% of an iteration, one reversible AES evaluation the oracle divided by 2 × pairs).</li>
+          <li><b>Known gaps.</b> No modelling of layout-specific routing costs, decoder throughput limits, qLDPC or cat-qubit codes, or multimode memories; the physical anchors that use them (Pinnacle, Cain et al., Gouzien et al., Pappalardo et al.) therefore sit far from the model's curve by construction. Grover numbers ignore the MAXDEPTH limit that NIST imposes; with it, AES-128 is already out of reach. Treat all outputs as order-of-magnitude.</li>
+        </ul>
+      </details>
+  </div>
+</div></section>
+

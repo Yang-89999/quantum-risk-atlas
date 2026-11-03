@@ -423,6 +423,28 @@ section.mod:not(.hero) .pill { font-weight: 500; }
   #quantum-lab .flow-list li { margin-bottom: 6px; }
   #quantum-lab .lab-bounds, #quantum-lab .roles { grid-template-columns: 1fr; }
 }
+/* ---- estimator anchors and variant notes (page 01) ---- */
+#estimator .variant-note { margin-top: -4px; font-size: .8rem; line-height: 1.5; max-width: none; }
+#estimator .op-anchors { margin: 0 0 22px; }
+#estimator .op-anchors .eyebrow { display: block; margin-bottom: 8px; color: var(--muted); }
+#estimator .op-anchors p { max-width: none; margin-top: 10px; line-height: 1.5; }
+#estimator .anch-tbl { font-size: .8rem; }
+#estimator .anch-tbl th { white-space: nowrap; }
+#estimator .anch-tbl td { vertical-align: top; line-height: 1.45; }
+#estimator .anch-tbl td.name { font-weight: 500; color: var(--fg); min-width: 16ch; max-width: 26ch; }
+#estimator .anch-tbl .sm { display: block; font-weight: 300; color: var(--muted); font-size: .76rem; margin-top: 3px; line-height: 1.4; }
+#estimator .anch-tbl td.muted { min-width: 24ch; }
+#estimator .anch-tbl td.num { font-family: var(--mono); font-size: .76rem; white-space: normal; min-width: 12ch; text-align: left; }
+#estimator .anch-tbl tr.grp td { text-align: left; font-family: var(--mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); padding-top: 18px; border-bottom: 1px solid var(--rule); }
+#estimator .anch-tbl tr.sel td { background: var(--accent-soft); }
+#estimator .anch-tbl tr.sel td.name { box-shadow: inset 3px 0 0 var(--accent); }
+#estimator .pq-tbl td.name, #estimator .op-tbl td:first-child { white-space: normal; min-width: 12ch; }
+#estimator .anch-intro { max-width: 78ch; margin: 8px 0 12px; line-height: 1.55; }
+#estimator .verdict .pill + .pill { margin-left: 6px; }
+#estimator .ctrl-group .variant-note { color: var(--muted); }
+@media (max-width: 900px) {
+  #estimator .anch-tbl { font-size: .76rem; }
+}
 /* ---- readiness index introduction (page 02) ---- */
 .index-intro { margin: 4px 0 40px; max-width: 72ch; }
 .index-intro p { font-size: 1rem; line-height: 1.6; color: var(--muted); }
@@ -646,7 +668,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
   </div>
 
   <div class="est-top">
-    <p class="small muted"><span class="pill warn">Provisional outputs</span>&nbsp; Results come from a placeholder model so the page reads as it will when finished. The methodology is not final; the computation is isolated in one <code>estimate()</code> function and will be replaced.</p>
+    <p class="small muted"><span class="pill warn">Provisional outputs</span>&nbsp; The fault-tolerance layer is a placeholder model so the page reads as it will when finished; the computation is isolated in one <code>estimate()</code> function and will be replaced. The logical-level inputs, the anchors and the sub-operation counts were refreshed on 3 November 2026 from the project literature review (search date 1 November 2026) and are quoted in each paper's own units, with per-run and expected costs kept apart.</p>
     <div class="presets-row"><span class="eyebrow">Start from a published scenario</span><div class="presets" id="presets" aria-label="Presets"></div></div>
   </div>
   <div class="setting-bar">
@@ -658,14 +680,16 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <thead><tr><th>Setting</th><th>Task being estimated</th><th>Operation or goal</th></tr></thead>
     <tbody></tbody>
   </table></div>
+  <div class="op-anchors" id="opAnch" aria-live="polite"></div>
 
   <div class="ctrl-grid">
     <div class="panel">
       <div class="ctrl-group">
         <span class="eyebrow">Target</span>
         <div class="ctrl"><label for="alg">Algorithm family</label><select id="alg"></select></div>
+        <div class="ctrl"><label for="variant">Published circuit (variant)<small id="variantHint"></small></label><select id="variant"></select></div>
         <div class="ctrl"><label for="keyBits">Key / field size<small id="keyHint"></small></label><select id="keyBits"></select></div>
-        <div class="ctrl"><label for="variant">Quantum algorithm variant<small id="variantHint"></small></label><select id="variant"></select></div>
+        <p class="variant-note small muted" id="variantNote"></p>
       </div>
 
       <div class="ctrl-group">
@@ -673,7 +697,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
         <div class="ctrl"><label for="arithOpt">Future gate-count improvement<small>Divides the Toffoli/iteration count. 1 = as published.</small></label><div class="rv"><input type="range" id="arithOpt" min="1" max="20" step="1" value="1"><output for="arithOpt" id="arithOptV">1×</output></div></div>
         <div class="ctrl"><label for="parallel">Toffoli parallelism<small>Concurrent non-Clifford ops (Shor only).</small></label><input type="number" id="parallel" min="1" max="64" step="1" value="1"></div>
         <div class="ctrl" data-only="aes"><label for="machines">Parallel machines<small>Grover gains only √P from P machines.</small></label><input type="number" id="machines" min="1" max="1000000" step="1" value="1"></div>
-        <div class="ctrl" data-setting="I"><label for="window">Attack time budget<small>Needed to finish within this window.</small></label><select id="window"><option value="0">No limit</option><option value="3600">1 hour</option><option value="86400">1 day</option><option value="604800">1 week</option><option value="2592000">30 days</option><option value="31536000">1 year</option></select></div>
+        <div class="ctrl" data-setting="I"><label for="window">Attack time budget<small>One run must finish within this window.</small></label><select id="window"><option value="0">No limit</option><option value="3600">1 hour</option><option value="86400">1 day</option><option value="604800">1 week</option><option value="2592000">30 days</option><option value="31536000">1 year</option></select></div>
       </div>
 
     </div>
@@ -685,7 +709,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
         <div class="ctrl"><label for="reactionUs">Reaction time (µs)<small>Decode + feed-forward per logical op.</small></label><input type="number" id="reactionUs" min="1" step="1" value="10"></div>
         <div class="ctrl"><label for="dAuto">Choose code distance automatically</label><input type="checkbox" id="dAuto" checked></div>
         <div class="ctrl"><label for="d">Code distance d<small>Odd. Used when auto is off.</small></label><input type="number" id="d" min="3" max="201" step="2" value="27"></div>
-        <div class="ctrl"><label for="eps">Allowed failure probability<small>Per attempt; expected attempts = 1/(1−ε).</small></label><select id="eps"><option value="0.5">50%</option><option value="0.1" selected>10%</option><option value="0.01">1%</option></select></div>
+        <div class="ctrl"><label for="eps">Allowed failure probability<small>Per run from logical errors; retries = 1/(1−ε).</small></label><select id="eps"><option value="0.5">50%</option><option value="0.1" selected>10%</option><option value="0.01">1%</option></select></div>
       </div>
 
     </div>
@@ -709,21 +733,21 @@ section.mod:not(.hero) .pill { font-weight: 500; }
   <div class="results">
       <div class="tiles">
         <div class="tile"><span class="eyebrow" id="tPhysL">Physical qubits</span><div class="v" id="tPhys">—</div><div class="sub" id="tPhysSub"></div></div>
-        <div class="tile"><span class="eyebrow" id="tTimeL">Runtime per attempt</span><div class="v" id="tTime">—</div><div class="sub" id="tTimeSub"></div></div>
+        <div class="tile"><span class="eyebrow" id="tTimeL">Runtime per run</span><div class="v" id="tTime">—</div><div class="sub" id="tTimeSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tLL">Logical qubits</span><div class="v" id="tL">—</div><div class="sub" id="tLSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tDL">Code distance</span><div class="v" id="tD">—</div><div class="sub" id="tDSub"></div></div>
       </div>
       <div class="verdict" id="verdict"></div>
 
       <figure class="wide">
-        <figcaption><b>Runtime vs physical qubits.</b> The space–time frontier for the complete attack on the current target: each point on the curve is a different number of magic-state factories (parallel machines for Grover). Other key sizes of the family are shown at the current factory count. Hover the curve to read values.</figcaption>
+        <figcaption><b>Runtime vs physical qubits.</b> The space–time frontier for the complete attack on the current target: each point on the curve is a different number of magic-state factories (parallel machines for Grover). Other key sizes of the family are shown at the current factory count. Published anchors are plotted at the runtime each paper reports (per run or expected, as listed in the table below). Hover the curve to read values.</figcaption>
         <div class="chart-wrap"><svg class="chart" id="chartTO" viewBox="0 0 1040 400" role="img" aria-label="Runtime against physical qubits for the complete attack"></svg><div class="tip" id="tipTO" hidden></div></div>
         <div class="legend"><span><i class="a"></i>Frontier, current target</span><span><i class="b"></i>Other key sizes</span><span><i class="g"></i>Published anchors</span><span><i class="f"></i>Largest machine today</span></div>
       </figure>
 
       <div class="charts">
         <figure>
-          <figcaption><b>Physical qubits vs physical error rate</b> for the complete attack (setting I). Published anchors shown for comparison.</figcaption>
+          <figcaption><b>Physical qubits vs physical error rate</b> for the complete attack (setting I). Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.</figcaption>
           <svg class="chart" id="chartP" viewBox="0 0 520 300" role="img" aria-label="Physical qubits needed as a function of physical error rate"></svg>
           <div class="legend"><span><i class="a"></i>This configuration</span><span><i class="g"></i>Published anchors</span></div>
         </figure>
@@ -735,19 +759,48 @@ section.mod:not(.hero) .pill { font-weight: 500; }
       </div>
 
       <details open>
-        <summary>Published anchors the model is calibrated against</summary>
-        <div class="tbl-wrap"><table id="anchors">
-          <thead><tr><th>Source</th><th>Target</th><th class="num">Logical qubits</th><th class="num">Toffoli / T count</th><th class="num">Physical qubits</th><th class="num">Runtime</th><th>Assumptions</th></tr></thead>
+        <summary>Published anchors (literature review, search date 1 November 2026)</summary>
+        <p class="small muted anch-intro">Every number is quoted as the paper reports it. <b>Coverage</b> says what the number describes: a complete attack at expected cost, one run or shot, or a formula. Gate counts stay in the paper's own unit; Toffoli, T and CCZ counts are never converted into one another. <b>Evidence</b> records how the figure was obtained and whether the review could verify it in the primary source. Rows of the selected family are highlighted.</p>
+        <div class="tbl-wrap"><table id="anchors" class="anch-tbl">
+          <thead><tr><th>Source · target · coverage</th><th>Logical qubits</th><th>Gate count (paper's unit)</th><th>Physical qubits</th><th>Runtime</th><th>Hardware assumptions · evidence</th></tr></thead>
           <tbody></tbody>
         </table></div>
       </details>
+
+      <details>
+        <summary>Beyond RSA and ECC: what estimates exist for the post-quantum families</summary>
+        <p class="small muted anch-intro">Only RSA and ECC have end-to-end estimates that run from a named parameter set to physical qubits and wall-clock time under stated hardware assumptions. The post-quantum families have logical-level circuit costs for subroutines or single iterations, asymptotic exponents and model-based security levels in bits; none has a complete physical-level attack estimate that threatens a standardised parameter set. Their records compare on cost model, exponent, QRAM assumption and depth limit rather than on qubits and runtime, which is why they live in the <a href="#pqc">PQC Benchmark Suite</a> and not in this estimator.</p>
+        <div class="tbl-wrap"><table class="anch-tbl pq-tbl">
+          <thead><tr><th>Family</th><th>Complete attack, logical level</th><th>Complete attack, physical level</th><th>Subroutine or one-iteration circuits</th><th>Asymptotic or model-based bits</th><th>Independently reproduced or tested</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Lattices (ML-KEM / ML-DSA)</td><td>None on a named parameter set</td><td>Doriguello et al. 2024/26 only: ≈10¹³ physical qubits and ≈10³¹ years for an SVP-400 sieve (surface code, p = 10⁻⁵, bucket-brigade QRAM costed); per-sieve tables not verified</td><td>Grover SVP oracle compiled to n = 50 (Prokop et al. 2025); nearest-neighbour popcount oracle (Albrecht et al. 2020); enumeration lower bounds under MAXDEPTH (Bindel et al. 2024)</td><td>The dominant form: core-SVP 0.265β (Kyber-512: 107 bits quantum against 118 classical, round-3 spec Table 4); sieve exponents 0.2653 → 0.2563 under QRAM assumptions</td><td>Scripted estimators with public code; no attack circuit compiled at cryptographic size</td></tr>
+            <tr><td class="name">HQC</td><td>Logical level only: Prange or Lee–Brickell + Grover whole-attack counts (Perriello, Barenghi, Pelosi 2023/24): HQC-1 ≈2¹⁰⁴ gates, depth 2⁸⁹, 2³⁰ qubits, all gates weighted equally</td><td>One abstract-level claim (Kim, Jang, Seo 2026: ≈2⁴³ physical qubits, ≈2⁵³ years for HQC-128; body not readable, version unknown)</td><td>One amplitude-amplification iterate (Chevignard, Fouque, Schrottenloher 2024); Gauss–Jordan circuits (Jang, Oh, Seo 2024)</td><td>Specification rule: classical bits divided by two; MAXDEPTH-aware margins of 19 / 28 / 28 bits over the AES references (Esser and Bellini 2022)</td><td>Small instances simulated; no independent reproduction found; every estimate predates the 12 October 2026 parameter change (w and w_r raised by one)</td></tr>
+            <tr><td class="name">CSIDH-512</td><td>Bonnetain and Schrottenloher 2020: 2^71.6 T-gates plus 2⁸⁶ classical operations, no QRAM; Peikert 2020: ≈2⁵⁶–2⁶⁰ T-gates with 2⁴⁰ bits of QRACM</td><td>Depth-width cost 2⁶³ with a flat 2¹⁰ error-correction factor (Chávez-Saab et al. 2022); no architecture-level estimate</td><td>Group-action oracle: ≈2⁴⁰ nonlinear bit operations (Bernstein, Lange, Martindale, Panny 2019), 2^52.6 T (Bonnetain and Schrottenloher 2020)</td><td>Query counts with the oracle ignored (CSIDH authors 2018); all three cost models place CSIDH-512 below NIST level 1</td><td>Oracle computer-verified at bit level; collimation sieve simulated classically on the exact CSIDH-512 group order</td></tr>
+            <tr><td class="name">SIDH / SIKE</td><td>Claw-finding cost models only (Jaques and Schanck 2019; Jaques and Schrottenloher 2020)</td><td>None</td><td>None</td><td>G-cost and depth-width cost in bits under MAXDEPTH</td><td>Moot: broken classically in 2022 (Castryck and Decru; Maino et al.; Robert); a SIKEp751 key was recovered in about 3 h 15 min on one core. The break does not transfer to CSIDH, CSI-FiSh or SQIsign</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+
+      <details>
+        <summary>Comparability rules the anchors follow</summary>
+        <ul class="notes">
+          <li><b>Same unit.</b> Häner et al. 2020 report T-count, Roetteler et al. 2017 Toffoli, Gidney and Ekerå "Toffoli + T/2", Schrottenloher "Toffoli = CCX + CCZ + And", Perriello et al. weight all gates equally. None of these belong in one column, so the table names the unit on every row.</li>
+          <li><b>Per run against expected.</b> Gidney and Ekerå's 5.1 h per run against the 8 h in their title; Gidney 2025's 12.07 h shot against 4.96 days expected over 9.2 shots; Chevignard et al.'s 2³⁶ Toffoli per run against 40 to 60 runs. A runtime table that mixes these is wrong by a factor of 5 to 60, so the tiles above show one run and the verdict multiplies by the stated runs.</li>
+          <li><b>Subroutine against attack.</b> An ECDSA.Fail score (one classical-addend point addition) is not an ECDLP cost; the windowed variant costs 29.6 % more Toffoli, the full schedule multiplies by 28 and compounds the per-call failure. Settings II–IV keep such counts apart from setting I.</li>
+          <li><b>Physical counts need the cycle time.</b> Cain et al.'s ≈11,000 atoms and Pinnacle's 94,000 qubits are counted at 1 ms and 1 µs cycles respectively; their runtimes differ by a factor of about a thousand. Quoting qubit counts without the runtime column inverts the ranking, which is why the frontier chart plots both.</li>
+          <li><b>Attested is not demonstrated.</b> Google's zero-knowledge-attested point addition, IonQ's withheld compiled circuits and ECDSA.Fail's sampled validation are evidence of circuit correctness on samples, not demonstrated attacks. Nothing on this page is a demonstrated attack on a deployed parameter set.</li>
+          <li><b>Pairs that do compare.</b> Gidney and Ekerå 2021 against Gidney 2025 (same error rate, cycle, code family and accounting); Pinnacle 2026 against Gidney 2025 at p = 10⁻³ and 1 µs (identical logical circuit); the 256-bit ECDLP logical lineage Roetteler 2017 → Häner 2020 → Litinski 2023 → Babbush, IonQ and Schrottenloher 2026; Babbush 2026 against IonQ 2026 at the logical level only.</li>
+        </ul>
+      </details>
+
       <details>
         <summary>How the model works and where it is rough</summary>
         <ul class="notes">
-          <li><b>Logical layer.</b> RSA: Gidney–Ekerå windowed arithmetic (≈3n logical qubits, 0.3n³ Toffolis at n=2048) or Gidney 2025 approximate residue arithmetic (≈1,400 logical qubits, 6.5·10⁹ Toffolis), scaled as n³ for other sizes. ECC: Roetteler et al. (9n + 2⌈log₂n⌉ + 10 qubits, 448n³log₂n + 4090n³ Toffolis). Finite-field DLP: same modular arithmetic as RSA with the exponent length set by the variant (full-length for safe-prime groups; ≈3× the security level for Ekerå–Håstad short exponents). AES: Grassl et al. logical qubits and per-iteration T-depth with ⌈π/4·√(2ⁿ/P)⌉ Grover iterations.</li>
-          <li><b>Fault-tolerance layer.</b> Logical error per cycle p_L = 0.1·(p/p_th)^((d+1)/2) with p_th = 1%. The distance is the smallest odd d such that L × cycles × p_L stays below the allowed failure probability. Physical qubits = L·2d²·storage·routing + factories × footprint·d² (footprint 300d² for distillation, 30d² for cultivation). Runtime = T × max(reaction time / parallelism, 10·d·t_cycle / factories).</li>
-          <li><b>Settings II–IV (placeholder).</b> One operation is currently derived from the complete attack: a controlled multiplication or point addition is 1/(2n) of the attack's Toffoli count, a window-selected one is w times that (w = 5 for modular arithmetic, 8 for curves), a fixed multiplication 0.9 of a controlled one; one Grover iteration is total T-depth / iterations, the oracle 97% of an iteration, and one reversible AES evaluation the oracle divided by 2 × (plaintext–ciphertext pairs). These ratios are to be replaced by the paper-specific counts.</li>
-          <li><b>Known gaps.</b> No modelling of layout-specific routing costs, decoder throughput limits, or non-surface codes (qLDPC). Grover numbers ignore the MAXDEPTH limit that NIST imposes; with it, AES-128 is already out of reach. Treat all outputs as order-of-magnitude.</li>
+          <li><b>Logical layer.</b> Each variant is one published circuit, costed per run in the paper's unit: RSA by Gidney–Ekerå 2021 windowed arithmetic (3n + 0.002 n log₂n qubits, 0.3n³ + 0.0005 n³ log₂n Toffoli + T/2, ≈1.4 expected runs at n = 2048), Chevignard–Fouque–Schrottenloher 2024 residue arithmetic (1,730 qubits, 2³⁶ Toffoli per run, 40 runs) or Gidney 2025 approximate residue arithmetic (1,399 qubits, Table 5 Toffoli totals spread over 9.2 shots). ECC by Roetteler et al. 2017 (9n + 2⌈log₂n⌉ + 10 qubits, 448n³log₂n + 4090n³ Toffoli), Luo et al. 2026 (3n + 6⌊log₂n⌋ + 19 qubits, 1056 n³/log₂n Toffoli), Chevignard et al. 2026 (3.12n qubits, 2^38.98 Toffoli per run, 22 runs) or, for 256-bit curves only, the 28-windowed-addition circuits of Schrottenloher 2026, Babbush et al. 2026 and IonQ 2026 at their published counts. Finite-field DLP reuses the Gidney–Ekerå arithmetic with the exponent length set by the variant (a project scaling with no published count). AES uses Grassl et al. 2016 logical qubits and per-iteration T-depth with ⌈π/4·√(2ⁿ/P)⌉ Grover iterations; the review did not cover symmetric key search.</li>
+          <li><b>Key sizes the source does not tabulate</b> are extrapolated with the paper's own leading-order formula and flagged "scaled" under the variant; the 256-bit-only variants offer no other size.</li>
+          <li><b>Fault-tolerance layer (placeholder).</b> Logical error per cycle p_L = 0.1·(p/p_th)^((d+1)/2) with p_th = 1%. The distance is the smallest odd d such that L × cycles × p_L stays below the allowed failure probability. Physical qubits = L·2d²·storage·routing + factories × footprint·d² (footprint 300d² for distillation, 30d² for cultivation). Runtime per run = T × max(reaction time / parallelism, 10·d·t_cycle / factories). Expected total = runtime × stated runs / (1 − ε). This layer does not reproduce any paper's physical number: it is a uniform surface-code wrapper applied to every circuit so that the variants can be compared under one set of hardware assumptions.</li>
+          <li><b>Settings II–IV.</b> Where the review records a published count for the operation (ECDSA.Fail point additions, Schrottenloher's windowed addition, Häner et al.'s controlled addition, Kahanamoku-Meyer and Yao's modular multiplication) it is listed under the setting table. The live figure is still derived from the complete attack: for the windowed 256-bit circuits by the published rule Toffoli_ECDLP ≈ (2n/w − 4) × (Toffoli_PA + 3·2^w) with w = 16, so that one window-selected addition is 1/28 of the attack and the classical-addend addition of setting IV is that divided by the benchmark's measured 1.296 windowing overhead; for the other circuits by placeholder ratios (one controlled operation is 1/(2n) of the attack, a window-selected one w times that with w = 16 for curves and 5 for modular arithmetic, a fixed one 0.9 of a controlled one; one Grover iteration is total T-depth / iterations, the oracle 97% of an iteration, one reversible AES evaluation the oracle divided by 2 × pairs).</li>
+          <li><b>Known gaps.</b> No modelling of layout-specific routing costs, decoder throughput limits, qLDPC or cat-qubit codes, or multimode memories; the physical anchors that use them (Pinnacle, Cain et al., Gouzien et al., Pappalardo et al.) therefore sit far from the model's curve by construction. Grover numbers ignore the MAXDEPTH limit that NIST imposes; with it, AES-128 is already out of reach. Treat all outputs as order-of-magnitude.</li>
         </ul>
       </details>
   </div>
@@ -1136,6 +1189,35 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <li>NIST, “Submission requirements and evaluation criteria for the Post-Quantum Cryptography standardization process” (security categories 1–5, MAXDEPTH); NIST IR 8545, status report on the fourth round (HQC selected, 2025); NIST additional digital signature round (UOV, MAYO, SQIsign).</li>
     <li>M. Albrecht, R. Player, S. Scott, “On the concrete hardness of Learning with Errors” (lattice estimator), JMC 2015, with the maintained estimator; E. Alkim et al., core-SVP methodology (NewHope, USENIX 2016).</li>
     <li>Microsoft Quantum, “Resource estimator for quantum cryptography” (reference tool this estimator extends).</li>
+    <!-- refs-lit-review: entries 17 onward added 2026-11-03 from the project literature review -->
+    <li>T. Häner, M. Roetteler, K. Svore, “Factoring using 2n+2 qubits with Toffoli based modular multiplication”, Quantum Inf. Comput. 17 (2017); arXiv:1611.07995.</li>
+    <li>C. Chevignard, P.-A. Fouque, A. Schrottenloher, “Reducing the number of qubits in quantum factoring”, CRYPTO 2025; IACR ePrint 2024/222 (revision of 31 December 2025).</li>
+    <li>É. Gouzien, N. Sangouard, “Factoring 2048-bit RSA integers in 177 days with 13,436 qubits and a multimode memory”, Phys. Rev. Lett. 127, 140503 (2021).</li>
+    <li>É. Gouzien, D. Ruiz, F.-M. Le Régent, J. Guillaud, N. Sangouard, “Performance analysis of a repetition cat code architecture: computing 256-bit elliptic curve logarithm in 9 hours with 126,133 cat qubits”, Phys. Rev. Lett. 131, 040602 (2023).</li>
+    <li>Zhou et al., transversal-gate architecture for reconfigurable atom arrays with an RSA-2048 estimate of 19 million qubits in 5.6 days, ISCA 2025.</li>
+    <li>Webster et al., “Pinnacle”: compiling the Gidney 2025 circuit onto generalised bicycle qLDPC codes, arXiv:2602.11457 (v2, May 2026); Iceberg Quantum.</li>
+    <li>Cain et al., RSA-2048 and 256-bit ECDLP on neutral-atom qLDPC architectures (lifted-product memory, bb18 processor), arXiv:2603.28627 (2026).</li>
+    <li>Xue, Covey, modular neutral-atom architecture for RSA-2048, arXiv:2605.03951 (2026).</li>
+    <li>Pappalardo et al. (Alice &amp; Bob, Inria), RSA, ECDLP and finite-field DLP on repetition-cat and LDPC-cat codes, IACR ePrint 2026/2665 (28 October 2026); abstract only was readable to the review.</li>
+    <li>T. Häner, S. Jaques, M. Naehrig, M. Roetteler, M. Soeken, “Improved quantum circuits for elliptic curve discrete logarithms”, PQCrypto 2020.</li>
+    <li>D. Litinski, “How to compute a 256-bit elliptic curve private key with only 50 million Toffoli gates”, arXiv:2306.08585 (2023).</li>
+    <li>C. Chevignard, P.-A. Fouque, A. Schrottenloher, residue-number-system quantum circuits for elliptic-curve discrete logarithms, EUROCRYPT 2026; IACR ePrint 2026/280 (revision of 4 June 2026).</li>
+    <li>R. Babbush, A. Zalcman, C. Gidney, …, D. Boneh, secp256k1 discrete logarithms with fewer than half a million physical qubits, arXiv:2603.28846 (v2, 15 April 2026); IACR ePrint 2026/625; with the Trail of Bits note on the v1 zero-knowledge verifier (April 2026).</li>
+    <li>Luo et al., space-efficient elliptic-curve point addition with mid-circuit measurement and feed-forward, arXiv:2607.13816 (v3, September 2026); supersedes arXiv:2604.02311.</li>
+    <li>A. Schrottenloher, windowed elliptic-curve point addition and an open reconstruction of the 256-bit ECDLP cost (Qarton library), arXiv:2606.02235; IACR ePrint 2026/1128 (2026).</li>
+    <li>T. Häner, Tripier, …, M. Roetteler (IonQ), fully compiled secp256k1 discrete-logarithm circuits on trapped-ion qLDPC blocks, IACR ePrint 2026/1916 (8 September 2026); arXiv:2609.05625.</li>
+    <li>ECDSA.Fail (Eigen Labs; repository under the Layr-Labs organisation, launched 30 May 2026): benchmark definition, scoring and results, arXiv:2609.09582 (cutoff 26 July 2026).</li>
+    <li>G. Kahanamoku-Meyer, N. Yao, “Fast quantum integer multiplication with zero ancillas”, arXiv:2403.18006 (v4, 2024).</li>
+    <li>J. Doriguello, G. Giapitzakis, A. Luongo, A. Morolia, physical-level resource estimates for Grover-aided lattice sieving at dimension 400, PQCrypto 2026; IACR ePrint 2024/1692 (revision of 10 April 2026); arXiv:2410.13759.</li>
+    <li>S. Perriello, A. Barenghi, G. Pelosi, quantum information-set-decoding circuits for HQC, BIKE and Classic McEliece, ACM Trans. Quantum Comput. 4(4) (2023), ACNS Workshops 2024 and CBCrypto 2026.</li>
+    <li>X. Bonnetain, A. Schrottenloher, “Quantum security analysis of CSIDH”, EUROCRYPT 2020.</li>
+    <li>C. Peikert, “He gives C-sieves on the CSIDH”, EUROCRYPT 2020; IACR ePrint 2019/725.</li>
+    <li>J. Chávez-Saab, J.-J. Chi-Domínguez, S. Jaques, F. Rodríguez-Henríquez, “The SQALE of CSIDH”, J. Cryptogr. Eng. (2022).</li>
+    <li>W. Castryck, T. Decru, “An efficient key recovery attack on SIDH”, EUROCRYPT 2023; with L. Maino, C. Martindale, L. Panny, G. Pope, B. Wesolowski (EUROCRYPT 2023) and D. Robert (EUROCRYPT 2023).</li>
+    <li>CRYSTALS-Kyber algorithm specification v3.01 (round 3, 2021), §4.4 Table 4 and §5; CRYSTALS-Dilithium round-3 specification (2021), Table 1 and §6.3.</li>
+    <li>A. Esser, E. Bellini, “Syndrome decoding estimator”, PKC 2022; IACR ePrint 2021/1243; HQC specifications of 22 August 2025 and 12 October 2026, §6.</li>
+    <li>Kim, Jang, Seo, physical-level estimate for HQC-128 information-set decoding, IACR ePrint 2026/1411 (July 2026); abstract only was readable to the review.</li>
+    <li>Project document, “Quantum Cryptanalysis Resource Estimates: Literature Review”, search date 1 November 2026: the source of every anchor, sub-operation count and comparability rule on page 01, with its own list of unverified numbers and open discrepancies.</li>
   </ol>
   <p class="muted small" style="margin-top:16px">Quantum Risk Atlas · v0.1 · all figures are model outputs for discussion, not vendor commitments.</p>
 </div></section>
@@ -1151,21 +1233,38 @@ section.mod:not(.hero) .pill { font-weight: 500; }
 const LOG2 = Math.log2;
 const STRENGTH = {1024: 80, 2048: 112, 3072: 128, 4096: 152};
 const GRASSL = {128: {L: 2953, tdepth: 1.99e5}, 192: {L: 4449, tdepth: 3.02e5}, 256: {L: 6681, tdepth: 2.35e5}};
+/* Gidney 2025, Table 5: expected Toffoli count (shots × per-shot cost) by modulus size. */
+const G2025_T = {1024: 1.1e9, 2048: 6.5e9, 3072: 1.9e10, 4096: 4.0e10};
 
+/* Logical-level cost of ONE RUN of the attack, in the unit the source paper uses (never converted).
+   `runs`   expected number of runs the source states (1 when it gives none; see the variant note).
+   `scaled` true when the chosen key size is not tabulated by the source and the figure is extrapolated
+            with the paper's own leading-order formula (a project assumption, flagged in the UI). */
 function logicalCost(s) {
-  const n = s.keyBits, opt = Math.max(1, s.arithOpt || 1);
+  const n = s.keyBits, opt = Math.max(1, s.arithOpt || 1), lg = LOG2(n);
+  const shor = (L, T, runs, unit, scaled, src, Lnote) => ({L: Math.round(L), T: T / opt, kind: 'shor', runs, unit, scaled, src, Lnote});
   if (s.alg === 'rsa') {
-    if (s.variant === 'g2025') return {L: Math.round(1399 * n / 2048), T: 6.5e9 * Math.pow(n / 2048, 3) / opt, kind: 'shor'};
-    return {L: Math.round(3 * n + 0.002 * n * LOG2(n)), T: (0.3 * n ** 3 + 0.0005 * n ** 3 * LOG2(n)) / opt, kind: 'shor'};
+    if (s.variant === 'g2025') return shor(1399 * n / 2048, (G2025_T[n] || 6.5e9 * Math.pow(n / 2048, 3)) / 9.2, 9.2, 'Toffoli', n !== 2048, 'Gidney 2025, Table 5', n === 2048 ? '1,399 tabulated (Table 5)' : 'scaled n/2048 from 1,399');
+    if (s.variant === 'cfs2024') return shor(1730 * n / 2048, Math.pow(2, 36) * Math.pow(n / 2048, 2) * Math.pow(lg / 11, 3), 40, 'Toffoli', n !== 2048, 'Chevignard, Fouque, Schrottenloher 2024/25, abstract', n === 2048 ? '1,730 per abstract (1,633 in Table 4)' : 'scaled n/2 from 1,730');
+    return shor(3 * n + 0.002 * n * lg, 0.3 * n ** 3 + 0.0005 * n ** 3 * lg, 1.4, 'Toffoli + T/2', false, 'Gidney and Ekerå 2021, Tables 1 and 3', 'formula 3n + 0.002 n log₂n; not tabulated by the paper');
   }
   if (s.alg === 'ffdlp') {
     const z = 2 * (STRENGTH[n] || Math.round(n / 18));
     const ne = s.variant === 'short' ? 1.5 * z : 2 * n;
-    return {L: Math.round(3 * n + 0.002 * n * LOG2(n)), T: (0.2 * n * n * ne + 0.0005 * n ** 3 * LOG2(n)) / opt, kind: 'shor'};
+    return shor(3 * n + 0.002 * n * lg, 0.2 * n * n * ne + 0.0005 * n ** 3 * lg, 1, 'Toffoli + T/2', true, 'Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)', 'Gidney–Ekerå formula; project scaling');
   }
-  if (s.alg === 'ecc') return {L: 9 * n + 2 * Math.ceil(LOG2(n)) + 10, T: (448 * n ** 3 * LOG2(n) + 4090 * n ** 3) / opt, kind: 'shor'};
+  if (s.alg === 'ecc') {
+    switch (s.variant) {
+      case 'luo2026': return shor(3 * n + 6 * Math.floor(lg) + 19, 1056 * n ** 3 / lg, 1, 'Toffoli', false, 'Luo et al. 2026, §6.4, leading-order formula', 'formula 3n + 6⌊log₂n⌋ + 19');
+      case 'cfs2026': return shor(1193 * n / 256, Math.pow(2, 38.98) * Math.pow(n / 256, 4), 22, 'Toffoli', n !== 256, 'Chevignard, Fouque, Schrottenloher 2026, abstract', n === 256 ? '1,193 per abstract (3.12n + o(n))' : 'scaled linearly from 1,193');
+      case 'schrott2026': return shor(1192 + 16, Math.pow(2, 26.66), 2, 'Toffoli (CCX + CCZ + And)', false, 'Schrottenloher 2026, Tables 1–2, any prime, space-optimised', '1,192 (Table 1) + 16 window qubits');
+      case 'babbush2026': return shor(1450, 70e6, 1, 'Toffoli', false, 'Babbush et al. 2026, abstract (stated as upper bounds)', 'upper bound “fewer than 1,450”');
+      case 'ionq2026': return shor(1450, 40e6, 2, 'Toffoli', false, 'Häner et al. (IonQ) 2026, Table I', '≈1,450 (Table I: 1,457 / 1,462)');
+      default: return shor(9 * n + 2 * Math.ceil(lg) + 10, 448 * n ** 3 * lg + 4090 * n ** 3, 1, 'Toffoli', false, 'Roetteler et al. 2017, Table 2', n === 256 ? '2,330 tabulated (Table 2)' : 'formula 9n + 2⌈log₂n⌉ + 10');
+    }
+  }
   const g = GRASSL[n] || GRASSL[128], P = Math.max(1, s.machines || 1);
-  return {L: g.L, iters: Math.PI / 4 * Math.sqrt(Math.pow(2, n) / P), tdepth: g.tdepth / opt, kind: 'grover', P};
+  return {L: g.L, iters: Math.PI / 4 * Math.sqrt(Math.pow(2, n) / P), tdepth: g.tdepth / opt, kind: 'grover', P, runs: 1, unit: 'T-depth', scaled: false, src: 'Grassl et al. 2016'};
 }
 const pL = (p, d, pth) => 0.1 * Math.pow(p / pth, (d + 1) / 2);
 
@@ -1184,15 +1283,18 @@ function estimate(s) {
   const perMachine = c.L * 2 * d * d * storage * s.routing + F * foot * d * d;
   const P = c.kind === 'grover' ? c.P : 1;
   const runtime = runtimeAt(d, F);
+  const runs = c.runs || 1;
   let windowFactories = null, windowFeasible = true;
   if (s.window && c.kind === 'shor') {
     if (c.T * tr / par > s.window) windowFeasible = false;
     else windowFactories = Math.max(F, Math.ceil(c.T * period * d * tc / s.window));
   } else if (s.window && c.kind === 'grover') windowFeasible = runtime <= s.window;
   const windowPhys = windowFactories ? c.L * 2 * d * d * storage * s.routing + windowFactories * foot * d * d : null;
-  return {L: c.L, T: c.kind === 'shor' ? c.T : c.iters * c.tdepth, iters: c.iters, kind: c.kind, d, runtime,
+  const fail = isFinite(d) ? failAt(d, F) : 1;
+  return {L: c.L, T: c.kind === 'shor' ? c.T : c.iters * c.tdepth, iters: c.iters, kind: c.kind, d, runtime, runs, unit: c.unit, scaled: c.scaled, src: c.src, Lnote: c.Lnote,
+    expected: isFinite(d) && fail < 1 ? runtime * runs / (1 - fail) : Infinity,
     phys: perMachine * P, perMachine, P, pLogical: isFinite(d) ? pL(s.pPhys, d, pth) : 1,
-    fail: isFinite(d) ? failAt(d, F) : 1, windowFactories, windowFeasible, windowPhys};
+    fail, windowFactories, windowFeasible, windowPhys};
 }
 function qDay(need, q0, year0, doubling) {
   if (!isFinite(need)) return Infinity;
@@ -1222,31 +1324,96 @@ const fmtT = s => {
 };
 
 /* ---------- 1. Estimator module ---------- */
+/* Variants are published circuits. `keys` restricts the sizes a variant is published for; `note` is shown under the control. */
 const ALGS = {
-  rsa: {name: 'RSA (integer factoring)', keys: [1024, 2048, 3072, 4096], hint: 'modulus bits',
-    variants: [['ge2019', 'Gidney–Ekerå 2019: windowed arithmetic'], ['g2025', 'Gidney 2025: approximate residue arithmetic']], vhint: 'Shor with period finding'},
-  ecc: {name: 'ECC (elliptic-curve DLP)', keys: [256, 384, 521], hint: 'curve field bits (P-256 / P-384 / P-521)',
-    variants: [['roetteler', 'Roetteler et al. 2017: Shor over prime-field curves']], vhint: 'Also covers ECDH, ECDSA, Ed25519-class'},
-  ffdlp: {name: 'Finite-field DLP (DH, DSA)', keys: [1024, 2048, 3072, 4096], hint: 'prime modulus bits',
-    variants: [['safe', 'Full-length exponent (safe-prime group)'], ['short', 'Ekerå–Håstad: short exponent (≈ 3× security level)']], vhint: 'Shor-type; cost scales with exponent length'},
-  aes: {name: 'AES (symmetric, Grover)', keys: [128, 192, 256], hint: 'key bits',
-    variants: [['grassl', 'Grassl et al. 2016 oracle']], vhint: 'Quadratic speed-up only'},
+  rsa: {name: 'RSA (integer factoring)', keys: [1024, 2048, 3072, 4096], hint: 'modulus bits', vhint: 'Shor-type period finding; cost per run in the paper’s unit',
+    variants: [
+      {id: 'ge2021', label: 'Gidney–Ekerå 2021: windowed arithmetic [1]', note: '3n + 0.002 n log₂n logical qubits (formula; the paper tabulates no number) and 0.3n³ + 0.0005 n³ log₂n “Toffoli + T/2” per run: 2.7·10⁹ at n = 2048. Table 3 gives a 31 % retry risk per run, ≈1.4 expected runs, charged here for every size.'},
+      {id: 'cfs2024', label: 'Chevignard–Fouque–Schrottenloher 2024: residue arithmetic, qubit-minimal [18]', note: '1,730 logical qubits and 2³⁶ Toffoli per run at n = 2048 with 40 runs on average (abstract; Table 4 as read gives 1,633 qubits and 60 runs, unresolved). Other sizes are scaled with the paper’s n/2 + o(n) qubits and O(n² log³n) gates.'},
+      {id: 'g2025', label: 'Gidney 2025: approximate residue arithmetic [2]', note: '1,399 logical qubits (1,409 peak active; 1,537 incl. idle hot patches) and expected Toffoli totals 1.1·10⁹ / 6.5·10⁹ / 1.9·10¹⁰ / 4.0·10¹⁰ for 1024 / 2048 / 3072 / 4096 bits (Table 5), spread here over the 9.2 expected shots stated for n = 2048.'},
+    ]},
+  ecc: {name: 'ECC (elliptic-curve DLP)', keys: [256, 384, 521], hint: 'curve field bits (P-256 / P-384 / P-521)', vhint: 'Also covers ECDH, ECDSA, Ed25519-class',
+    variants: [
+      {id: 'roetteler', label: 'Roetteler et al. 2017: Shor, affine Montgomery arithmetic [3]', note: '9n + 2⌈log₂n⌉ + 10 qubits and 448n³log₂n + 4090n³ Toffoli: 2,330 qubits, 1.26·10¹¹ Toffoli at P-256 (Table 2). Exceptional cases ignored; the controlled point addition was compiled and classically simulated.'},
+      {id: 'luo2026', label: 'Luo et al. 2026: mid-circuit measurement, signed windows [30]', note: '3n + 6⌊log₂n⌋ + 19 qubits and 1056 n³/log₂n Toffoli (leading order, §6.4): 835 qubits and 2^30.88 Toffoli at 256 bits. Repetitions not reported, so one run is charged. Qiskit implementation for 64–512 bits; no repository found.'},
+      {id: 'cfs2026', label: 'Chevignard–Fouque–Schrottenloher 2026: RNS, projective, no inversion [28]', note: '1,193 qubits (3.12n + o(n)) and 2^38.98 Toffoli per run at P-256, 22 independent runs (abstract). Other sizes are scaled as n⁴ (the paper’s Õ(n⁴)); the qubit count relies on heuristic assumptions.'},
+      {id: 'schrott2026', label: 'Schrottenloher 2026: 28 windowed additions, open reconstruction [31]', keys: [256], note: '1,192 + 16 qubits (space-optimised) and 2^26.66 Toffoli (CCX + CCZ + And) for any 256-bit prime, as 28 × (3·2¹⁶ + Q_A) with Q_A = 2^21.78 per windowed addition (Tables 1–2). One run succeeds with probability > 1/2, so 2 expected runs are charged as an upper bound. Published for 256-bit curves only.'},
+      {id: 'babbush2026', label: 'Babbush et al. 2026 (Google): secp256k1, circuits withheld [29]', keys: [256], note: 'Fewer than 1,450 logical qubits and 70 M Toffoli, or fewer than 1,200 and 90 M (abstract; upper bounds). Algorithmic success probability not given, so one run is charged. Correctness attested by a zero-knowledge proof over 9,000 random inputs; the v1 verifier was bypassed by Trail of Bits and patched. 256-bit only.'},
+      {id: 'ionq2026', label: 'Häner et al. 2026 (IonQ): secp256k1, fully compiled [32]', keys: [256], note: '≈1,450 logical qubits (1,457 / 1,462 incl. window qubits), ≈40·10⁶ Toffoli and 75,251,329 measurement layers (Table I). Single-run success 40.7–63.3 %, charged here as 2 expected runs. Circuits withheld. 256-bit only.'},
+    ]},
+  ffdlp: {name: 'Finite-field DLP (DH, DSA)', keys: [1024, 2048, 3072, 4096], hint: 'prime modulus bits', vhint: 'Shor-type; cost scales with exponent length',
+    variants: [
+      {id: 'safe', label: 'Full-length exponent (safe-prime group)', note: 'Project scaling: Gidney–Ekerå 2021 modular arithmetic [1] with a 2n-bit exponent. The review records no published finite-field DLP count; Pappalardo et al. 2026 [25] compile one but only the abstract was readable.'},
+      {id: 'short', label: 'Ekerå–Håstad: short exponent (≈ 3× security level)', note: 'Project scaling: the same arithmetic with the exponent shortened to ≈3× the security level [4]. No published count for this size in the review.'},
+    ]},
+  aes: {name: 'AES (symmetric, Grover)', keys: [128, 192, 256], hint: 'key bits', vhint: 'Quadratic speed-up only',
+    variants: [
+      {id: 'grassl', label: 'Grassl et al. 2016 oracle [5]', note: 'Grassl et al. logical qubits and per-iteration T-depth. Symmetric key search was outside the scope of the literature review; see Jaques et al. 2020 [6] for the later oracle costs.'},
+    ]},
 };
+const variantOf = (alg, id) => ALGS[alg].variants.find(v => v.id === id) || ALGS[alg].variants[0];
+const keysFor = (alg, id) => variantOf(alg, id).keys || ALGS[alg].keys;
+const HW = {pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1};
 const PRESETS = [
-  {label: 'Gidney–Ekerå 2019 · RSA-2048', s: {alg: 'rsa', keyBits: 2048, variant: 'ge2019', pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1}},
-  {label: 'Gidney 2025 · RSA-2048', s: {alg: 'rsa', keyBits: 2048, variant: 'g2025', pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 4, magic: 'cultivate', storage: 'yoked', routing: 1.2, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1}},
-  {label: 'Roetteler 2017 · P-256', s: {alg: 'ecc', keyBits: 256, variant: 'roetteler', pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1}},
-  {label: 'DH-2048 short exponent', s: {alg: 'ffdlp', keyBits: 2048, variant: 'short', pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1}},
-  {label: 'AES-128 · Grover', s: {alg: 'aes', keyBits: 128, variant: 'grassl', pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1}},
+  {label: 'Gidney–Ekerå 2021 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'ge2021'}},
+  {label: 'Gidney 2025 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'g2025', factories: 6, magic: 'cultivate', storage: 'yoked', routing: 1.2}},
+  {label: 'Chevignard et al. 2024 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'cfs2024', factories: 4, magic: 'cultivate', storage: 'yoked', routing: 1.2}},
+  {label: 'Babbush et al. 2026 · secp256k1', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'babbush2026', magic: 'cultivate', routing: 1.2}},
+  {label: 'IonQ 2026 · secp256k1 · ions', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'ionq2026', pPhys: 1e-4, cycleUs: 1000, reactionUs: 1000, factories: 4}},
+  {label: 'Luo et al. 2026 · P-256', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'luo2026'}},
+  {label: 'DH-2048 short exponent', s: {...HW, alg: 'ffdlp', keyBits: 2048, variant: 'short'}},
+  {label: 'AES-128 · Grover', s: {...HW, alg: 'aes', keyBits: 128, variant: 'grassl'}},
 ];
+/* Published anchors, quoted in each paper's units. Chart fields: p (gate error rate), q (physical qubits), t (runtime in seconds, as published). */
 const ANCHORS = [
-  {src: 'Gidney & Ekerå 2019 [1]', target: 'RSA-2048', L: '6,189', T: '2.7·10⁹ Toffoli', phys: '20 M', time: '8 h', note: 'p = 10⁻³, 1 µs cycle, 10 µs reaction, 28 factories, d≈27', p: 1e-3, q: 20e6, t: 28800, alg: 'rsa'},
-  {src: 'Gidney 2025 [2]', target: 'RSA-2048', L: '≈1,400', T: '6.5·10⁹ Toffoli', phys: '< 1 M', time: '< 1 week', note: 'yoked codes, magic-state cultivation, same noise', p: 1e-3, q: 1e6, t: 604800, alg: 'rsa'},
-  {src: 'Roetteler et al. 2017 [3]', target: 'P-256', L: '2,330', T: '1.26·10¹¹ Toffoli', phys: '—', time: '—', note: 'logical level only; ≈ 9n + 2⌈log₂n⌉ + 10 qubits', alg: 'ecc'},
-  {src: 'Grassl et al. 2016 [5]', target: 'AES-128', L: '2,953', T: '≈1.19·2⁸⁶ T-gates', phys: '—', time: '≈ 2⁸¹ T-depth', note: 'full Grover search; infeasible under any MAXDEPTH', alg: 'aes'},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Häner 17', src: 'Häner, Roetteler, Svore 2017 [17]', target: 'RSA-n', cov: 'Complete, one run (formula)', L: '2n + 2', T: '64 n³ log₂n + O(n³) Toffoli (formula; GE21 cites 5.2·10¹² for n = 2048)', phys: '—', time: '—', hw: 'logical level', ev: 'Implemented and simulated in LIQUi|⟩ up to 8,192-bit inputs; no n = 2048 table in the paper'},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'GE21', src: 'Gidney & Ekerå 2021 [1]', target: 'RSA-2048', cov: 'Complete; per run (≈1.4 expected runs, 31 % retry risk)', L: '3n + 0.002 n log₂n (formula; no number tabulated)', T: '2.7·10⁹ Toffoli + T/2', phys: '20 M (script); ≈23 M hand estimate', time: '5.1 h per run (Table 3); 8 h in the title', hw: 'surface code d = 27, p = 10⁻³, 1 µs cycle, 10 µs reaction, 28 CCZ factories, planar superconducting', ev: 'Analytical estimate with released cost script; verified in primary source', p: 1e-3, q: 20e6, t: 5.1 * 3600},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'CFS 24', src: 'Chevignard, Fouque, Schrottenloher 2024/25 [18]', target: 'RSA-2048', cov: 'One run; 40 runs on average (abstract) or 60 (Table 4 as read)', L: '1,730 (abstract); 1,633 incl. 487 ancillae (Table 4 as read)', T: '2³⁶ Toffoli per run (Table 4: 2^35.61 Toffoli, 2^35.13 CNOT)', phys: '—', time: 'depth 2^33.42 per run', hw: 'logical level; relies on Heuristics 1–2', ev: 'Analytical; Qiskit estimates of building blocks; classical post-processing implemented; abstract/body discrepancy unresolved'},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Gidney 25', src: 'Gidney 2025 [2]', target: 'RSA-2048', cov: 'Complete; expected cost = 9.2 shots × per-shot', L: '1,399 (Table 5); 1,409 peak active; 1,537 incl. idle hot patches', T: '6.5·10⁹ Toffoli expected', phys: '897,864 (“< 1 million”)', time: '12.07 h per shot; 4.96 days expected', hw: 'hot storage d = 25 surface code, yoked cold storage, magic-state cultivation + 8T→CCZ, 6 factories, p = 10⁻³, 1 µs / 10 µs, square grid', ev: 'Analytical + released code; masking simulated; cold storage not simulated under realistic workloads (stated); Assumptions 1–2 conjectural', p: 1e-3, q: 897864, t: 12.07 * 3600},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Gouzien 21', src: 'Gouzien & Sangouard 2021 [19]', target: 'RSA-2048', cov: 'Complete', L: '8,284', T: 'not reported in the review', phys: '13,436 processor qubits + multimode memory of ≈28 M spatial modes', time: '177 days', hw: '3D gauge colour codes d = 47, rare-earth-ion photon-echo memory, p = 10⁻³, 1 µs', ev: 'Analytical with released code; memory modes are not counted as qubits, so no chart point'},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Gouzien 23 (cat)', src: 'Gouzien et al. 2023 [20]', target: 'RSA-2048', cov: 'Complete', L: 'not reported in the review', T: 'windowed Shor', phys: '349,133 cat qubits (often quoted as 350,000)', time: '4 days', hw: 'repetition cat code, lattice surgery, κ₁/κ₂ = 10⁻⁵, ≈19 photons, 500 ns, 2D grid', ev: 'Analytical; no gate error rate comparable to the surface-code axis', q: 349133, t: 4 * 86400},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Zhou 25', src: 'Zhou et al. 2025 [21]', target: 'RSA-2048', cov: 'Complete', L: 'not reported in the review', T: 'transversal-gate architecture', phys: '19 M', time: '5.6 days', hw: 'reconfigurable atom arrays, 1 ms QEC cycle, 500 µs measure/decode; error rate not in fetched text', ev: 'Analytical with heuristic logical-error model', q: 19e6, t: 5.6 * 86400},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Pinnacle 26', src: 'Webster et al. 2026, Pinnacle [22]', target: 'RSA-2048', cov: 'Complete (Gidney 2025 circuit)', L: '1,399 (reused)', T: '6.5·10⁹ Toffoli (reused)', phys: '135 k (≤ 1 week), 94 k (≤ 1 month), 381 k (≤ 1 day) at 1 µs, p = 10⁻³; 53 k–141 k at 10⁻⁴; 871 k (≤ 1 year) at 1 ms', time: 'see qubits; the paper gives formulas only', hw: 'generalised bicycle qLDPC codes, 15-to-1 magic engine, quasi-local non-planar couplers; real-time decoder out of scope', ev: 'Compilation-based analysis; preprint; no code link found', p: 1e-3, q: 135000, t: 7 * 86400},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Cain 26 (fast)', src: 'Cain et al. 2026 [23]', target: 'RSA-2048', cov: 'Complete, 90 % success target', L: 'Gidney 2025 / Gidney–Ekerå circuits', T: 'reused', phys: '≈102,000 (fast) · ≈68,000 · 13,255 · 11,033 (space-efficient)', time: '≈97 days · ≈870 days · ≈1.0·10⁴ days · ≈4.3·10⁴ days', hw: 'lifted-product qLDPC memory, bb18 processor, cultivation + 8T→CCZ, p = 0.048–0.093 %, 1 ms cycle (flagged as requiring development), reconfigurable non-local', ev: 'Analytical/numerical; some constructions depend on forthcoming work; figure-to-configuration mapping uncertain in extraction', p: 7e-4, q: 102000, t: 97 * 86400},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Cain 26 (small)', src: 'Cain et al. 2026, space-efficient [23]', target: 'RSA-2048', cov: 'Complete, 90 % success target', L: 'Gidney 2025 circuit', T: 'reused', phys: '11,033', time: '≈4.3·10⁴ days (≈120 years)', hw: 'as above', ev: 'A qubit-count reduction, not a cost reduction: ≈470 Mqubit-days', q: 11033, t: 4.3e4 * 86400},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Xue 26', src: 'Xue & Covey 2026 [24]', target: 'RSA-2048', cov: 'Complete; 190.4 days per shot × 9.2 shots', L: 'Gidney-style compilation', T: '≈7.1 M modular additions; depth 2.25·10¹⁰', phys: '≈367,500 (6 modules, d = 25) + ≈10⁵ memory ≈ “half a million”', time: '190.4 days per shot; QGPU variant 37.3 days total', hw: 'modular neutral atoms, p = 10⁻³, 1 ms measurement, 10⁵ Bell pairs/s (stated as far beyond demonstrations)', ev: 'Analytical with custom simulator (not stated as released); minor internal inconsistencies', p: 1e-3, q: 467500, t: 190.4 * 86400},
+  {grp: 'RSA-2048', alg: 'rsa', tag: 'Pappalardo 26*', src: 'Pappalardo et al. 2026 [25]', target: 'RSA-2048', cov: 'Complete (abstract only)', L: '1,433 (secondary source only)', T: '7.6·10⁸ Toffoli per run, 9.6 runs (secondary source only)', phys: '≈22,593 cat qubits; 611,000 for 1.25 h', time: '3.14 days', hw: 'repetition-cat and LDPC-cat codes, phase-flip 5·10⁻⁴, ≈100-year bit-flip time, 1 µs / 10 µs', ev: 'Not verified: PDF blocked, abstract page only', q: 22593, t: 3.14 * 86400},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Roetteler 17', src: 'Roetteler et al. 2017 [3]', target: 'P-256', cov: 'Complete = 2n controlled point additions; exceptional cases ignored', L: '2,330 (Häner et al. later cite 2,338)', T: '1.26·10¹¹ Toffoli; depth 1.16·10¹¹', phys: '—', time: '—', hw: 'logical level', ev: 'Controlled point addition compiled and classically simulated in LIQUi|⟩; number of test inputs not stated'},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Häner 20', src: 'Häner et al. 2020 [26]', target: 'P-256', cov: 'Complete = windowed addition × 2n / window', L: '2,124 (Low-W) · 2,619 (Low-T) · 2,871 (Low-D)', T: 'Low-D: 1.34·2³² T-count, 1.40·2³⁴ total; T-depth 1.12·2²⁴', phys: '—', time: '—', hw: 'logical level', ev: 'Full Q# implementation with unit tests and automatic resource estimation; Low-W / Low-T gate columns garbled in the review’s PDF extraction'},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Litinski 23', src: 'Litinski 2023 [27]', target: '256-bit prime curve', cov: 'Complete, per key, with k parallel instances', L: '3,000 memory + 3,000 factories', T: '(44 + 65/k) M Toffoli per key: 109 M at k = 1, 44 M as k → ∞ (title’s “50 M” relies on batching)', phys: '9.4 M (2D baseline, d = 28); 6.9 M (active volume)', time: '3.8 h at 1 µs / 160 days at 1 ms (2D); 58 s at 1 µs (active volume)', hw: 'surface code, error rate 10 % of threshold, p_L = 10^(−d/2)', ev: 'Analytical counting from Litinski–Nickerson subroutine costs; “300–700×” vs “240×” inconsistency noted', p: 1e-3, q: 9.4e6, t: 3.8 * 3600},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Gouzien 23 (cat)', src: 'Gouzien et al. 2023 [20]', target: '256-bit prime curve', cov: 'Complete', L: '9n + w_e + 4 = 2,308 + w_e', T: '348n³/w_e Toffoli (leading order)', phys: '126,133 cat qubits', time: '9 h', hw: 'repetition cat code, κ₁/κ₂ = 10⁻⁵, 500 ns, ≈19 photons', ev: 'Exact gate and qubit counting by code; no simulation', q: 126133, t: 9 * 3600},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'CFS 26', src: 'Chevignard, Fouque, Schrottenloher 2026 [28]', target: 'P-256', cov: 'Per run; 22 runs', L: '1,193 (3.12n + o(n)); other versions quote 1,098 or ≈1,100', T: '2^38.98 Toffoli per run', phys: '—', time: '—', hw: 'logical level', ev: 'Analytical; qubit count relies on heuristic assumptions; P-224/P-256 swap corrected in the abstract'},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Babbush 26', src: 'Babbush et al. 2026 (Google) [29]', target: 'secp256k1', cov: 'Complete, single instance; success probability not given', L: '< 1,200 or < 1,450', T: '< 90 M or < 70 M Toffoli', phys: '“fewer than half a million”', time: '18 or 23 min; ≈9 / 12 min with precomputation', hw: 'surface code, p = 10⁻³, planar superconducting', ev: 'Circuits withheld; zero-knowledge proof of the point addition on 9,000 random inputs (v1 verifier bypassed by Trail of Bits, patched; estimates stated to stand)', p: 1e-3, q: 5e5, t: 23 * 60},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Luo 26', src: 'Luo et al. 2026 [30]', target: 'P-256 class', cov: 'Complete; repetitions not reported', L: '835 (3n + 6⌊log₂n⌋ + O(1))', T: '2^30.88 Toffoli (1056n³/log₂n)', phys: '—', time: '—', hw: 'logical level; mid-circuit measurement and feed-forward', ev: 'Qiskit for 64–512 bits; no repository found; supersedes arXiv:2604.02311'},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Schrottenloher 26', src: 'Schrottenloher 2026 [31]', target: 'secp256k1 and any 256-bit prime', cov: 'Complete = 28 × (3·2¹⁶ + Q_A); one run, success > 1/2', L: '1,192 (space) / 1,446 (gate) + 16', T: 'any prime: 2^26.66 / 2^26.33 Toffoli (CCX + CCZ + And)', phys: '—', time: '—', hw: 'logical level; semiclassical QFT, measurement-based unlookup', ev: 'Open Python library (Qarton), non-gate-level simulation; windowed addition tested on 10,000 random inputs'},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'IonQ 26', src: 'Häner et al. 2026 (IonQ) [32]', target: 'secp256k1', cov: 'Complete, fully compiled; logical failure ≈26.45 % per attempt, single-run success 40.7–63.3 %', L: '≈1,450 (1,457 / 1,462 incl. window qubits)', T: '≈40·10⁶ Toffoli; 75,251,329 measurement layers', phys: '19,397 ions', time: '25.69 days (upper bound)', hw: '“Walking Cat” qLDPC [[102,22,9]] blocks, 4 CCZ factories, two-qubit error 10⁻⁴, trapped ions', ev: 'Fully compiled with a rigorous logical-failure bound; circuits withheld', p: 1e-4, q: 19397, t: 25.69 * 86400},
+  {grp: 'ECC-256 (P-256 / secp256k1)', alg: 'ecc', tag: 'Cain 26', src: 'Cain et al. 2026 [23]', target: '“P-256” (uses Google’s secp256k1 circuits)', cov: 'Complete, 90 % target', L: '1,200 / 1,450 (cited)', T: '9.0·10⁷ / 7.0·10⁷ Toffoli (cited)', phys: '9,739 · 11,961 · ≈19,000 · ≈26,000 atoms', time: '≈10³ days · ≈264 days · ≈52 days · ≈10 days (abstract says “a few days”)', hw: 'neutral atoms, qLDPC, 1 ms cycle', ev: 'Theoretical; curve naming mismatch with the source circuits', p: 7e-4, q: 26000, t: 10 * 86400},
+  {grp: 'AES-128', alg: 'aes', tag: 'Grassl 16', src: 'Grassl et al. 2016 [5]', target: 'AES-128', cov: 'Complete Grover search', L: '2,953', T: '≈1.19·2⁸⁶ T-gates; ≈2⁸¹ T-depth', phys: '—', time: '—', hw: 'logical level; infeasible under any MAXDEPTH', ev: 'Not covered by the literature review; retained from the original page'},
 ];
-/* Estimation settings I–IV: what the number describes, per algorithm family.
-   Placeholder scaling (`opView`) derives II–IV from the complete attack until the methodology is fixed. */
+/* Published counts for single operations (settings II–IV), from the review. */
+const OP_ANCHORS = {
+  'ecc:II': [
+    {src: 'Häner et al. 2020, App. E Table 5 [26]', what: 'one point addition, P-256, manual compilation', L: '2,319', T: '8,176,739 T-count; T-depth 50,253', ev: 'Q# unit tests'},
+    {src: 'Häner et al. 2020, App. E Table 5 [26]', what: 'one point addition, P-256, automatic compilation', L: '394,588', T: '1,576,296 T-count; T-depth 1,542', ev: 'Q# unit tests'},
+  ],
+  'ecc:III': [
+    {src: 'Schrottenloher 2026, Table 1 [31]', what: 'one windowed addition |i⟩|R⟩ → |i⟩|R + P_i⟩, secp256k1 (excl. window: +16 qubits, +3·2^w Toffoli)', L: '1,192 (space) / 1,446 (gate)', T: '2^21.19 / 2^20.83 Toffoli', ev: '10,000 random inputs; failure ≤ 2^−13.3'},
+    {src: 'Schrottenloher 2026, Table 1 [31]', what: 'one windowed addition, any 256-bit prime', L: '1,192 / 1,446', T: '2^21.78 / 2^21.42 Toffoli', ev: 'as above'},
+    {src: 'ECDSA.Fail windowed-compatible variant [33]', what: 'windowed-compatible point addition, secp256k1', L: '1,162', T: '≈1,684,161 Toffoli (+29.6 % over the classical-addend circuit)', ev: 'pass rate 0.99809 on 100,000 inputs; authors state it is “not a full-Shor success estimate”'},
+  ],
+  'ecc:IV': [
+    {src: 'ECDSA.Fail README anchors [33]', what: 'initial circuit: uncontrolled in-place affine addition of a classical point, secp256k1', L: '2,715', T: '3,942,753 Toffoli (score ≈1.07·10¹⁰)', ev: '9,024 Fiat–Shamir-derived test points; Q × Toffoli score'},
+    {src: 'ECDSA.Fail README anchors [33]', what: 'Google low-qubit / low-gate point addition (as reported by the benchmark)', L: '1,175 / 1,425', T: '2.7 M / 2.1 M Toffoli', ev: 'ZK-attested on 9,000 inputs; not located in the paper’s extractable main text'},
+    {src: 'ECDSA.Fail paper, cutoff 26 July 2026 [33]', what: 'best leaderboard entry', L: '1,151', T: '1,299,453 Toffoli (score ≈1.496·10⁹)', ev: 'benchmark harness; Pareto points down to 825 qubits'},
+    {src: 'ECDSA.Fail post-cutoff entry [33]', what: 'first entry below one million Toffoli', L: '1,321', T: '952,707 Toffoli', ev: 'benchmark harness'},
+    {src: 'Luo et al. 2026, §6 [30]', what: 'point addition, n = 256 class (formula)', L: '3n + 6⌊log₂n⌋ + 19', T: '1051 n² Toffoli; inversion 229 n²', ev: 'Qiskit'},
+  ],
+  'rsa:IV': [
+    {src: 'Kahanamoku-Meyer & Yao 2024, Table II [34]', what: 'one classical–quantum modular multiplication of 2048-bit numbers, Toom–Cook / QFT', L: '79–80 ancillae', T: '0.6 M Toffoli (standard QFT) / 0.9 M (phase gradient)', ev: 'analytical with resource-estimation code; compare Karatsuba 5.6 M Toffoli / 12,730 ancillae and windowed 1.8 M / 4,106'},
+  ],
+};
+const OP_RULE = {ecc: 'For the windowed 256-bit circuits the complete attack follows the published rule Toffoli_ECDLP ≈ (2n/w − 4) × (Toffoli_PA + 3·2^w) with w = 16, i.e. 28 × (3·2¹⁶ + Q_A), qubits ≈ Q + 16 (ECDSA.Fail Eq. 11; Schrottenloher Formula 1; IonQ uses the same form). It assumes a quantum-index windowed addition with three 2^w lookups, exceptional cases neglected except at i = 0, a semiclassical QFT with one recycled control qubit, per-call failure compounded over 28 calls, and ≈1/p repetitions for a single-run success p. The benchmark paper says instantiating the complete 28-call schedule “remains future work”.'};
+/* Estimation settings I–IV: what the number describes, per algorithm family. */
 const SHOR_MULT = (attackName, attackGoal) => [
   {id: 'I', name: attackName, task: 'The full attack, including the required quantum computations, repetitions, and classical processing', goal: attackGoal},
   {id: 'II', name: 'Controlled constant multiplication', task: 'One multiplication by a known A, conditional on c', goal: '|c, y⟩ ↦ |c, A<sup>c</sup>·y mod N⟩'},
@@ -1260,7 +1427,7 @@ const SETTINGS = {
     {id: 'I', name: 'Complete discrete-log attack', task: 'The paper’s complete discrete-log attack model: the full Shor computation, repetitions, and classical post-processing', goal: 'Recover the scalar k from Q = kP, enabling recovery of the ECC private key'},
     {id: 'II', name: 'Controlled point addition', task: 'One addition of a classical point, conditional on a quantum control', goal: '|c, R⟩ ↦ |c, R + c·P⟩'},
     {id: 'III', name: 'Window/table-selected point addition', task: 'One coherently selected table-point addition, including the specified lookup and cleanup', goal: '|J, R⟩ ↦ |J, R + P<sub>J</sub>⟩'},
-    {id: 'IV', name: 'Fixed point addition', task: 'One addition of a fixed classical point', goal: '|R⟩ ↦ |R + P⟩'},
+    {id: 'IV', name: 'Fixed point addition', task: 'One addition of a fixed classical point (the ECDSA.Fail benchmark operation)', goal: '|R⟩ ↦ |R + P⟩'},
   ],
   aes: [
     {id: 'I', name: 'Complete key-recovery attack', task: 'Preparation, many Grover iterations, measurement, and candidate verification', goal: 'Recover the secret AES key'},
@@ -1270,20 +1437,29 @@ const SETTINGS = {
   ],
 };
 let SETTING = 'I';
-/* Placeholder decomposition of the complete attack into one operation of the chosen setting. */
+const WINDOWED = new Set(['schrott2026', 'babbush2026', 'ionq2026']);
+/* One operation of the chosen setting, derived from the complete attack.
+   Windowed 256-bit circuits use the published 28-call rule; the rest use placeholder ratios. */
 function opView(s, full) {
   const n = s.keyBits;
   if (full.kind === 'grover') {
     const pairs = n === 256 ? 3 : 2;                       // plaintext–ciphertext pairs checked by the oracle
     const perIter = full.T / full.iters;
     const f = {II: 1, III: 0.97, IV: 0.97 / (2 * pairs)}[SETTING];
-    return {T: perIter * f, L: full.L, count: SETTING === 'IV' ? full.iters * 2 * pairs : full.iters, unit: 'T-depth',
+    return {T: perIter * f, L: full.L, count: SETTING === 'IV' ? full.iters * 2 * pairs : full.iters, unit: 'T-depth', rule: 'placeholder ratio',
       opsLabel: {II: 'Grover iterations', III: 'oracle calls', IV: 'AES evaluations'}[SETTING]};
   }
   const ops = 2 * n;                                        // controlled multiplications / point additions in the exponentiation
-  const w = s.alg === 'ecc' ? 8 : 5;                        // placeholder window size
+  const w = s.alg === 'ecc' ? 16 : 5;
+  if (s.alg === 'ecc' && WINDOWED.has(s.variant)) {
+    const calls = 2 * n / w - 4;                            // 28 windowed additions for n = 256, w = 16
+    const perWin = full.T / calls;                          // = 3·2^w + Q_A
+    const f = {II: 1 / ops, III: 1, IV: 1 / 1.296}[SETTING];
+    return {T: SETTING === 'II' ? full.T * f : perWin * f, L: SETTING === 'III' ? full.L : full.L - 16, count: SETTING === 'II' ? ops : calls, unit: 'Toffoli gates',
+      rule: SETTING === 'III' ? 'published rule: attack = (2n/w − 4) × (Toffoli_PA + 3·2^w)' : SETTING === 'IV' ? 'windowed addition ÷ 1.296 (ECDSA.Fail measured overhead)' : 'placeholder ratio', opsLabel: SETTING === 'III' ? 'windowed point additions' : 'point additions'};
+  }
   const f = {II: 1 / ops, III: w / ops, IV: 0.9 / ops}[SETTING];
-  return {T: full.T * f, L: full.L, count: SETTING === 'III' ? ops / w : ops, unit: 'Toffoli gates', opsLabel: s.alg === 'ecc' ? 'point additions' : 'modular multiplications'};
+  return {T: full.T * f, L: full.L, count: SETTING === 'III' ? ops / w : ops, unit: 'Toffoli gates', rule: 'placeholder ratio', opsLabel: s.alg === 'ecc' ? 'point additions' : 'modular multiplications'};
 }
 const $ = id => document.getElementById(id);
 const pFromSlider = v => Math.pow(10, -4 + 2 * v / 100);
@@ -1304,16 +1480,23 @@ function fillSelect(sel, pairs, keep) {
   sel.innerHTML = pairs.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
   sel.value = keep && pairs.some(p => String(p[0]) === prev) ? prev : pairs[0][0];
 }
+function syncKeys() {
+  const alg = $('alg').value, v = variantOf(alg, $('variant').value);
+  fillSelect($('keyBits'), keysFor(alg, v.id).map(k => [k, k + '-bit']), true);
+  $('keyHint').textContent = ALGS[alg].hint + (v.keys ? ' · published for ' + v.keys.join(', ') + '-bit only' : '');
+  $('variantNote').textContent = v.note;
+}
 function syncAlgUI() {
   const a = ALGS[$('alg').value];
-  fillSelect($('keyBits'), a.keys.map(k => [k, k + '-bit']), true);
-  fillSelect($('variant'), a.variants, true);
-  $('keyHint').textContent = a.hint; $('variantHint').textContent = a.vhint;
+  fillSelect($('variant'), a.variants.map(v => [v.id, v.label]), true);
+  $('variantHint').textContent = a.vhint;
+  syncKeys();
   document.querySelectorAll('[data-only]').forEach(el => el.hidden = el.dataset.only !== $('alg').value);
 }
 function applyPreset(s) {
   $('alg').value = s.alg; syncAlgUI();
-  $('keyBits').value = s.keyBits; $('variant').value = s.variant;
+  $('variant').value = s.variant; syncKeys();
+  $('keyBits').value = s.keyBits;
   $('pPhys').value = sliderFromP(s.pPhys); $('cycleUs').value = s.cycleUs; $('reactionUs').value = s.reactionUs;
   $('factories').value = s.factories; $('magic').value = s.magic; $('storage').value = s.storage; $('routing').value = s.routing;
   $('eps').value = s.eps; $('parallel').value = s.parallel; $('arithOpt').value = s.arithOpt; $('window').value = s.window; $('machines').value = s.machines;
@@ -1325,18 +1508,37 @@ function applyPreset(s) {
 const svgEl = (tag, attrs, text) => { let s = `<${tag}`; for (const k in attrs) s += ` ${k}="${attrs[k]}"`; return text != null ? `${s}>${text}</${tag}>` : `${s}/>`; };
 const logTicks = (lo, hi) => { const t = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) t.push(Math.pow(10, e)); return t; };
 const sup = e => '10' + String(e).replace(/-/g, '⁻').replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
+/* Place anchor labels so that they do not overlap each other (greedy: try a few offsets, then push down). */
+function placeLabels(items, W) {
+  const boxes = [], out = [];
+  const cands = [[9, -7, 'start'], [9, 15, 'start'], [-9, -7, 'end'], [-9, 15, 'end'], [9, 27, 'start'], [-9, 27, 'end']];
+  const hits = (x0, x1, y0, y1) => boxes.some(b => !(x1 < b.x0 || x0 > b.x1 || y1 < b.y0 || y0 > b.y1));
+  items.forEach(it => {
+    const w = it.text.length * 6.2, h = 11;
+    let best = null;
+    for (const c of cands) {
+      const x = it.x + c[0], y = it.y + c[1], x0 = c[2] === 'start' ? x : x - w;
+      if (x0 < 4 || x0 + w > W - 4) continue;
+      if (!hits(x0, x0 + w, y - h, y)) { best = {x, y, anchor: c[2], x0, x1: x0 + w, y0: y - h, y1: y}; break; }
+    }
+    if (!best) { const x = it.x + 9, x0 = x; let y = it.y - 7; while (hits(x0, x0 + w, y - h, y)) y += 12; best = {x, y, anchor: 'start', x0, x1: x0 + w, y0: y - h, y1: y}; }
+    boxes.push(best); out.push({...it, lx: best.x, ly: best.y, anchor: best.anchor});
+  });
+  return out;
+}
 
 function chartP(s, cur) {
   const W = 520, H = 300, m = {l: 54, r: 16, t: 24, b: 36};
   const xs = [], pts = [];
   for (let i = 0; i <= 60; i++) { const p = Math.pow(10, -4 + 1.9 * i / 60); const r = estimate({...s, pPhys: p, manualD: false}); if (isFinite(r.phys)) pts.push([p, r.phys]); }
-  const anchors = ANCHORS.filter(a => a.q && a.alg === s.alg);
+  const anchors = ANCHORS.filter(a => a.q && a.p && a.alg === s.alg);
   const ys = pts.map(p => p[1]).concat(anchors.map(a => a.q), [cur.phys].filter(isFinite));
   const ylo = Math.pow(10, Math.floor(Math.log10(Math.min(...ys)))), yhi = Math.pow(10, Math.ceil(Math.log10(Math.max(...ys))));
   const X = p => m.l + (Math.log10(p) + 4) / 2 * (W - m.l - m.r);
   const Y = q => H - m.b - (Math.log10(q) - Math.log10(ylo)) / (Math.log10(yhi) - Math.log10(ylo)) * (H - m.t - m.b);
   let g = '';
-  logTicks(ylo, yhi).forEach(t => { g += svgEl('line', {x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), class: 'grid'}); g += svgEl('text', {x: m.l - 6, y: Y(t) + 3, 'text-anchor': 'end'}, sup(Math.log10(t))); });
+  let yt = logTicks(ylo, yhi); if (yt.length > 8) yt = yt.filter((_, i) => i % 2 === 0);
+  yt.forEach(t => { g += svgEl('line', {x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), class: 'grid'}); g += svgEl('text', {x: m.l - 6, y: Y(t) + 3, 'text-anchor': 'end'}, sup(Math.log10(t))); });
   [1e-4, 1e-3, 1e-2].forEach(t => { g += svgEl('line', {x1: X(t), x2: X(t), y1: H - m.b, y2: H - m.b + 4, class: 'axis'}); g += svgEl('text', {x: X(t), y: H - m.b + 16, 'text-anchor': 'middle'}, sup(Math.log10(t))); });
   g += svgEl('text', {x: W - m.r, y: H - 4, 'text-anchor': 'end'}, 'physical error rate');
   g += svgEl('text', {x: 6, y: 10}, 'physical qubits');
@@ -1344,7 +1546,7 @@ function chartP(s, cur) {
     g += svgEl('path', {class: 'area', d: `M${X(pts[0][0])},${H - m.b} ` + pts.map(p => `L${X(p[0])},${Y(p[1])}`).join(' ') + ` L${X(pts[pts.length - 1][0])},${H - m.b} Z`});
     g += svgEl('path', {class: 'ln a', d: pts.map((p, i) => (i ? 'L' : 'M') + X(p[0]) + ',' + Y(p[1])).join(' ')});
   }
-  anchors.forEach((a, i) => { g += svgEl('circle', {class: 'mk g', cx: X(a.p), cy: Y(a.q), r: 4.5}); g += svgEl('text', {class: 'lbl', x: X(a.p) + 8, y: Y(a.q) + (i ? 12 : -6)}, a.src.replace(/ \[.*/, '')); });
+  placeLabels(anchors.map(a => ({x: X(a.p), y: Y(a.q), text: a.tag})), W).forEach(a => { g += svgEl('circle', {class: 'mk g', cx: a.x, cy: a.y, r: 4.5}); g += svgEl('text', {class: 'lbl', x: a.lx, y: a.ly, 'text-anchor': a.anchor}, a.text); });
   if (isFinite(cur.phys)) { g += svgEl('circle', {class: 'mk a', cx: X(s.pPhys), cy: Y(cur.phys), r: 5}); g += svgEl('text', {class: 'lbl', x: X(s.pPhys) - 8, y: Y(cur.phys) - 8, 'text-anchor': 'end'}, fmtN(cur.phys)); }
   $('chartP').innerHTML = g;
 }
@@ -1384,7 +1586,7 @@ function chartTO(s, cur) {
     if (prev && r.runtime > prev.x * 0.99) break;            // reaction-time floor reached: more factories only add qubits
     sweep.push({F: k, x: r.runtime, y: r.phys});
   }
-  const others = ALGS[s.alg].keys.filter(k => k !== s.keyBits).map(k => { const r = estimate({...s, keyBits: k, manualD: false}); return {k, x: r.runtime, y: r.phys}; }).filter(o => isFinite(o.x) && isFinite(o.y));
+  const others = keysFor(s.alg, s.variant).filter(k => k !== s.keyBits).map(k => { const r = estimate({...s, keyBits: k, manualD: false}); return {k, x: r.runtime, y: r.phys}; }).filter(o => isFinite(o.x) && isFinite(o.y));
   const anchors = ANCHORS.filter(a => a.q && a.t && a.alg === s.alg);
   const curOk = isFinite(cur.phys) && isFinite(cur.runtime);
   const xs = sweep.map(p => p.x).concat(others.map(o => o.x), anchors.map(a => a.t), curOk ? [cur.runtime] : []);
@@ -1401,10 +1603,10 @@ function chartTO(s, cur) {
   let xt = TIME_TICKS.filter(t => t[0] >= xlo && t[0] <= xhi); if (xt.length > 10) xt = xt.filter((_, i) => i % 2 === 0);
   xt.forEach(t => { g += svgEl('line', {x1: X(t[0]), x2: X(t[0]), y1: m.t, y2: H - m.b, class: 'grid'}); g += svgEl('text', {x: X(t[0]), y: H - m.b + 16, 'text-anchor': 'middle'}, t[1]); });
   g += svgEl('text', {x: 8, y: 11}, 'physical qubits');
-  g += svgEl('text', {x: W - m.r, y: H - 4, 'text-anchor': 'end'}, 'runtime per attempt (log)');
+  g += svgEl('text', {x: W - m.r, y: H - 4, 'text-anchor': 'end'}, 'runtime per run (log)');
   // largest machine today
   g += svgEl('line', {x1: m.l, x2: W - m.r, y1: Y(s.q0), y2: Y(s.q0), stroke: 'var(--muted)', 'stroke-dasharray': '2 4', 'stroke-width': 1.5});
-  g += svgEl('text', {x: W - m.r, y: Y(s.q0) - 6, 'text-anchor': 'end'}, `largest machine today · ${fmtN(s.q0)}`);
+  g += svgEl('text', {x: m.l + 6, y: Y(s.q0) - 6, 'text-anchor': 'start'}, `largest machine today · ${fmtN(s.q0)}`);
   if (sweep.length) {
     const pts = sweep.slice().sort((a, b) => a.x - b.x);
     g += svgEl('path', {class: 'area', d: `M${X(pts[0].x)},${H - m.b} ` + pts.map(p => `L${X(p.x)},${Y(p.y)}`).join(' ') + ` L${X(pts[pts.length - 1].x)},${H - m.b} Z`});
@@ -1413,7 +1615,7 @@ function chartTO(s, cur) {
     g += svgEl('text', {x: X(e2.x) - 8, y: Y(e2.y) + 18, 'text-anchor': 'end', class: 'lbl'}, `${e2.F} ${grover ? 'machine' : 'factory'}${e2.F > 1 ? 's' : ''} (slowest)`);
   }
   others.forEach(o => { g += svgEl('circle', {class: 'mk b', cx: X(o.x), cy: Y(o.y), r: 5}); g += svgEl('text', {class: 'lbl', x: X(o.x) + 9, y: Y(o.y) + 4}, `${o.k}-bit`); });
-  anchors.forEach((a, i) => { g += svgEl('circle', {class: 'mk g', cx: X(a.t), cy: Y(a.q), r: 5}); g += svgEl('text', {class: 'lbl', x: X(a.t) + 10, y: Y(a.q) + 18 + 14 * i}, a.src.replace(/ \[.*/, '')); });
+  placeLabels(anchors.map(a => ({x: X(a.t), y: Y(a.q), text: a.tag})), W).forEach(a => { g += svgEl('circle', {class: 'mk g', cx: a.x, cy: a.y, r: 5}); g += svgEl('text', {class: 'lbl', x: a.lx, y: a.ly, 'text-anchor': a.anchor}, a.text); });
   if (curOk) { g += svgEl('circle', {class: 'mk a', cx: X(cur.runtime), cy: Y(cur.phys), r: 6}); g += svgEl('text', {class: 'lbl', x: X(cur.runtime) - 12, y: Y(cur.phys) - 12, 'text-anchor': 'end'}, `${ALGS[s.alg].name.split(' (')[0]}-${s.keyBits} · ${fmtN(cur.phys)} qubits · ${fmtT(cur.runtime).v} ${fmtT(cur.runtime).u}`); }
   g += svgEl('circle', {id: 'toHover', class: 'mk a', r: 6, hidden: ''});
   $('chartTO').innerHTML = g;
@@ -1434,6 +1636,16 @@ function initTradeoffHover() {
   });
   svg.addEventListener('mouseleave', () => { tip.hidden = true; const c = $('toHover'); if (c) c.hidden = true; });
 }
+function renderOpAnchors(s) {
+  const box = $('opAnch');
+  if (SETTING === 'I') { box.innerHTML = ''; box.hidden = true; return; }
+  const rows = OP_ANCHORS[`${s.alg}:${SETTING}`] || [];
+  const rule = s.alg === 'ecc' && SETTING !== 'II' ? `<p class="small muted">${OP_RULE.ecc}</p>` : '';
+  box.hidden = false;
+  box.innerHTML = `<span class="eyebrow">Published counts for this operation (literature review)</span>` + (rows.length
+    ? `<div class="tbl-wrap"><table class="anch-tbl op-tbl"><thead><tr><th>Source</th><th>What is costed</th><th class="num">Logical qubits</th><th class="num">Gate count (paper's unit)</th><th>Evidence</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r.src}</td><td>${r.what}</td><td class="num">${r.L}</td><td class="num">${r.T}</td><td class="muted">${r.ev}</td></tr>`).join('')}</tbody></table></div>${rule}`
+    : `<p class="small muted">The review records no published count for this operation on ${ALGS[s.alg].name.split(' (')[0]}; the figure below is placeholder-scaled from the complete attack.</p>`);
+}
 function renderSettingUI(s) {
   const list = SETTINGS[s.alg];
   if (!list.some(x => x.id === SETTING)) SETTING = 'I';
@@ -1441,49 +1653,61 @@ function renderSettingUI(s) {
   $('segName').textContent = list.find(x => x.id === SETTING).name;
   $('settingTbl').querySelector('tbody').innerHTML = list.map(x => `<tr class="${x.id === SETTING ? 'sel' : ''}"><td>${x.id}</td><td>${x.task}</td><td class="op">${x.goal}</td></tr>`).join('');
   document.querySelectorAll('[data-setting]').forEach(el => el.hidden = el.dataset.setting !== SETTING);
+  renderOpAnchors(s);
+}
+function renderAnchorsTable(alg) {
+  let last = '';
+  $('anchors').querySelector('tbody').innerHTML = ANCHORS.map(a => {
+    const head = a.grp !== last ? `<tr class="grp"><td colspan="6">${a.grp}</td></tr>` : '';
+    last = a.grp;
+    return head + `<tr class="${a.alg === alg ? 'sel' : ''}"><td class="name">${a.src}<span class="sm">${a.target} · ${a.cov}</span></td><td class="num">${a.L}</td><td class="num">${a.T}</td><td class="num">${a.phys}</td><td class="num">${a.time}</td><td class="muted">${a.hw}<span class="sm">Evidence: ${a.ev}</span></td></tr>`;
+  }).join('');
 }
 function renderEstimator() {
   const s = readSettings(), r = estimate(s);
   renderSettingUI(s);
+  renderAnchorsTable(s.alg);
   const t = fmtT(r.runtime);
   const qd = qDay(r.phys, s.q0, YEAR0, s.doubling);
   window.__qday = qd;
   const alg = ALGS[s.alg].name.split(' (')[0] + '-' + s.keyBits;
   const setting = SETTINGS[s.alg].find(x => x.id === SETTING);
+  const scaled = r.scaled ? ' <span class="pill warn">scaled</span>' : '';
   let v = '';
   if (SETTING !== 'I' && r.d !== Infinity) {
-    /* Settings II–IV: one operation, placeholder-scaled from the complete attack */
     const o = opView(s, r);
     const perOp = r.runtime * (o.T / r.T);
     const ot = fmtT(perOp);
+    const published = o.rule !== 'placeholder ratio';
     $('tPhysL').textContent = 'Physical qubits (footprint)'; $('tPhys').textContent = fmtN(r.perMachine);
     $('tPhysSub').textContent = `same machine, d = ${r.d}`;
     $('tTimeL').textContent = 'Time per operation'; $('tTime').innerHTML = `${ot.v} <small>${ot.u}</small>`;
     $('tTimeSub').textContent = `${fmtSci(o.T)} ${o.unit}`;
     $('tLL').textContent = 'Logical qubits'; $('tL').textContent = o.L.toLocaleString(); $('tLSub').textContent = 'working registers';
     $('tDL').textContent = 'Repetitions in attack'; $('tD').textContent = fmtN(o.count); $('tDSub').textContent = o.opsLabel;
-    v = `<span class="pill warn">Setting ${SETTING} · placeholder</span><p><b>${setting.name}.</b> ${setting.task}. One such operation is estimated at <b>${fmtSci(o.T)} ${o.unit}</b> and about <b>${ot.v} ${ot.u}</b> under the current hardware assumptions; the complete attack on ${alg} (setting I) performs it roughly ${fmtN(o.count)} times. Charts below always describe the complete attack.</p>`;
+    v = `<span class="pill ${published ? 'good' : 'warn'}">Setting ${SETTING} · ${published ? 'published rule' : 'placeholder'}</span><p><b>${setting.name}.</b> ${setting.task}. One such operation is estimated at <b>${fmtSci(o.T)} ${o.unit}</b> and about <b>${ot.v} ${ot.u}</b> under the current hardware assumptions; the complete attack on ${alg} (setting I, ${r.src}) performs it ${published ? '' : 'roughly '}${fmtN(o.count)} times per run. Derivation: ${o.rule}. Charts below always describe the complete attack.</p>`;
     $('verdict').innerHTML = v;
     chartTO(s, r); chartP(s, r); chartQ(s, r);
     $('d').disabled = $('dAuto').checked; if ($('dAuto').checked && isFinite(r.d)) $('d').value = r.d;
     $('arithOptV').textContent = s.arithOpt + '×'; $('pPhysV').textContent = s.pPhys.toExponential(1); $('routingV').textContent = s.routing.toFixed(2) + '×';
     return;
   }
-  $('tPhysL').textContent = 'Physical qubits'; $('tTimeL').textContent = 'Runtime per attempt'; $('tLL').textContent = 'Logical qubits'; $('tDL').textContent = 'Code distance';
+  $('tPhysL').textContent = 'Physical qubits'; $('tTimeL').textContent = r.kind === 'grover' ? 'Runtime' : 'Runtime per run'; $('tLL').textContent = 'Logical qubits'; $('tDL').textContent = 'Code distance';
   $('tPhys').textContent = fmtN(r.phys);
   $('tPhysSub').textContent = r.kind === 'grover' && r.P > 1 ? `${fmtN(r.perMachine)} × ${r.P} machines` : `${r.d === Infinity ? 'above threshold' : 'd = ' + r.d + ', ' + s.factories + ' factories'}`;
   $('tTime').innerHTML = `${t.v} <small>${t.u}</small>`;
-  $('tTimeSub').textContent = r.kind === 'grover' ? `${fmtSci(r.iters)} Grover iterations` : `${fmtSci(r.T)} Toffoli gates`;
+  $('tTimeSub').textContent = r.kind === 'grover' ? `${fmtSci(r.iters)} Grover iterations` : `${fmtSci(r.T)} ${r.unit} per run · ${r.runs} expected runs`;
   $('tL').textContent = r.L.toLocaleString();
-  $('tLSub').textContent = r.kind === 'grover' ? 'per machine' : 'incl. ancilla';
+  $('tLSub').textContent = r.kind === 'grover' ? 'per machine' : (r.Lnote || (r.scaled ? 'scaled from the published size' : 'as published'));
   $('tD').textContent = isFinite(r.d) ? r.d : '—';
   $('tDSub').textContent = isFinite(r.d) ? `p_L = ${r.pLogical.toExponential(1)} / cycle` : 'no distance suffices';
   if (r.d === Infinity) v = `<span class="pill bad">Not feasible</span><p>At a physical error rate at or above the 1% threshold no code distance suppresses errors. Lower the error rate.</p>`;
   else if (r.kind === 'grover') v = `<span class="pill good">Symmetric keys hold</span><p>Breaking ${alg} by Grover search takes ${t.v} ${t.u} on ${r.P > 1 ? r.P + ' machines' : 'one machine'} of ${fmtN(r.perMachine)} physical qubits. Parallelism only buys a square root, so key search stays out of reach; doubling the key length (AES-256) restores the full margin.</p>`;
   else {
-    const win = s.window ? (r.windowFeasible ? ` To finish inside ${fmtT(s.window).v} ${fmtT(s.window).u} the attacker needs ${r.windowFactories} factories and about ${fmtN(r.windowPhys)} physical qubits.` : ` The reaction-time floor alone exceeds the ${fmtT(s.window).v} ${fmtT(s.window).u} budget: this attack cannot finish in that window at any factory count.`) : '';
+    const win = s.window ? (r.windowFeasible ? ` To finish one run inside ${fmtT(s.window).v} ${fmtT(s.window).u} the attacker needs ${r.windowFactories} factories and about ${fmtN(r.windowPhys)} physical qubits.` : ` The reaction-time floor alone exceeds the ${fmtT(s.window).v} ${fmtT(s.window).u} budget: one run cannot finish in that window at any factory count.`) : '';
     const cls = qd <= 2032 ? 'bad' : qd <= 2040 ? 'warn' : 'good';
-    v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span><p>Breaking ${alg} needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per attempt (${(1 / (1 - r.fail)).toFixed(2)} attempts expected). If the largest machine grows from ${fmtN(s.q0)} qubits doubling every ${s.doubling} years, that size arrives around <b>${isFinite(qd) ? qd.toFixed(0) : '—'}</b>.${win}</p>`;
+    const ex = fmtT(r.expected);
+    v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span>${scaled}<p>Breaking ${alg} with the ${r.src} circuit needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per run. The source charges ${r.runs} expected run${r.runs === 1 ? '' : 's'} and this configuration adds ${(1 / (1 - r.fail)).toFixed(2)}× for logical-error retries, so the expected total is <b>${ex.v} ${ex.u}</b>. If the largest machine grows from ${fmtN(s.q0)} qubits doubling every ${s.doubling} years, that size arrives around <b>${isFinite(qd) ? qd.toFixed(0) : '—'}</b>.${win}</p>`;
   }
   $('verdict').innerHTML = v;
   chartTO(s, r); chartP(s, r); chartQ(s, r);
@@ -1494,11 +1718,12 @@ function initEstimator() {
   fillSelect($('alg'), Object.entries(ALGS).map(([k, a]) => [k, a.name]));
   $('presets').innerHTML = PRESETS.map((p, i) => `<button type="button" data-preset="${i}">${p.label}</button>`).join('');
   $('presets').addEventListener('click', e => { const b = e.target.closest('[data-preset]'); if (b) applyPreset(PRESETS[+b.dataset.preset].s); });
-  $('anchors').querySelector('tbody').innerHTML = ANCHORS.map(a => `<tr><td>${a.src}</td><td>${a.target}</td><td class="num">${a.L}</td><td class="num">${a.T}</td><td class="num">${a.phys}</td><td class="num">${a.time}</td><td class="muted">${a.note}</td></tr>`).join('');
+  renderAnchorsTable('rsa');
   $('alg').addEventListener('change', () => { syncAlgUI(); renderAll(); });
+  $('variant').addEventListener('change', () => { syncKeys(); renderAll(); });
   $('seg').addEventListener('click', e => { const b = e.target.closest('[data-setting-id]'); if (b) { SETTING = b.dataset.settingId; renderAll(); } });
   initTradeoffHover();
-  document.querySelector('#estimator').addEventListener('input', e => { if (e.target.id !== 'alg') renderAll(); });
+  document.querySelector('#estimator').addEventListener('input', e => { if (e.target.id !== 'alg' && e.target.id !== 'variant') renderAll(); });
   applyPreset(PRESETS[0].s);
 }
 
@@ -1852,7 +2077,7 @@ MODULES.forEach(m => m.init());
 document.body.dataset.ready = '1';
 renderAll();
 /* report-style byline under every inner-page title */
-document.querySelectorAll('section.mod:not(.hero) .sec-head > div:nth-child(2)').forEach(d => d.insertAdjacentHTML('beforeend', '<div class="byline">Quantum Risk Atlas · v0.1 · provisional model · updated 28 October 2026</div>'));
+document.querySelectorAll('section.mod:not(.hero) .sec-head > div:nth-child(2)').forEach(d => d.insertAdjacentHTML('beforeend', '<div class="byline">Quantum Risk Atlas · v0.1 · provisional model · updated 3 November 2026</div>'));
 
 /* ---------- pages: one section visible at a time, chosen by the hash ---------- */
 const ROUTES = ['home', 'estimator', 'migration', 'products', 'pqc', 'next', 'quantum-lab', 'refs'];

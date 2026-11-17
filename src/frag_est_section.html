@@ -1,16 +1,22 @@
-<!-- ============ 01 RESOURCE ESTIMATOR ============ -->
+<!-- ============ 01 Q-CARE (RESOURCE ESTIMATION) ============ -->
 <section class="mod" id="estimator" data-module="estimator"><div class="wrap">
   <div class="sec-head">
     <div class="n">01</div>
     <div>
-      <h2>Resource estimator</h2>
-      <p>What size of fault-tolerant machine does the attack need, and when does hardware get there? Choose the target cryptosystem and the attacker's assumptions; the model scales published logical-level estimates and then wraps them in a surface-code layer.</p>
+      <h2>Q-CARE</h2>
+      <div class="qc-full">Quantum Cryptography Analysis &amp; Resource Estimation</div>
+      <p>What size of fault-tolerant machine does an attack need, and when does hardware get there? Pick the algorithm you run and a published attack circuit. Q-CARE takes the circuit's logical qubit and gate counts as the paper reports them and prices the physical machine with the open-source Microsoft QDK resource estimator, running in your browser.</p>
     </div>
   </div>
 
   <div class="est-top">
-    <p class="small muted"><span class="pill warn">Provisional outputs</span>&nbsp; The fault-tolerance layer is a placeholder model so the page reads as it will when finished; the computation is isolated in one <code>estimate()</code> function and will be replaced. The logical-level inputs, the anchors and the sub-operation counts were refreshed on 3 November 2026 from the project literature review (search date 1 November 2026) and are quoted in each paper's own units, with per-run and expected costs kept apart.</p>
+    <p class="small muted" id="engNote"></p>
     <div class="presets-row"><span class="eyebrow">Start from a published scenario</span><div class="presets" id="presets" aria-label="Presets"></div></div>
+  </div>
+  <div class="setting-bar engine-bar">
+    <span class="eyebrow">Estimation engine</span>
+    <div class="seg" id="engSeg" role="tablist" aria-label="Estimation engine"><button type="button" role="tab" data-engine-id="qdk">QDK resource estimator</button><button type="button" role="tab" data-engine-id="builtin">Built-in model</button></div>
+    <span class="small muted" id="engStatus" aria-live="polite"></span>
   </div>
   <div class="setting-bar">
     <span class="eyebrow">Estimation setting</span>
@@ -27,6 +33,7 @@
     <div class="panel">
       <div class="ctrl-group">
         <span class="eyebrow">Target</span>
+        <div class="ctrl"><label for="deployed">Deployed algorithm<small>Quick pick: sets the family, circuit and size below.</small></label><select id="deployed"></select></div>
         <div class="ctrl"><label for="alg">Algorithm family</label><select id="alg"></select></div>
         <div class="ctrl"><label for="variant">Published circuit (variant)<small id="variantHint"></small></label><select id="variant"></select></div>
         <div class="ctrl"><label for="keyBits">Key / field size<small id="keyHint"></small></label><select id="keyBits"></select></div>
@@ -36,7 +43,7 @@
       <div class="ctrl-group">
         <span class="eyebrow">Attacker's algorithmic assumptions</span>
         <div class="ctrl"><label for="arithOpt">Future gate-count improvement<small>Divides the Toffoli/iteration count. 1 = as published.</small></label><div class="rv"><input type="range" id="arithOpt" min="1" max="20" step="1" value="1"><output for="arithOpt" id="arithOptV">1×</output></div></div>
-        <div class="ctrl"><label for="parallel">Toffoli parallelism<small>Concurrent non-Clifford ops (Shor only).</small></label><input type="number" id="parallel" min="1" max="64" step="1" value="1"></div>
+        <div class="ctrl" data-engine="builtin"><label for="parallel">Toffoli parallelism<small>Concurrent non-Clifford ops (Shor only).</small></label><input type="number" id="parallel" min="1" max="64" step="1" value="1"></div>
         <div class="ctrl" data-only="aes"><label for="machines">Parallel machines<small>Grover gains only √P from P machines.</small></label><input type="number" id="machines" min="1" max="1000000" step="1" value="1"></div>
         <div class="ctrl" data-setting="I"><label for="window">Attack time budget<small>One run must finish within this window.</small></label><select id="window"><option value="0">No limit</option><option value="3600">1 hour</option><option value="86400">1 day</option><option value="604800">1 week</option><option value="2592000">30 days</option><option value="31536000">1 year</option></select></div>
       </div>
@@ -45,22 +52,29 @@
     <div class="panel">
       <div class="ctrl-group">
         <span class="eyebrow">Hardware &amp; error correction</span>
-        <div class="ctrl"><label for="pPhys">Physical error rate<small>Per gate / cycle. Threshold assumed 1%.</small></label><div class="rv"><input type="range" id="pPhys" min="0" max="100" step="1" value="50"><output for="pPhys" id="pPhysV">1.0e-3</output></div></div>
-        <div class="ctrl"><label for="cycleUs">Surface-code cycle time (µs)<small>~1 superconducting · ~100–1000 ions/atoms</small></label><input type="number" id="cycleUs" min="0.1" step="0.1" value="1"></div>
-        <div class="ctrl"><label for="reactionUs">Reaction time (µs)<small>Decode + feed-forward per logical op.</small></label><input type="number" id="reactionUs" min="1" step="1" value="10"></div>
-        <div class="ctrl"><label for="dAuto">Choose code distance automatically</label><input type="checkbox" id="dAuto" checked></div>
-        <div class="ctrl"><label for="d">Code distance d<small>Odd. Used when auto is off.</small></label><input type="number" id="d" min="3" max="201" step="2" value="27"></div>
-        <div class="ctrl"><label for="eps">Allowed failure probability<small>Per run from logical errors; retries = 1/(1−ε).</small></label><select id="eps"><option value="0.5">50%</option><option value="0.1" selected>10%</option><option value="0.01">1%</option></select></div>
+        <div class="ctrl" data-engine="qdk"><label for="qModel">Qubit model<small id="qModelHint">Predefined in the QDK.</small></label><select id="qModel"></select></div>
+        <div class="ctrl" data-engine="qdk-custom"><label for="qGate">Gate time (ns)<small>One- and two-qubit gates and T gates.</small></label><input type="number" id="qGate" min="1" max="100000000" step="1" value="50"></div>
+        <div class="ctrl" data-engine="qdk-custom"><label for="qMeas">Measurement time (ns)</label><input type="number" id="qMeas" min="1" max="100000000" step="1" value="100"></div>
+        <div class="ctrl" data-engine="builtin qdk-custom"><label for="pPhys">Physical error rate<small>Per gate / cycle. Threshold assumed 1%.</small></label><div class="rv"><input type="range" id="pPhys" min="0" max="100" step="1" value="50"><output for="pPhys" id="pPhysV">1.0e-3</output></div></div>
+        <div class="ctrl" data-engine="qdk"><label for="qec">Error-correction scheme<small>Floquet code needs Majorana qubits.</small></label><select id="qec"></select></div>
+        <div class="ctrl" data-engine="builtin"><label for="cycleUs">Surface-code cycle time (µs)<small>~1 superconducting · ~100–1000 ions/atoms</small></label><input type="number" id="cycleUs" min="0.1" step="0.1" value="1"></div>
+        <div class="ctrl" data-engine="builtin"><label for="reactionUs">Reaction time (µs)<small>Decode + feed-forward per logical op.</small></label><input type="number" id="reactionUs" min="1" step="1" value="10"></div>
+        <div class="ctrl" data-engine="builtin"><label for="dAuto">Choose code distance automatically</label><input type="checkbox" id="dAuto" checked></div>
+        <div class="ctrl" data-engine="builtin"><label for="d">Code distance d<small>Odd. Used when auto is off.</small></label><input type="number" id="d" min="3" max="201" step="2" value="27"></div>
+        <div class="ctrl"><label for="eps"><span data-engine="qdk">Error budget</span><span data-engine="builtin">Allowed failure probability</span><small><span data-engine="qdk">Per run; the QDK splits it between logical errors and T states.</span><span data-engine="builtin">Per run from logical errors; retries = 1/(1−ε).</span></small></label><select id="eps"><option value="0.5">50%</option><option value="0.1" selected>10%</option><option value="0.01">1%</option><option value="0.001">0.1%</option></select></div>
       </div>
 
     </div>
     <div class="panel">
       <div class="ctrl-group">
         <span class="eyebrow">Architecture</span>
-        <div class="ctrl"><label for="factories">Magic-state factories<small>More factories: faster, bigger.</small></label><input type="number" id="factories" min="1" max="500" step="1" value="28"></div>
-        <div class="ctrl"><label for="magic">Magic-state production</label><select id="magic"><option value="distill">Distillation (Litinski-style)</option><option value="cultivate">Cultivation (Gidney et al. 2024)</option></select></div>
-        <div class="ctrl"><label for="storage">Idle-qubit storage</label><select id="storage"><option value="surface">Plain surface code</option><option value="yoked">Yoked surface codes (≈3× denser)</option></select></div>
-        <div class="ctrl"><label for="routing">Routing / layout overhead</label><div class="rv"><input type="range" id="routing" min="1" max="2" step="0.05" value="1.4"><output for="routing" id="routingV">1.40×</output></div></div>
+        <div class="ctrl" data-engine="qdk"><label for="maxTF">Maximum T factories<small>0 = as many as the algorithm consumes.</small></label><input type="number" id="maxTF" min="0" max="10000" step="1" value="0"></div>
+        <div class="ctrl" data-engine="qdk"><label for="depthFactor">Logical depth factor<small>1 = fastest. Larger slows the run and needs fewer factories.</small></label><input type="number" id="depthFactor" min="1" max="1000" step="0.5" value="1"></div>
+        <div class="ctrl" data-engine="builtin"><label for="factories">Magic-state factories<small>More factories: faster, bigger.</small></label><input type="number" id="factories" min="1" max="500" step="1" value="28"></div>
+        <div class="ctrl" data-engine="builtin"><label for="magic">Magic-state production</label><select id="magic"><option value="distill">Distillation (Litinski-style)</option><option value="cultivate">Cultivation (Gidney et al. 2024)</option></select></div>
+        <div class="ctrl" data-engine="builtin"><label for="storage">Idle-qubit storage</label><select id="storage"><option value="surface">Plain surface code</option><option value="yoked">Yoked surface codes (≈3× denser)</option></select></div>
+        <div class="ctrl" data-engine="builtin"><label for="routing">Routing / layout overhead</label><div class="rv"><input type="range" id="routing" min="1" max="2" step="0.05" value="1.4"><output for="routing" id="routingV">1.40×</output></div></div>
+        <p class="variant-note small muted" data-engine="qdk">The QDK fixes the rest of the architecture: its own qubit layout, 2d² physical qubits per logical qubit and T-state distillation in up to three 15-to-1 rounds.</p>
       </div>
 
       <div class="ctrl-group">
@@ -72,23 +86,35 @@
   </div>
 
   <div class="results">
-      <div class="tiles">
+      <div class="tiles tiles6">
         <div class="tile"><span class="eyebrow" id="tPhysL">Physical qubits</span><div class="v" id="tPhys">—</div><div class="sub" id="tPhysSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tTimeL">Runtime per run</span><div class="v" id="tTime">—</div><div class="sub" id="tTimeSub"></div></div>
+        <div class="tile" id="tExpTile"><span class="eyebrow" id="tExpL">Expected total</span><div class="v" id="tExp">—</div><div class="sub" id="tExpSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tLL">Logical qubits</span><div class="v" id="tL">—</div><div class="sub" id="tLSub"></div></div>
+        <div class="tile" id="tGTile"><span class="eyebrow" id="tGL">Gate count per run</span><div class="v" id="tG">—</div><div class="sub" id="tGSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tDL">Code distance</span><div class="v" id="tD">—</div><div class="sub" id="tDSub"></div></div>
       </div>
       <div class="verdict" id="verdict"></div>
 
+      <details open id="cmpBox">
+        <summary>Algorithm comparison under the current hardware assumptions</summary>
+        <p class="small muted anch-intro" id="cmpIntro"></p>
+        <div class="tbl-wrap"><table id="cmpTbl" class="anch-tbl cmp-tbl">
+          <thead><tr><th>Algorithm</th><th>Attack · circuit used</th><th>Logical qubits</th><th>Gates per run</th><th>Physical qubits</th><th>Runtime</th><th>Status</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <p class="small muted anch-intro">Select an algorithm name to load it into the estimator above. Status is the year the largest machine reaches the required size on the hardware trajectory you set; it moves with every assumption on this page. Hash functions (SHA-2 and SHA-3 preimage search), ChaCha20 and 3DES are not costed: the project literature review has not covered them, so no number is shown.</p>
+      </details>
+
       <figure class="wide">
-        <figcaption><b>Runtime vs physical qubits.</b> The space–time frontier for the complete attack on the current target: each point on the curve is a different number of magic-state factories (parallel machines for Grover). Other key sizes of the family are shown at the current factory count. Published anchors are plotted at the runtime each paper reports (per run or expected, as listed in the table below). Hover the curve to read values.</figcaption>
+        <figcaption id="capTO"></figcaption>
         <div class="chart-wrap"><svg class="chart" id="chartTO" viewBox="0 0 1040 400" role="img" aria-label="Runtime against physical qubits for the complete attack"></svg><div class="tip" id="tipTO" hidden></div></div>
-        <div class="legend"><span><i class="a"></i>Frontier, current target</span><span><i class="b"></i>Other key sizes</span><span><i class="g"></i>Published anchors</span><span><i class="f"></i>Largest machine today</span></div>
+        <div class="legend"><span><i class="a"></i>Frontier, current target</span><span><i class="b"></i>Other key sizes</span><span><i class="g"></i>Published anchors</span><span><i class="f"></i>Largest machine today</span><span id="legQre" hidden><i class="q"></i>qdk.qre reference runs (computed offline)</span></div>
       </figure>
 
       <div class="charts">
         <figure>
-          <figcaption><b>Physical qubits vs physical error rate</b> for the complete attack (setting I). Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.</figcaption>
+          <figcaption id="capP"></figcaption>
           <svg class="chart" id="chartP" viewBox="0 0 520 300" role="img" aria-label="Physical qubits needed as a function of physical error rate"></svg>
           <div class="legend"><span><i class="a"></i>This configuration</span><span><i class="g"></i>Published anchors</span></div>
         </figure>
@@ -98,6 +124,28 @@
           <div class="legend"><span><i class="b"></i>Hardware trajectory</span><span><i class="a"></i>Qubits required</span><span><i class="g"></i>NIST deprecation (2030) / disallow (2035)</span></div>
         </figure>
       </div>
+
+      <details id="qdkReport">
+        <summary>Full QDK report for this configuration</summary>
+        <p class="small muted anch-intro">The complete result the QDK returns for the current target and hardware, with the QDK's own labels: the same table the QDK shows in VS Code and Jupyter. Values are for one run of the circuit.</p>
+        <div id="qdkReportBody"></div>
+      </details>
+
+      <details id="qdkRepro">
+        <summary>Reproduce this estimate with the QDK Python package</summary>
+        <p class="small muted anch-intro">Q-CARE passes the QDK two JSON documents: the logical counts of one run and the job parameters. The same two documents give the same result in the QDK's Python package (<code>pip install qdk</code>), so every figure above can be checked outside this page.</p>
+        <pre class="code" id="qdkReproCode" tabindex="0"></pre>
+        <button type="button" class="btn" id="qdkReproCopy">Copy the snippet</button>
+      </details>
+
+      <details id="qreBox">
+        <summary>Reference runs with the newer QDK estimator (qdk.qre)</summary>
+        <p class="small muted anch-intro" id="qreIntro"></p>
+        <div class="tbl-wrap"><table id="qreTbl" class="anch-tbl">
+          <thead><tr><th>Target · circuit</th><th>Counts fed in (one run)</th><th>Qubit model</th><th>Fastest result</th><th>Smallest result</th><th>Results on the frontier</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </details>
 
       <details open>
         <summary>Published anchors (literature review, search date 1 November 2026)</summary>
@@ -139,9 +187,11 @@
         <ul class="notes">
           <li><b>Logical layer.</b> Each variant is one published circuit, costed per run in the paper's unit: RSA by Gidney–Ekerå 2021 windowed arithmetic (3n + 0.002 n log₂n qubits, 0.3n³ + 0.0005 n³ log₂n Toffoli + T/2, ≈1.4 expected runs at n = 2048), Chevignard–Fouque–Schrottenloher 2024 residue arithmetic (1,730 qubits, 2³⁶ Toffoli per run, 40 runs) or Gidney 2025 approximate residue arithmetic (1,399 qubits, Table 5 Toffoli totals spread over 9.2 shots). ECC by Roetteler et al. 2017 (9n + 2⌈log₂n⌉ + 10 qubits, 448n³log₂n + 4090n³ Toffoli), Luo et al. 2026 (3n + 6⌊log₂n⌋ + 19 qubits, 1056 n³/log₂n Toffoli), Chevignard et al. 2026 (3.12n qubits, 2^38.98 Toffoli per run, 22 runs) or, for 256-bit curves only, the 28-windowed-addition circuits of Schrottenloher 2026, Babbush et al. 2026 and IonQ 2026 at their published counts. Finite-field DLP reuses the Gidney–Ekerå arithmetic with the exponent length set by the variant (a project scaling with no published count). AES uses Grassl et al. 2016 logical qubits and per-iteration T-depth with ⌈π/4·√(2ⁿ/P)⌉ Grover iterations; the review did not cover symmetric key search.</li>
           <li><b>Key sizes the source does not tabulate</b> are extrapolated with the paper's own leading-order formula and flagged "scaled" under the variant; the 256-bit-only variants offer no other size.</li>
-          <li><b>Fault-tolerance layer (placeholder).</b> Logical error per cycle p_L = 0.1·(p/p_th)^((d+1)/2) with p_th = 1%. The distance is the smallest odd d such that L × cycles × p_L stays below the allowed failure probability. Physical qubits = L·2d²·storage·routing + factories × footprint·d² (footprint 300d² for distillation, 30d² for cultivation). Runtime per run = T × max(reaction time / parallelism, 10·d·t_cycle / factories). Expected total = runtime × stated runs / (1 − ε). This layer does not reproduce any paper's physical number: it is a uniform surface-code wrapper applied to every circuit so that the variants can be compared under one set of hardware assumptions.</li>
-          <li><b>Settings II–IV.</b> Where the review records a published count for the operation (ECDSA.Fail point additions, Schrottenloher's windowed addition, Häner et al.'s controlled addition, Kahanamoku-Meyer and Yao's modular multiplication) it is listed under the setting table. The live figure is still derived from the complete attack: for the windowed 256-bit circuits by the published rule Toffoli_ECDLP ≈ (2n/w − 4) × (Toffoli_PA + 3·2^w) with w = 16, so that one window-selected addition is 1/28 of the attack and the classical-addend addition of setting IV is that divided by the benchmark's measured 1.296 windowing overhead; for the other circuits by placeholder ratios (one controlled operation is 1/(2n) of the attack, a window-selected one w times that with w = 16 for curves and 5 for modular arithmetic, a fixed one 0.9 of a controlled one; one Grover iteration is total T-depth / iterations, the oracle 97% of an iteration, one reversible AES evaluation the oracle divided by 2 × pairs).</li>
-          <li><b>Known gaps.</b> No modelling of layout-specific routing costs, decoder throughput limits, qLDPC or cat-qubit codes, or multimode memories; the physical anchors that use them (Pinnacle, Cain et al., Gouzien et al., Pappalardo et al.) therefore sit far from the model's curve by construction. Grover numbers ignore the MAXDEPTH limit that NIST imposes; with it, AES-128 is already out of reach. Treat all outputs as order-of-magnitude.</li>
+          <li><b>Physical layer: QDK resource estimator.</b> The default engine is the estimator crate of the open-source Microsoft Quantum Development Kit [45], compiled unmodified to WebAssembly and run in the browser; its model is described by Beverland et al. [46]. Q-CARE passes it the logical qubits and the gate count of one run, charging each Toffoli (or CCZ, or And) of the paper's count as one CCZ magic state. The QDK then lays the algorithm out on 2n + ⌈√(8n)⌉ + 1 logical qubits, charges three logical cycles and four T states per CCZ, chooses the smallest odd code distance d for which the logical error per qubit and cycle, 0.03·(p/0.01)^((d+1)/2) for the gate-based surface code, fits half of the error budget, counts 2d² physical qubits per logical qubit and a cycle of (4·t_gate + 2·t_meas)·d, and builds T factories from up to three rounds of 15-to-1 distillation that fit the other half. The frontier chart is the QDK's own space–time frontier (fewer factories, longer runtime). Expected total = runtime × stated runs / (1 − error budget), an upper bound on retries.</li>
+          <li><b>Why QDK figures differ from the papers' own physical numbers.</b> Each paper prices its circuit on its own architecture: Gidney 2025 reaches 897,864 qubits with yoked cold storage, magic-state cultivation and a hand-built layout; Pinnacle and Cain et al. use qLDPC codes; IonQ uses qLDPC blocks on ions. The QDK applies one generic architecture to every circuit, so its figures are larger than the best published ones and are comparable with each other, not with the anchors. The newer QDK estimator described on Microsoft Learn [47] (<code>qdk.qre</code>) models cultivation, 8T-to-CCX factories and yoked memory, but it is a Python library with a native core and cannot run inside a web page; its reference runs above were computed offline.</li>
+          <li><b>Built-in model (fallback).</b> Used for AES key search, whose Grover counts exceed the 64-bit integers the QDK takes, when the QDK module cannot load, and when selected by hand. Logical error per cycle p_L = 0.1·(p/p_th)^((d+1)/2) with p_th = 1%. The distance is the smallest odd d such that L × cycles × p_L stays below the allowed failure probability. Physical qubits = L·2d²·storage·routing + factories × footprint·d² (footprint 300d² for distillation, 30d² for cultivation). Runtime per run = T × max(reaction time / parallelism, 10·d·t_cycle / factories). Expected total = runtime × stated runs / (1 − ε). It is a placeholder: a uniform surface-code wrapper that reproduces no paper's physical number.</li>
+          <li><b>Settings II–IV.</b> Where the review records a published count for the operation (ECDSA.Fail point additions, Schrottenloher's windowed addition, Häner et al.'s controlled addition, Kahanamoku-Meyer and Yao's modular multiplication) it is listed under the setting table. The live figure is still derived from the complete attack, by time in proportion to gate count: for the windowed 256-bit circuits by the published rule Toffoli_ECDLP ≈ (2n/w − 4) × (Toffoli_PA + 3·2^w) with w = 16, so that one window-selected addition is 1/28 of the attack and the classical-addend addition of setting IV is that divided by the benchmark's measured 1.296 windowing overhead; for the other circuits by placeholder ratios (one controlled operation is 1/(2n) of the attack, a window-selected one w times that with w = 16 for curves and 5 for modular arithmetic, a fixed one 0.9 of a controlled one; one Grover iteration is total T-depth / iterations, the oracle 97% of an iteration, one reversible AES evaluation the oracle divided by 2 × pairs).</li>
+          <li><b>Known gaps.</b> Neither engine models layout-specific routing costs, decoder throughput limits, qLDPC or cat-qubit codes, or multimode memories; the physical anchors that use them (Pinnacle, Cain et al., Gouzien et al., Pappalardo et al.) therefore sit far from the curve by construction. The QDK engine counts runtime in 64-bit nanoseconds, so a run longer than about 585 years is reported as having no estimate. Grover numbers ignore the MAXDEPTH limit that NIST imposes; with it, AES-128 is already out of reach. Treat all outputs as order-of-magnitude.</li>
         </ul>
       </details>
   </div>

@@ -1,0 +1,22 @@
+# Thin WebAssembly wrapper around the open-source QDK resource estimator.
+# It is built as a member of the microsoft/qdk workspace (see build.sh), so it
+# uses the QDK's own Cargo.lock and dependency versions.
+[package]
+name = "qcare_qdk_estimator"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "Q-CARE: WebAssembly entry point for the QDK resource estimator (logical counts in, physical estimates out)"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+doctest = false
+
+[dependencies]
+resource_estimator = { path = "../resource_estimator" }
+wasm-bindgen = { workspace = true }
+# Same WASM randomness backends as the QDK's own wasm crate; nothing on the
+# estimation path draws random numbers, but the dependency tree must compile.
+getrandom_02 = { workspace = true, features = ["js"] }
+getrandom = { workspace = true, features = ["wasm_js"] }

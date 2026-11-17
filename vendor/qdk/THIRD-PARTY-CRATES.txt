@@ -1,0 +1,133 @@
+Rust crates in the dependency tree of vendor/qdk/qcare_qdk_estimator_bg.wasm
+(cargo tree of the Q-CARE wrapper inside the QDK workspace at the commit in QDK_COMMIT;
+ crates at v0.0.0 are QDK workspace members, MIT, see LICENSE-QDK.txt).
+Each crate's licence text is in its source distribution on crates.io.
+
+crate | licence
+anstream v1.0.0 | MIT OR Apache-2.0
+anstyle v1.0.14 | MIT OR Apache-2.0
+anstyle-parse v1.0.0 | MIT OR Apache-2.0
+anstyle-query v1.1.5 | MIT OR Apache-2.0
+approx v0.5.1 | Apache-2.0
+async-trait v0.1.92 | MIT OR Apache-2.0
+binar v0.1.3 | MIT
+bitflags v2.13.1 | MIT OR Apache-2.0
+bumpalo v3.20.3 | MIT OR Apache-2.0
+bytemuck v1.25.2 | Zlib OR Apache-2.0 OR MIT
+bytemuck_derive v1.12.0 | Zlib OR Apache-2.0 OR MIT
+cfg-if v1.0.4 | MIT OR Apache-2.0
+chacha20 v0.10.1 | MIT OR Apache-2.0
+clap v4.6.6 | MIT OR Apache-2.0
+clap_builder v4.6.6 | MIT OR Apache-2.0
+clap_derive v4.6.4 | MIT OR Apache-2.0
+clap_lex v1.1.0 | MIT OR Apache-2.0
+colorchoice v1.0.5 | MIT OR Apache-2.0
+convert_case v0.10.0 | MIT
+derive_more v2.1.1 | MIT
+derive_more-impl v2.1.1 | MIT
+either v1.17.0 | MIT OR Apache-2.0
+enum-iterator v2.3.0 | 0BSD
+enum-iterator-derive v1.5.0 | 0BSD
+fasteval v0.2.4 | MIT
+futures v0.3.33 | MIT OR Apache-2.0
+futures-channel v0.3.33 | MIT OR Apache-2.0
+futures-core v0.3.33 | MIT OR Apache-2.0
+futures-executor v0.3.33 | MIT OR Apache-2.0
+futures-io v0.3.33 | MIT OR Apache-2.0
+futures-macro v0.3.33 | MIT OR Apache-2.0
+futures-sink v0.3.33 | MIT OR Apache-2.0
+futures-task v0.3.33 | MIT OR Apache-2.0
+futures-util v0.3.33 | MIT OR Apache-2.0
+getrandom v0.2.17 | MIT OR Apache-2.0
+getrandom v0.4.3 | MIT OR Apache-2.0
+heck v0.5.0 | MIT OR Apache-2.0
+indenter v0.3.4 | MIT OR Apache-2.0
+index_map v0.0.0 | MIT
+is_terminal_polyfill v1.70.2 | MIT OR Apache-2.0
+itertools v0.14.0 | MIT OR Apache-2.0
+itoa v1.0.18 | MIT OR Apache-2.0
+js-sys v0.3.104 | MIT OR Apache-2.0
+libm v0.2.16 | MIT
+library v0.0.0 | MIT
+log v0.4.33 | MIT OR Apache-2.0
+matrixmultiply v0.3.10 | MIT/Apache-2.0
+memchr v2.8.3 | Unlicense OR MIT
+miette v7.6.0 | Apache-2.0
+miette-derive v7.6.0 | Apache-2.0
+nalgebra v0.35.0 | Apache-2.0
+nalgebra-macros v0.3.0 | Apache-2.0
+ndarray v0.17.2 | MIT OR Apache-2.0
+noisy_simulator v0.0.0 | MIT
+num-bigint v0.4.8 | MIT OR Apache-2.0
+num-complex v0.4.6 | MIT OR Apache-2.0
+num-derive v0.4.2 | MIT OR Apache-2.0
+num-integer v0.1.46 | MIT OR Apache-2.0
+num-rational v0.4.2 | MIT OR Apache-2.0
+num-traits v0.2.19 | MIT OR Apache-2.0
+once_cell v1.21.4 | MIT OR Apache-2.0
+owo-colors v4.3.0 | MIT
+paulimer v0.2.3 | MIT
+pin-project-lite v0.2.17 | Apache-2.0 OR MIT
+probability v0.20.3 | Apache-2.0/MIT
+proc-macro2 v1.0.107 | MIT OR Apache-2.0
+qcare_qdk_estimator v0.1.0 | MIT
+qdk_openqasm v0.0.0 | MIT
+qdk_simulators v0.0.0 | MIT
+qsc v0.0.0 | MIT
+qsc_ast v0.0.0 | MIT
+qsc_circuit v0.0.0 | MIT
+qsc_codegen v0.0.0 | MIT
+qsc_data_structures v0.0.0 | MIT
+qsc_doc_gen v0.0.0 | MIT
+qsc_eval v0.0.0 | MIT
+qsc_fir v0.0.0 | MIT
+qsc_fir_transforms v0.0.0 | MIT
+qsc_formatter v0.0.0 | MIT
+qsc_frontend v0.0.0 | MIT
+qsc_hir v0.0.0 | MIT
+qsc_linter v0.0.0 | MIT
+qsc_lowerer v0.0.0 | MIT
+qsc_openqasm_compiler v0.0.0 | MIT
+qsc_parse v0.0.0 | MIT
+qsc_partial_eval v0.0.0 | MIT
+qsc_passes v0.0.0 | MIT
+qsc_project v0.0.0 | MIT
+qsc_rca v0.0.0 | MIT
+qsc_rir v0.0.0 | MIT
+quote v1.0.47 | MIT OR Apache-2.0
+rand v0.10.2 | MIT OR Apache-2.0
+rand_core v0.10.1 | MIT OR Apache-2.0
+random v0.13.2 | Apache-2.0/MIT
+rawpointer v0.2.1 | MIT/Apache-2.0
+regex-lite v0.1.9 | MIT OR Apache-2.0
+resource_estimator v0.0.0 | MIT
+rustc-hash v1.1.0 | Apache-2.0/MIT
+serde v1.0.229 | MIT OR Apache-2.0
+serde_core v1.0.229 | MIT OR Apache-2.0
+serde_derive v1.0.229 | MIT OR Apache-2.0
+serde_json v1.0.151 | MIT OR Apache-2.0
+simba v0.10.2 | Apache-2.0
+slab v0.4.12 | MIT
+sorted-iter v0.1.11 | MIT OR Apache-2.0
+sorted-vec v0.8.11 | Apache-2.0
+special v0.10.3 | Apache-2.0/MIT
+strsim v0.11.1 | MIT
+syn v2.0.119 | MIT OR Apache-2.0
+syn v3.0.3 | MIT OR Apache-2.0
+textwrap v0.16.2 | MIT
+thiserror v2.0.20 | MIT OR Apache-2.0
+thiserror-impl v2.0.20 | MIT OR Apache-2.0
+typenum v1.20.1 | MIT OR Apache-2.0
+unicode-ident v1.0.24 | (MIT OR Apache-2.0) AND Unicode-3.0
+unicode-linebreak v0.1.5 | Apache-2.0
+unicode-segmentation v1.13.3 | MIT OR Apache-2.0
+unicode-width v0.1.14 | MIT OR Apache-2.0
+unicode-width v0.2.2 | MIT OR Apache-2.0
+unicode-xid v0.2.6 | MIT OR Apache-2.0
+utf8parse v0.2.2 | Apache-2.0 OR MIT
+wasm-bindgen v0.2.127 | MIT OR Apache-2.0
+wasm-bindgen-macro v0.2.127 | MIT OR Apache-2.0
+wasm-bindgen-macro-support v0.2.127 | MIT OR Apache-2.0
+wasm-bindgen-shared v0.2.127 | MIT OR Apache-2.0
+wide v1.6.1 | Zlib OR Apache-2.0 OR MIT
+zmij v1.0.23 | MIT

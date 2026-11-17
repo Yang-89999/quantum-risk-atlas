@@ -20,3 +20,34 @@
 @media (max-width: 900px) {
   #estimator .anch-tbl { font-size: .76rem; }
 }
+/* Q-CARE additions: engine switch, six tiles, comparison table, QDK report */
+#estimator .qc-full { font-family: var(--mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+#estimator .est-top { align-items: flex-start; }
+#estimator .est-top p { max-width: 78ch; line-height: 1.55; }
+#estimator .engine-bar { margin-bottom: 18px; }
+#estimator .engine-bar .seg button { font-family: var(--body); font-size: .84rem; }
+#estimator #engStatus { flex: 1 1 28ch; min-width: 0; }
+#estimator .tiles6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#estimator .tile .sub { line-height: 1.4; overflow-wrap: anywhere; }
+#estimator .linkish { font: inherit; font-weight: 500; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+#estimator .linkish:hover { text-decoration-thickness: 2px; }
+#estimator .linkish:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+#estimator .cmp-tbl td.name { min-width: 15ch; }
+#estimator .cmp-tbl td:nth-child(2) { min-width: 20ch; }
+#estimator .cmp-tbl td.num { min-width: 9ch; }
+#estimator .cmp-tbl td:nth-child(6) { min-width: 15ch; }
+#estimator .cmp-tbl th, #estimator .cmp-tbl td { padding-left: 8px; padding-right: 8px; }
+#estimator .cmp-tbl .pill, #estimator .anch-tbl .pill { white-space: nowrap; font-size: .66rem; }
+#estimator .rep-tbl td.name { min-width: 20ch; max-width: 30ch; }
+#estimator .rep-tbl td.num { min-width: 14ch; }
+#estimator pre.code { font-family: var(--mono); font-size: .78rem; line-height: 1.55; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; margin: 0 0 12px; overflow-x: auto; white-space: pre; color: var(--fg); }
+#estimator pre.code:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+#estimator code { font-family: var(--mono); font-size: .9em; }
+.chart .mk.q { stroke: var(--blue); fill: var(--blue); fill-opacity: .25; }
+.legend i.q { width: 8px; height: 8px; border: 2px solid var(--blue); transform: rotate(45deg); margin-right: 8px; }
+@media (max-width: 900px) {
+  #estimator .tiles6 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  #estimator .tiles6 { grid-template-columns: minmax(0, 1fr); }
+}

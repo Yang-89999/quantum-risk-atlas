@@ -28,17 +28,51 @@ const ALGS = {
 };
 const variantOf = (alg, id) => ALGS[alg].variants.find(v => v.id === id) || ALGS[alg].variants[0];
 const keysFor = (alg, id) => variantOf(alg, id).keys || ALGS[alg].keys;
-const HW = {pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1};
+const HW = {pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1,
+  qModel: 'qubit_gate_ns_e3', qec: 'surface_code', qGate: 50, qMeas: 100, maxTF: 0, depthFactor: 1};
 const PRESETS = [
   {label: 'Gidney–Ekerå 2021 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'ge2021'}},
   {label: 'Gidney 2025 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'g2025', factories: 6, magic: 'cultivate', storage: 'yoked', routing: 1.2}},
   {label: 'Chevignard et al. 2024 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'cfs2024', factories: 4, magic: 'cultivate', storage: 'yoked', routing: 1.2}},
   {label: 'Babbush et al. 2026 · secp256k1', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'babbush2026', magic: 'cultivate', routing: 1.2}},
-  {label: 'IonQ 2026 · secp256k1 · ions', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'ionq2026', pPhys: 1e-4, cycleUs: 1000, reactionUs: 1000, factories: 4}},
+  {label: 'IonQ 2026 · secp256k1 · ions', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'ionq2026', pPhys: 1e-4, cycleUs: 1000, reactionUs: 1000, factories: 4, qModel: 'qubit_gate_us_e4'}},
   {label: 'Luo et al. 2026 · P-256', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'luo2026'}},
   {label: 'DH-2048 short exponent', s: {...HW, alg: 'ffdlp', keyBits: 2048, variant: 'short'}},
   {label: 'AES-128 · Grover', s: {...HW, alg: 'aes', keyBits: 128, variant: 'grassl'}},
 ];
+/* Deployed algorithms, each mapped to the hard problem behind it and the published circuit used to cost it.
+   `note` flags a mapping that is the project's own and not a published count for that exact algorithm. */
+const DEPLOYED = [
+  {grp: 'Public-key · broken by Shor’s algorithm', items: [
+    {id: 'rsa1024', label: 'RSA-1024', alg: 'rsa', variant: 'g2025', keyBits: 1024, attack: 'Shor, factoring'},
+    {id: 'rsa2048', label: 'RSA-2048', alg: 'rsa', variant: 'g2025', keyBits: 2048, attack: 'Shor, factoring'},
+    {id: 'rsa3072', label: 'RSA-3072', alg: 'rsa', variant: 'g2025', keyBits: 3072, attack: 'Shor, factoring'},
+    {id: 'rsa4096', label: 'RSA-4096', alg: 'rsa', variant: 'g2025', keyBits: 4096, attack: 'Shor, factoring'},
+    {id: 'p256', label: 'ECDSA / ECDH P-256', alg: 'ecc', variant: 'schrott2026', keyBits: 256, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'k256', label: 'ECDSA secp256k1', alg: 'ecc', variant: 'babbush2026', keyBits: 256, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'c25519', label: 'Ed25519 / X25519', alg: 'ecc', variant: 'schrott2026', keyBits: 256, attack: 'Shor, elliptic-curve discrete log', note: 'project mapping: the 255-bit curve is costed with the circuit for any 256-bit prime; the review records no Curve25519-specific circuit'},
+    {id: 'p384', label: 'ECDSA / ECDH P-384', alg: 'ecc', variant: 'luo2026', keyBits: 384, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'p521', label: 'ECDSA / ECDH P-521', alg: 'ecc', variant: 'luo2026', keyBits: 521, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'dh2048s', label: 'DH-2048 / DSA-2048', alg: 'ffdlp', variant: 'short', keyBits: 2048, attack: 'Shor, discrete log with a short exponent or small subgroup'},
+    {id: 'dh3072s', label: 'DH-3072', alg: 'ffdlp', variant: 'short', keyBits: 3072, attack: 'Shor, discrete log with a short exponent'},
+    {id: 'elg2048', label: 'ElGamal-2048 / DH-2048, full exponent', alg: 'ffdlp', variant: 'safe', keyBits: 2048, attack: 'Shor, discrete log in a safe-prime group'},
+  ]},
+  {grp: 'Symmetric · weakened by Grover’s algorithm', items: [
+    {id: 'aes128', label: 'AES-128', alg: 'aes', variant: 'grassl', keyBits: 128, attack: 'Grover key search'},
+    {id: 'aes192', label: 'AES-192', alg: 'aes', variant: 'grassl', keyBits: 192, attack: 'Grover key search'},
+    {id: 'aes256', label: 'AES-256', alg: 'aes', variant: 'grassl', keyBits: 256, attack: 'Grover key search'},
+  ]},
+];
+const DEPLOYED_FLAT = DEPLOYED.flatMap(g => g.items);
+let DEPLOY_ID = '';
+let ENGINE_WANT = 'qdk';
+/* Reference runs of the newer QDK estimator (qdk.qre), computed offline by tools/qre_reference_runs.py and embedded as JSON. */
+const QRE = (() => { try { return JSON.parse(document.getElementById('qre-data').textContent); } catch (e) { return {runs: []}; } })();
+const QRE_ARCH = {qubit_gate_ns_e3: 'ns_e3', qubit_gate_ns_e4: 'ns_e4'};
+const escH = s => String(s == null ? '' : s).replace(/[&<>"]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[ch]));
+const plural = (n, one, many) => n === 1 ? one : many;
+const fmtCycle = ns => ns >= 1e6 ? (ns / 1e6).toPrecision(3) + ' ms' : ns >= 1e3 ? (ns / 1e3).toPrecision(3) + ' µs' : ns + ' ns';
+const fmtDur = sec => { const t = fmtT(sec); return (t.v + ' ' + t.u).trim(); };
 /* Published anchors, quoted in each paper's units. Chart fields: p (gate error rate), q (physical qubits), t (runtime in seconds, as published). */
 const ANCHORS = [
   {grp: 'RSA-2048', alg: 'rsa', tag: 'Häner 17', src: 'Häner, Roetteler, Svore 2017 [17]', target: 'RSA-n', cov: 'Complete, one run (formula)', L: '2n + 2', T: '64 n³ log₂n + O(n³) Toffoli (formula; GE21 cites 5.2·10¹² for n = 2048)', phys: '—', time: '—', hw: 'logical level', ev: 'Implemented and simulated in LIQUi|⟩ up to 8,192-bit inputs; no n = 2048 table in the paper'},
@@ -148,6 +182,8 @@ function readSettings() {
     manualD: !$('dAuto').checked, d: +$('d').value, eps: +$('eps').value,
     factories: +$('factories').value, magic: $('magic').value, storage: $('storage').value, routing: +$('routing').value,
     q0: +$('q0').value, doubling: +$('doubling').value,
+    engine: ENGINE_WANT, qModel: $('qModel').value, qec: $('qec').value, qGate: +$('qGate').value, qMeas: +$('qMeas').value,
+    maxTF: +$('maxTF').value, depthFactor: +$('depthFactor').value,
   };
 }
 function fillSelect(sel, pairs, keep) {
@@ -168,7 +204,30 @@ function syncAlgUI() {
   syncKeys();
   document.querySelectorAll('[data-only]').forEach(el => el.hidden = el.dataset.only !== $('alg').value);
 }
+function syncQec() {
+  fillSelect($('qec'), qdkQecFor($('qModel').value).map(k => [k, QDK_QEC[k]]), true);
+  const qm = $('qModel').value; $('qModelHint').textContent = (QDK_MODELS[qm].custom ? 'Uses ' : 'QDK preset ' + qm + ': ') + QDK_MODELS[qm].note + '.';
+}
+/* Keep the quick-pick select in step with the family / circuit / size controls. */
+function syncDeployed() {
+  const alg = $('alg').value, variant = $('variant').value, keyBits = +$('keyBits').value;
+  const cur = DEPLOYED_FLAT.find(d => d.id === DEPLOY_ID);
+  if (!cur || cur.alg !== alg || cur.variant !== variant || cur.keyBits !== keyBits) {
+    const m = DEPLOYED_FLAT.find(d => d.alg === alg && d.variant === variant && d.keyBits === keyBits);
+    DEPLOY_ID = m ? m.id : '';
+  }
+  $('deployed').value = DEPLOY_ID;
+}
+function applyDeployed(id) {
+  const d = DEPLOYED_FLAT.find(x => x.id === id); if (!d) return;
+  DEPLOY_ID = id;
+  $('alg').value = d.alg; syncAlgUI();
+  $('variant').value = d.variant; syncKeys();
+  $('keyBits').value = d.keyBits;
+  if (document.body.dataset.ready) renderAll();
+}
 function applyPreset(s) {
+  $('qModel').value = s.qModel; syncQec(); $('qec').value = s.qec; $('qGate').value = s.qGate; $('qMeas').value = s.qMeas; $('maxTF').value = s.maxTF; $('depthFactor').value = s.depthFactor;
   $('alg').value = s.alg; syncAlgUI();
   $('variant').value = s.variant; syncKeys();
   $('keyBits').value = s.keyBits;
@@ -184,8 +243,8 @@ const svgEl = (tag, attrs, text) => { let s = `<${tag}`; for (const k in attrs) 
 const logTicks = (lo, hi) => { const t = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) t.push(Math.pow(10, e)); return t; };
 const sup = e => '10' + String(e).replace(/-/g, '⁻').replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
 /* Place anchor labels so that they do not overlap each other (greedy: try a few offsets, then push down). */
-function placeLabels(items, W) {
-  const boxes = [], out = [];
+function placeLabels(items, W, obstacles = []) {
+  const boxes = obstacles.map(o => ({x0: o.x - o.r, x1: o.x + o.r, y0: o.y - o.r, y1: o.y + o.r})), out = [];
   const cands = [[9, -7, 'start'], [9, 15, 'start'], [-9, -7, 'end'], [-9, 15, 'end'], [9, 27, 'start'], [-9, 27, 'end']];
   const hits = (x0, x1, y0, y1) => boxes.some(b => !(x1 < b.x0 || x0 > b.x1 || y1 < b.y0 || y0 > b.y1));
   items.forEach(it => {
@@ -204,10 +263,12 @@ function placeLabels(items, W) {
 
 function chartP(s, cur) {
   const W = 520, H = 300, m = {l: 54, r: 16, t: 24, b: 36};
-  const xs = [], pts = [];
-  for (let i = 0; i <= 60; i++) { const p = Math.pow(10, -4 + 1.9 * i / 60); const r = estimate({...s, pPhys: p, manualD: false}); if (isFinite(r.phys)) pts.push([p, r.phys]); }
+  const xs = [], pts = [], qdk = cur.engine === 'qdk', N = qdk ? 24 : 60;
+  for (let i = 0; i <= N; i++) { const p = Math.pow(10, -4 + 1.9 * i / N); const r = qdk ? estimateQdk(s, {p}) : estimate({...s, pPhys: p, manualD: false}); if (isFinite(r.phys)) pts.push([p, r.phys]); }
+  const pNow = qdk ? qdkNominalP(s) : s.pPhys;
   const anchors = ANCHORS.filter(a => a.q && a.p && a.alg === s.alg);
   const ys = pts.map(p => p[1]).concat(anchors.map(a => a.q), [cur.phys].filter(isFinite));
+  if (!ys.length) { $('chartP').innerHTML = svgEl('text', {x: W / 2, y: H / 2, 'text-anchor': 'middle', class: 'lbl'}, 'No finite estimate in this range'); return; }
   const ylo = Math.pow(10, Math.floor(Math.log10(Math.min(...ys)))), yhi = Math.pow(10, Math.ceil(Math.log10(Math.max(...ys))));
   const X = p => m.l + (Math.log10(p) + 4) / 2 * (W - m.l - m.r);
   const Y = q => H - m.b - (Math.log10(q) - Math.log10(ylo)) / (Math.log10(yhi) - Math.log10(ylo)) * (H - m.t - m.b);
@@ -222,7 +283,7 @@ function chartP(s, cur) {
     g += svgEl('path', {class: 'ln a', d: pts.map((p, i) => (i ? 'L' : 'M') + X(p[0]) + ',' + Y(p[1])).join(' ')});
   }
   placeLabels(anchors.map(a => ({x: X(a.p), y: Y(a.q), text: a.tag})), W).forEach(a => { g += svgEl('circle', {class: 'mk g', cx: a.x, cy: a.y, r: 4.5}); g += svgEl('text', {class: 'lbl', x: a.lx, y: a.ly, 'text-anchor': a.anchor}, a.text); });
-  if (isFinite(cur.phys)) { g += svgEl('circle', {class: 'mk a', cx: X(s.pPhys), cy: Y(cur.phys), r: 5}); g += svgEl('text', {class: 'lbl', x: X(s.pPhys) - 8, y: Y(cur.phys) - 8, 'text-anchor': 'end'}, fmtN(cur.phys)); }
+  if (isFinite(cur.phys) && pNow >= 1e-4 && pNow <= 1e-2) { const left = X(pNow) < m.l + 60; g += svgEl('circle', {class: 'mk a', cx: X(pNow), cy: Y(cur.phys), r: 5}); g += svgEl('text', {class: 'lbl', x: X(pNow) + (left ? 8 : -8), y: Y(cur.phys) - 8, 'text-anchor': left ? 'start' : 'end'}, fmtN(cur.phys)); }
   $('chartP').innerHTML = g;
 }
 function chartQ(s, cur) {
@@ -250,9 +311,10 @@ const TIME_TICKS = [[1, '1 s'], [60, '1 min'], [3600, '1 h'], [86400, '1 d'], [6
 /* Space–time frontier: runtime (x) against physical qubits (y) for the complete attack, traced by the factory count (machines for Grover). */
 function chartTO(s, cur) {
   const W = 1040, H = 400, m = {l: 64, r: 24, t: 26, b: 40};
-  const grover = cur.kind === 'grover';
+  const grover = cur.kind === 'grover', qdk = cur.engine === 'qdk';
   const sweep = []; const seen = new Set();
-  for (let i = 0; i <= 60; i++) {
+  if (qdk) qdkFrontier(s).forEach(q => sweep.push({F: q.factories, x: q.runtime, y: q.phys}));
+  else for (let i = 0; i <= 60; i++) {
     const k = Math.round(Math.pow(10, (grover ? 6 : 3) * i / 60));
     if (seen.has(k)) continue; seen.add(k);
     const r = estimate(grover ? {...s, machines: k, manualD: false} : {...s, factories: k, manualD: false});
@@ -261,11 +323,13 @@ function chartTO(s, cur) {
     if (prev && r.runtime > prev.x * 0.99) break;            // reaction-time floor reached: more factories only add qubits
     sweep.push({F: k, x: r.runtime, y: r.phys});
   }
-  const others = keysFor(s.alg, s.variant).filter(k => k !== s.keyBits).map(k => { const r = estimate({...s, keyBits: k, manualD: false}); return {k, x: r.runtime, y: r.phys}; }).filter(o => isFinite(o.x) && isFinite(o.y));
+  const others = keysFor(s.alg, s.variant).filter(k => k !== s.keyBits).map(k => { const r = estimateAny({...s, keyBits: k, manualD: false}); return {k, x: r.runtime, y: r.phys}; }).filter(o => isFinite(o.x) && isFinite(o.y));
   const anchors = ANCHORS.filter(a => a.q && a.t && a.alg === s.alg);
   const curOk = isFinite(cur.phys) && isFinite(cur.runtime);
-  const xs = sweep.map(p => p.x).concat(others.map(o => o.x), anchors.map(a => a.t), curOk ? [cur.runtime] : []);
-  const ys = sweep.map(p => p.y).concat(others.map(o => o.y), anchors.map(a => a.q), [s.q0], curOk ? [cur.phys] : []);
+  const qre = qdk && s.arithOpt === 1 ? qreRunsFor(s).filter(x => x.arch === QRE_ARCH[s.qModel]).flatMap(x => x.results) : [];
+  $('legQre').hidden = !qre.length;
+  const xs = sweep.map(p => p.x).concat(others.map(o => o.x), anchors.map(a => a.t), qre.map(q => q.runtime_s), curOk ? [cur.runtime] : []);
+  const ys = sweep.map(p => p.y).concat(others.map(o => o.y), anchors.map(a => a.q), qre.map(q => q.qubits), [s.q0], curOk ? [cur.phys] : []);
   if (!xs.length) { $('chartTO').innerHTML = svgEl('text', {x: W / 2, y: H / 2, 'text-anchor': 'middle', class: 'lbl'}, 'No finite estimate at this error rate'); window.__to = null; return; }
   const lg = Math.log10;
   const xlo = Math.pow(10, Math.floor(lg(Math.min(...xs)))), xhi = Math.pow(10, Math.ceil(lg(Math.max(...xs))));
@@ -282,19 +346,25 @@ function chartTO(s, cur) {
   // largest machine today
   g += svgEl('line', {x1: m.l, x2: W - m.r, y1: Y(s.q0), y2: Y(s.q0), stroke: 'var(--muted)', 'stroke-dasharray': '2 4', 'stroke-width': 1.5});
   g += svgEl('text', {x: m.l + 6, y: Y(s.q0) - 6, 'text-anchor': 'start'}, `largest machine today · ${fmtN(s.q0)}`);
+  let endLabel = null;
   if (sweep.length) {
     const pts = sweep.slice().sort((a, b) => a.x - b.x);
     g += svgEl('path', {class: 'area', d: `M${X(pts[0].x)},${H - m.b} ` + pts.map(p => `L${X(p.x)},${Y(p.y)}`).join(' ') + ` L${X(pts[pts.length - 1].x)},${H - m.b} Z`});
     g += svgEl('path', {class: 'ln a', d: pts.map((p, i) => (i ? 'L' : 'M') + X(p.x) + ',' + Y(p.y)).join(' ')});
-    const e2 = pts[pts.length - 1];
-    g += svgEl('text', {x: X(e2.x) - 8, y: Y(e2.y) + 18, 'text-anchor': 'end', class: 'lbl'}, `${e2.F} ${grover ? 'machine' : 'factory'}${e2.F > 1 ? 's' : ''} (slowest)`);
+    if (pts.length > 1) { const e2 = pts[pts.length - 1]; endLabel = {x: X(e2.x), y: Y(e2.y), text: `${e2.F} ${grover ? plural(e2.F, 'machine', 'machines') : (qdk ? 'T ' : '') + plural(e2.F, 'factory', 'factories')} (slowest)`}; }
   }
-  others.forEach(o => { g += svgEl('circle', {class: 'mk b', cx: X(o.x), cy: Y(o.y), r: 5}); g += svgEl('text', {class: 'lbl', x: X(o.x) + 9, y: Y(o.y) + 4}, `${o.k}-bit`); });
-  placeLabels(anchors.map(a => ({x: X(a.t), y: Y(a.q), text: a.tag})), W).forEach(a => { g += svgEl('circle', {class: 'mk g', cx: a.x, cy: a.y, r: 5}); g += svgEl('text', {class: 'lbl', x: a.lx, y: a.ly, 'text-anchor': a.anchor}, a.text); });
-  if (curOk) { g += svgEl('circle', {class: 'mk a', cx: X(cur.runtime), cy: Y(cur.phys), r: 6}); g += svgEl('text', {class: 'lbl', x: X(cur.runtime) - 12, y: Y(cur.phys) - 12, 'text-anchor': 'end'}, `${ALGS[s.alg].name.split(' (')[0]}-${s.keyBits} · ${fmtN(cur.phys)} qubits · ${fmtT(cur.runtime).v} ${fmtT(cur.runtime).u}`); }
+  /* markers first, then every label placed so that it clears the markers and the other labels */
+  const labels = [], obstacles = [];
+  if (curOk) { labels.push({x: X(cur.runtime), y: Y(cur.phys), text: `${ALGS[s.alg].name.split(' (')[0]}-${s.keyBits} · ${fmtN(cur.phys)} qubits · ${fmtDur(cur.runtime)}`}); obstacles.push({x: X(cur.runtime), y: Y(cur.phys), r: 8}); }
+  if (endLabel) labels.push(endLabel);
+  others.forEach(o => { g += svgEl('circle', {class: 'mk b', cx: X(o.x), cy: Y(o.y), r: 5}); labels.push({x: X(o.x), y: Y(o.y), text: `${o.k}-bit`}); obstacles.push({x: X(o.x), y: Y(o.y), r: 7}); });
+  anchors.forEach(a => { g += svgEl('circle', {class: 'mk g', cx: X(a.t), cy: Y(a.q), r: 5}); labels.push({x: X(a.t), y: Y(a.q), text: a.tag}); obstacles.push({x: X(a.t), y: Y(a.q), r: 7}); });
+  qre.forEach(q => { const cx = X(q.runtime_s), cy = Y(q.qubits); g += svgEl('path', {class: 'mk q', d: `M${cx},${cy - 5} L${cx + 5},${cy} L${cx},${cy + 5} L${cx - 5},${cy} Z`}); obstacles.push({x: cx, y: cy, r: 7}); });
+  if (curOk) g += svgEl('circle', {class: 'mk a', cx: X(cur.runtime), cy: Y(cur.phys), r: 6});
+  placeLabels(labels, W, obstacles).forEach(l => { g += svgEl('text', {class: 'lbl', x: l.lx, y: l.ly, 'text-anchor': l.anchor}, l.text); });
   g += svgEl('circle', {id: 'toHover', class: 'mk a', r: 6, hidden: ''});
   $('chartTO').innerHTML = g;
-  window.__to = {sweep, X, Y, unit: grover ? 'machines' : 'factories'};
+  window.__to = {sweep, X, Y, unit: grover ? 'machines' : qdk ? 'T factories' : 'factories'};
 }
 function initTradeoffHover() {
   const svg = $('chartTO'), tip = $('tipTO');
@@ -338,18 +408,137 @@ function renderAnchorsTable(alg) {
     return head + `<tr class="${a.alg === alg ? 'sel' : ''}"><td class="name">${a.src}<span class="sm">${a.target} · ${a.cov}</span></td><td class="num">${a.L}</td><td class="num">${a.T}</td><td class="num">${a.phys}</td><td class="num">${a.time}</td><td class="muted">${a.hw}<span class="sm">Evidence: ${a.ev}</span></td></tr>`;
   }).join('');
 }
+const qreRunsFor = s => QRE.runs.filter(x => x.alg === s.alg && x.variant === s.variant && x.keyBits === s.keyBits);
+const targetName = (alg, keyBits) => ALGS[alg].name.split(' (')[0] + '-' + keyBits;
+
+/* Show the controls of the active engine and say which engine is pricing the physical layer, and why. */
+function syncEngineUI(s) {
+  const eng = engineFor(s), custom = s.qModel === 'custom';
+  document.querySelectorAll('#estimator [data-engine]').forEach(el => { const t = el.dataset.engine.split(' '); el.hidden = !(t.includes(eng) || (eng === 'qdk' && custom && t.includes('qdk-custom'))); });
+  document.querySelectorAll('#engSeg [data-engine-id]').forEach(b => b.setAttribute('aria-selected', b.dataset.engineId === ENGINE_WANT));
+  const c7 = QDK.commit ? QDK.commit.slice(0, 7) : '';
+  let st;
+  if (ENGINE_WANT !== 'qdk') st = 'Built-in placeholder model selected.';
+  else if (QDK.state === 'loading') st = 'Loading the QDK estimator (0.6 MB)… built-in figures are shown until it is ready.';
+  else if (QDK.state === 'failed') st = `The QDK estimator is not running in this copy of the page (${QDK.error}); the built-in model is shown instead.`;
+  else if (s.alg === 'aes') st = 'AES key search runs on the built-in model: Grover counts exceed the 64-bit integers the QDK takes.';
+  else st = `QDK estimator running in this browser tab · microsoft/qdk @ ${c7} · MIT licence`;
+  $('engStatus').textContent = st;
+  $('engNote').innerHTML = eng === 'qdk'
+    ? `<span class="pill good">QDK engine</span>&nbsp; Physical qubits, runtime, code distance and T factories are computed in your browser by the open-source Microsoft QDK resource estimator [45] from the logical counts of the chosen circuit. They describe the QDK's generic architecture, so they differ from the physical numbers each paper reports for its own. Logical counts, anchors and sub-operation counts come from the project literature review (search date 1 November 2026) and are quoted in each paper's own units.`
+    : `<span class="pill warn">Provisional outputs</span>&nbsp; The physical layer shown is Q-CARE's built-in placeholder model, a uniform surface-code wrapper that reproduces no paper's physical number. Logical counts, anchors and sub-operation counts come from the project literature review (search date 1 November 2026) and are quoted in each paper's own units, with per-run and expected costs kept apart.`;
+  $('capTO').innerHTML = eng === 'qdk'
+    ? `<b>Runtime vs physical qubits.</b> The QDK's space–time frontier for the complete attack on the current target: each point further along the curve runs with fewer T factories and takes longer. Other key sizes of the family are shown at the QDK's fastest configuration. Published anchors are plotted at the qubits and runtime each paper reports for its own architecture (per run or expected, as listed in the table below). Hover the curve to read values.`
+    : `<b>Runtime vs physical qubits.</b> The space–time frontier for the complete attack on the current target: each point on the curve is a different number of magic-state factories (parallel machines for Grover). Other key sizes of the family are shown at the current factory count. Published anchors are plotted at the runtime each paper reports (per run or expected, as listed in the table below). Hover the curve to read values.`;
+  $('capP').innerHTML = eng === 'qdk'
+    ? `<b>Physical qubits vs physical error rate</b> for the complete attack (setting I): the QDK rerun with the qubit model's gate, measurement and idle error rates set to each value. Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.`
+    : `<b>Physical qubits vs physical error rate</b> for the complete attack (setting I). Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.`;
+  return eng;
+}
+
+/* The reference function: every deployed algorithm priced under the current hardware assumptions. */
+function renderComparison(s) {
+  const pageEng = engineFor({...s, alg: 'rsa'});
+  const cell = (main, sub) => `${main}${sub ? `<span class="sm">${sub}</span>` : ''}`;
+  let html = '';
+  DEPLOYED.forEach(g => {
+    html += `<tr class="grp"><td colspan="7">${g.grp}</td></tr>`;
+    g.items.forEach(it => {
+      const si = {...s, alg: it.alg, variant: it.variant, keyBits: it.keyBits, manualD: false, machines: 1};
+      const r = estimateAny(si), ok = isFinite(r.phys) && isFinite(r.runtime);
+      const flags = [r.src, r.scaled && !it.note ? 'scaled from the published size' : '', it.note || ''].filter(Boolean).join(' · ');
+      let status;
+      if (!ok) status = cell('<span class="pill warn">No estimate</span>', escH(r.err || 'no code distance suffices at this error rate'));
+      else if (r.kind === 'grover') status = cell('<span class="pill good">Holds</span>', 'Grover gives a quadratic speed-up only');
+      else { const qd = qDay(r.phys, s.q0, YEAR0, s.doubling); status = cell(`<span class="pill ${qd <= 2032 ? 'bad' : qd <= 2040 ? 'warn' : ''}">Vulnerable by ≈ ${qd.toFixed(0)}</span>`, `when ${fmtN(r.phys)} qubits exist`); }
+      const ex = ok && r.kind !== 'grover' ? `${r.runs} expected ${plural(r.runs, 'run', 'runs')} → ${r.engine === 'qdk' ? '≤ ' : ''}${fmtDur(r.expected)}` : '';
+      html += `<tr class="${it.id === DEPLOY_ID ? 'sel' : ''}"><td class="name"><button type="button" class="linkish" data-deploy="${it.id}">${it.label}</button></td>`
+        + `<td>${cell(it.attack, flags)}</td>`
+        + `<td class="num">${cell(r.L.toLocaleString(), r.engine === 'qdk' && ok ? r.Llayout.toLocaleString() + ' after QDK layout' : '')}</td>`
+        + `<td class="num">${cell(fmtSci(r.T), r.unit)}</td>`
+        + `<td class="num">${ok ? cell(fmtN(r.phys), `d = ${r.d}${r.engine === 'qdk' ? ` · ${r.factories} T ${plural(r.factories, 'factory', 'factories')}` : pageEng === 'qdk' ? ' · built-in model' : ''}`) : '—'}</td>`
+        + `<td class="num">${ok ? cell(fmtDur(r.runtime) + (r.kind === 'grover' ? '' : ' per run'), ex) : '—'}</td>`
+        + `<td>${status}</td></tr>`;
+    });
+  });
+  html += `<tr class="grp"><td colspan="7">Post-quantum · no known quantum break</td></tr>`
+    + `<tr><td class="name">ML-KEM, ML-DSA, SLH-DSA, HQC</td><td>${cell('No quantum attack below the claimed security level is known', 'the review found subroutine circuits and model-based security levels only; see “Beyond RSA and ECC” below and the <a href="#pqc">PQC Benchmark Suite</a>')}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>${cell('<span class="pill good">No known quantum break</span>', 'no complete attack exists to price')}</td></tr>`;
+  $('cmpTbl').querySelector('tbody').innerHTML = html;
+  const m = QDK_MODELS[s.qModel] || QDK_MODELS.qubit_gate_ns_e3;
+  $('cmpIntro').innerHTML = pageEng === 'qdk'
+    ? `Each deployed algorithm is mapped to the hard problem behind it and to one published circuit, and the logical counts of that circuit are priced by the QDK with the settings above: qubit model <code>${escH(s.qModel)}</code>, ${QDK_QEC[qdkQecFor(s.qModel).includes(s.qec) ? s.qec : 'surface_code'].toLowerCase()}, error budget ${s.eps * 100}%${s.maxTF > 0 ? `, at most ${s.maxTF} T factories` : ''}${s.depthFactor > 1 ? `, logical depth factor ${s.depthFactor}` : ''}. AES rows use the built-in model. Rows marked as project mapping or scaling are not published counts for that exact algorithm.`
+    : `Each deployed algorithm is mapped to the hard problem behind it and to one published circuit, and the logical counts of that circuit are priced by the built-in placeholder model with the hardware settings above. Rows marked as project mapping or scaling are not published counts for that exact algorithm.`;
+}
+
+/* The QDK's own report, with its labels and formatted values. */
+function renderQdkReport(r) {
+  const box = $('qdkReport');
+  if (r.engine !== 'qdk' || !r.raw || !r.raw.reportData) { box.hidden = true; return; }
+  box.hidden = false;
+  const x = r.raw, get = path => path.split('/').reduce((o, k) => o == null ? o : o[k], x);
+  const rows = x.reportData.groups.map(g => `<tr class="grp"><td colspan="3">${escH(g.title)}</td></tr>` + g.entries.map(e => {
+    const v = get(e.path);
+    return `<tr><td class="name">${escH(e.label)}</td><td class="num">${escH(v == null ? '—' : Array.isArray(v) ? v.join(', ') : v)}</td><td class="muted">${escH(e.description)}</td></tr>`;
+  }).join('')).join('');
+  const md = a => escH(a).replace(/^_(.*)_$/, '$1').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[(.+?)\]\((https:[^)\s]+)\)/g, '<a href="$2">$1</a>');
+  $('qdkReportBody').innerHTML = `<div class="tbl-wrap"><table class="anch-tbl rep-tbl"><thead><tr><th>Quantity</th><th>Value</th><th>What it is</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    + `<p class="small muted anch-intro"><b>Assumptions the QDK states for every estimate</b></p><ul class="notes">${(x.reportData.assumptions || []).map(a => `<li>${md(a)}</li>`).join('')}</ul>`;
+}
+function renderQdkRepro(r) {
+  const box = $('qdkRepro');
+  if (r.engine !== 'qdk') { box.hidden = true; return; }
+  box.hidden = false;
+  $('qdkReproCode').textContent = `# pip install qdk
+from qdk.estimator import LogicalCounts
+
+# logical counts of one run: ${r.src}
+counts = LogicalCounts(${JSON.stringify(r.counts).replace(/([:,])/g, '$1 ')})
+result = counts.estimate(${JSON.stringify(r.params, null, 2)})
+
+pc = result["physicalCounts"]
+print(pc["physicalQubits"], "physical qubits")
+print(pc["runtime"] / 3.6e12, "hours per run")
+print("code distance", result["logicalQubit"]["codeDistance"])
+print(pc["breakdown"]["numTfactories"], "T factories")`;
+}
+function renderQre(s) {
+  const one = q => q ? `${q.qubits.toLocaleString()} qubits<span class="sm">${fmtDur(q.runtime_s)} · ${escH(q.factories)} · error ${q.error.toPrecision(2)}</span>` : '—';
+  const st = QRE.settings || {};
+  $('qreIntro').innerHTML = QRE.runs.length
+    ? `Microsoft's current documentation [47] describes a second estimator in the QDK, the Python library <code>qdk.qre</code>. It cannot run in a web page, so these runs were computed offline with qdk ${escH(QRE.qdkVersion || '')} on ${escH(QRE.generated || '')} by <code>tools/qre_reference_runs.py</code> in the site repository, from the same per-run logical counts Q-CARE feeds the in-browser engine. Settings: ${escH(st.description || '')} Each run returns several Pareto-optimal results; the fastest and the smallest are listed, and on the frontier chart they appear as diamonds when the target and qubit model match. Rows of the current target are highlighted.`
+    : 'No reference runs are embedded in this copy of the page.';
+  $('qreTbl').querySelector('tbody').innerHTML = QRE.runs.map(x => {
+    const fast = x.results.slice().sort((a, b) => a.runtime_s - b.runtime_s)[0], small = x.results.slice().sort((a, b) => a.qubits - b.qubits)[0];
+    const sel = x.alg === s.alg && x.variant === s.variant && x.keyBits === s.keyBits;
+    return `<tr class="${sel ? 'sel' : ''}"><td class="name">${escH(targetName(x.alg, x.keyBits))}<span class="sm">${escH(x.src)}</span></td><td class="num">${x.counts.numQubits.toLocaleString()} qubits<span class="sm">${fmtSci(x.counts.cczCount)} CCZ</span></td><td class="num">${escH(x.archLabel)}</td><td class="num">${one(fast)}</td><td class="num">${one(small)}</td><td class="num">${x.results.length || 'none'}${x.note ? `<span class="sm">${escH(x.note)}</span>` : ''}</td></tr>`;
+  }).join('');
+}
+
 function renderEstimator() {
-  const s = readSettings(), r = estimate(s);
+  const s = readSettings();
+  syncDeployed();
+  const eng = syncEngineUI(s), qdk = eng === 'qdk';
+  const r = estimateAny(s);
+  const ok = isFinite(r.phys) && isFinite(r.runtime);
   renderSettingUI(s);
   renderAnchorsTable(s.alg);
+  renderComparison(s);
+  renderQdkReport(r); renderQdkRepro(r); renderQre(s);
   const t = fmtT(r.runtime);
   const qd = qDay(r.phys, s.q0, YEAR0, s.doubling);
   window.__qday = qd;
-  const alg = ALGS[s.alg].name.split(' (')[0] + '-' + s.keyBits;
+  const alg = targetName(s.alg, s.keyBits);
   const setting = SETTINGS[s.alg].find(x => x.id === SETTING);
   const scaled = r.scaled ? ' <span class="pill warn">scaled</span>' : '';
-  let v = '';
-  if (SETTING !== 'I' && r.d !== Infinity) {
+  const retry = qdk ? 1 / (1 - s.eps) : 1 / (1 - r.fail);
+  const finish = () => {
+    chartTO(s, r); chartP(s, r); chartQ(s, r);
+    $('d').disabled = $('dAuto').checked; if (!qdk && $('dAuto').checked && isFinite(r.d)) $('d').value = r.d;
+    $('arithOptV').textContent = s.arithOpt + '×'; $('pPhysV').textContent = s.pPhys.toExponential(1); $('routingV').textContent = s.routing.toFixed(2) + '×';
+  };
+  const opMode = SETTING !== 'I' && ok;
+  $('tExpTile').hidden = opMode; $('tGTile').hidden = opMode;
+  if (opMode) {
     const o = opView(s, r);
     const perOp = r.runtime * (o.T / r.T);
     const ot = fmtT(perOp);
@@ -360,45 +549,106 @@ function renderEstimator() {
     $('tTimeSub').textContent = `${fmtSci(o.T)} ${o.unit}`;
     $('tLL').textContent = 'Logical qubits'; $('tL').textContent = o.L.toLocaleString(); $('tLSub').textContent = 'working registers';
     $('tDL').textContent = 'Repetitions in attack'; $('tD').textContent = fmtN(o.count); $('tDSub').textContent = o.opsLabel;
-    v = `<span class="pill ${published ? 'good' : 'warn'}">Setting ${SETTING} · ${published ? 'published rule' : 'placeholder'}</span><p><b>${setting.name}.</b> ${setting.task}. One such operation is estimated at <b>${fmtSci(o.T)} ${o.unit}</b> and about <b>${ot.v} ${ot.u}</b> under the current hardware assumptions; the complete attack on ${alg} (setting I, ${r.src}) performs it ${published ? '' : 'roughly '}${fmtN(o.count)} times per run. Derivation: ${o.rule}. Charts below always describe the complete attack.</p>`;
-    $('verdict').innerHTML = v;
-    chartTO(s, r); chartP(s, r); chartQ(s, r);
-    $('d').disabled = $('dAuto').checked; if ($('dAuto').checked && isFinite(r.d)) $('d').value = r.d;
-    $('arithOptV').textContent = s.arithOpt + '×'; $('pPhysV').textContent = s.pPhys.toExponential(1); $('routingV').textContent = s.routing.toFixed(2) + '×';
+    $('verdict').innerHTML = `<span class="pill ${published ? 'good' : 'warn'}">Setting ${SETTING} · ${published ? 'published rule' : 'placeholder'}</span><p><b>${setting.name}.</b> ${setting.task}. One such operation is estimated at <b>${fmtSci(o.T)} ${o.unit}</b> and about <b>${ot.v} ${ot.u}</b> under the current hardware assumptions${qdk ? ' (QDK engine)' : ''}; the complete attack on ${alg} (setting I, ${r.src}) performs it ${published ? '' : 'roughly '}${fmtN(o.count)} times per run. Derivation: ${o.rule}. Charts below always describe the complete attack.</p>`;
+    finish();
     return;
   }
-  $('tPhysL').textContent = 'Physical qubits'; $('tTimeL').textContent = r.kind === 'grover' ? 'Runtime' : 'Runtime per run'; $('tLL').textContent = 'Logical qubits'; $('tDL').textContent = 'Code distance';
-  $('tPhys').textContent = fmtN(r.phys);
-  $('tPhysSub').textContent = r.kind === 'grover' && r.P > 1 ? `${fmtN(r.perMachine)} × ${r.P} machines` : `${r.d === Infinity ? 'above threshold' : 'd = ' + r.d + ', ' + s.factories + ' factories'}`;
-  $('tTime').innerHTML = `${t.v} <small>${t.u}</small>`;
-  $('tTimeSub').textContent = r.kind === 'grover' ? `${fmtSci(r.iters)} Grover iterations` : `${fmtSci(r.T)} ${r.unit} per run · ${r.runs} expected runs`;
+  const grover = r.kind === 'grover';
+  $('tPhysL').textContent = 'Physical qubits'; $('tTimeL').textContent = grover ? 'Runtime' : 'Runtime per run'; $('tLL').textContent = 'Logical qubits'; $('tDL').textContent = 'Code distance';
+  $('tPhys').textContent = ok ? fmtN(r.phys) : '—';
+  $('tTime').innerHTML = ok ? `${t.v} <small>${t.u}</small>` : '—';
   $('tL').textContent = r.L.toLocaleString();
-  $('tLSub').textContent = r.kind === 'grover' ? 'per machine' : (r.Lnote || (r.scaled ? 'scaled from the published size' : 'as published'));
   $('tD').textContent = isFinite(r.d) ? r.d : '—';
-  $('tDSub').textContent = isFinite(r.d) ? `p_L = ${r.pLogical.toExponential(1)} / cycle` : 'no distance suffices';
-  if (r.d === Infinity) v = `<span class="pill bad">Not feasible</span><p>At a physical error rate at or above the 1% threshold no code distance suppresses errors. Lower the error rate.</p>`;
-  else if (r.kind === 'grover') v = `<span class="pill good">Symmetric keys hold</span><p>Breaking ${alg} by Grover search takes ${t.v} ${t.u} on ${r.P > 1 ? r.P + ' machines' : 'one machine'} of ${fmtN(r.perMachine)} physical qubits. Parallelism only buys a square root, so key search stays out of reach; doubling the key length (AES-256) restores the full margin.</p>`;
+  $('tG').textContent = fmtSci(r.T);
+  const ex = fmtT(r.expected);
+  $('tExp').innerHTML = ok && isFinite(r.expected) ? `${ex.v} <small>${ex.u}</small>` : '—';
+  $('tExpL').textContent = grover ? 'Expected total' : qdk ? 'Expected total (upper bound)' : 'Expected total';
+  $('tGL').textContent = grover ? 'T-depth of the search' : 'Gate count per run';
+  if (qdk) {
+    $('tPhysSub').textContent = ok ? `${fmtN(r.physAlg)} algorithm + ${fmtN(r.physFac)} in ${r.factories} T ${plural(r.factories, 'factory', 'factories')}` : 'no estimate';
+    $('tTimeSub').textContent = ok ? `${fmtSci(r.depth)} logical cycles of ${fmtCycle(r.cycleNs)}` : '';
+    $('tExpSub').textContent = ok ? `${r.runs} expected ${plural(r.runs, 'run', 'runs')} · retries ≤ ${retry.toFixed(2)}×` : '';
+    $('tLSub').textContent = (r.Lnote || 'as published') + (ok ? ` · ${r.Llayout.toLocaleString()} after QDK layout` : '');
+    $('tGSub').textContent = r.unit + (ok ? ` · ${fmtSci(r.tstates)} T states in the QDK` : '');
+    $('tDSub').textContent = ok ? `p_L = ${r.pLogical.toExponential(1)} per qubit and cycle` : 'no distance found';
+  } else {
+    $('tPhysSub').textContent = grover && r.P > 1 ? `${fmtN(r.perMachine)} × ${r.P} machines` : `${r.d === Infinity ? 'above threshold' : 'd = ' + r.d + ', ' + s.factories + ' factories'}`;
+    $('tTimeSub').textContent = grover ? `${fmtSci(r.iters)} Grover iterations` : `${fmtSci(r.T)} ${r.unit} per run · ${r.runs} expected runs`;
+    $('tExpSub').textContent = grover ? 'one search' + (isFinite(retry) ? ` · retries ${retry.toFixed(2)}×` : '') : `${r.runs} expected ${plural(r.runs, 'run', 'runs')} · retries ${isFinite(retry) ? retry.toFixed(2) : '∞'}×`;
+    $('tLSub').textContent = grover ? 'per machine' : (r.Lnote || (r.scaled ? 'scaled from the published size' : 'as published'));
+    $('tGSub').textContent = grover ? 'iterations × T-depth per iteration' : r.unit;
+    $('tDSub').textContent = isFinite(r.d) ? `p_L = ${r.pLogical.toExponential(1)} / cycle` : 'no distance suffices';
+  }
+  let v;
+  if (!ok && qdk) v = `<span class="pill bad">No estimate</span><p>The QDK returned no estimate for ${alg} with these settings: ${escH(r.err || 'unknown reason')}. Change the qubit model, the error budget or the constraints, or switch to the built-in model.</p>`;
+  else if (r.d === Infinity) v = `<span class="pill bad">Not feasible</span><p>At a physical error rate at or above the 1% threshold no code distance suppresses errors. Lower the error rate.</p>`;
+  else if (grover) v = `<span class="pill good">Symmetric keys hold</span>${ENGINE_WANT === 'qdk' ? ' <span class="pill warn">built-in model</span>' : ''}<p>Breaking ${alg} by Grover search takes ${t.v} ${t.u} on ${r.P > 1 ? r.P + ' machines' : 'one machine'} of ${fmtN(r.perMachine)} physical qubits. Parallelism only buys a square root, so key search stays out of reach; doubling the key length (AES-256) restores the full margin.</p>`;
   else {
-    const win = s.window ? (r.windowFeasible ? ` To finish one run inside ${fmtT(s.window).v} ${fmtT(s.window).u} the attacker needs ${r.windowFactories} factories and about ${fmtN(r.windowPhys)} physical qubits.` : ` The reaction-time floor alone exceeds the ${fmtT(s.window).v} ${fmtT(s.window).u} budget: one run cannot finish in that window at any factory count.`) : '';
     const cls = qd <= 2032 ? 'bad' : qd <= 2040 ? 'warn' : 'good';
-    const ex = fmtT(r.expected);
-    v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span>${scaled}<p>Breaking ${alg} with the ${r.src} circuit needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per run. The source charges ${r.runs} expected run${r.runs === 1 ? '' : 's'} and this configuration adds ${(1 / (1 - r.fail)).toFixed(2)}× for logical-error retries, so the expected total is <b>${ex.v} ${ex.u}</b>. If the largest machine grows from ${fmtN(s.q0)} qubits doubling every ${s.doubling} years, that size arrives around <b>${isFinite(qd) ? qd.toFixed(0) : '—'}</b>.${win}</p>`;
+    const wl = s.window ? $('window').selectedOptions[0].textContent.toLowerCase() : '';
+    const tail = `If the largest machine grows from ${fmtN(s.q0)} qubits doubling every ${s.doubling} years, that size arrives around <b>${isFinite(qd) ? qd.toFixed(0) : '—'}</b>.`;
+    if (qdk) {
+      let win = '';
+      if (s.window) { const w = estimateQdk(s, {maxDurationS: s.window}); win = isFinite(w.phys) ? ` To finish one run inside ${wl} the QDK needs about ${fmtN(w.phys)} physical qubits with ${w.factories} T ${plural(w.factories, 'factory', 'factories')}.` : ` The QDK finds no configuration that finishes one run inside ${wl}.`; }
+      const m = QDK_MODELS[s.qModel] || QDK_MODELS.qubit_gate_ns_e3;
+      v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span> <span class="pill good">QDK estimate</span>${scaled}<p>Breaking ${alg} with the ${r.src} circuit needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per run on the QDK's architecture: ${m.custom ? `a custom gate-based qubit (${s.qGate} ns gates, ${s.qMeas} ns measurement, error ${s.pPhys.toExponential(1)})` : `qubit model <code>${escH(s.qModel)}</code>`}, ${QDK_QEC[r.params.qecScheme.name].toLowerCase()} at distance ${r.d}, ${r.Llayout.toLocaleString()} logical qubits after layout and ${r.factories} T ${plural(r.factories, 'factory', 'factories')} taking ${(100 * r.physFac / r.phys).toFixed(0)}% of the machine. The source charges ${r.runs} expected ${plural(r.runs, 'run', 'runs')} and the ${s.eps * 100}% error budget allows up to ${retry.toFixed(2)}× for retries, so the expected total is at most <b>${ex.v} ${ex.u}</b>. ${tail}${win}</p>`;
+    } else {
+      const win = s.window ? (r.windowFeasible ? ` To finish one run inside ${wl} the attacker needs ${r.windowFactories} factories and about ${fmtN(r.windowPhys)} physical qubits.` : ` The reaction-time floor alone exceeds the ${wl} budget: one run cannot finish in that window at any factory count.`) : '';
+      v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span>${scaled}<p>Breaking ${alg} with the ${r.src} circuit needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per run. The source charges ${r.runs} expected run${r.runs === 1 ? '' : 's'} and this configuration adds ${retry.toFixed(2)}× for logical-error retries, so the expected total is <b>${ex.v} ${ex.u}</b>. ${tail}${win}</p>`;
+    }
   }
   $('verdict').innerHTML = v;
-  chartTO(s, r); chartP(s, r); chartQ(s, r);
-  $('d').disabled = $('dAuto').checked; if ($('dAuto').checked && isFinite(r.d)) $('d').value = r.d;
-  $('arithOptV').textContent = s.arithOpt + '×'; $('pPhysV').textContent = s.pPhys.toExponential(1); $('routingV').textContent = s.routing.toFixed(2) + '×';
+  finish();
+}
+
+/* Load the QDK module (a plain script plus its .wasm file, both served next to the page). Any failure leaves the built-in model in charge. */
+function loadQdk() {
+  const done = () => { if (document.body.dataset.ready) renderAll(); };
+  const fail = why => { if (QDK.state !== 'loading') return; QDK.state = 'failed'; QDK.error = why; done(); };
+  try {
+    if (typeof WebAssembly !== 'object') return fail('this browser has no WebAssembly');
+    const sc = document.createElement('script');
+    sc.src = 'vendor/qdk/qcare_qdk_estimator.js';
+    sc.onerror = () => fail('its files are not reachable from this copy of the page');
+    sc.onload = () => {
+      try {
+        wasm_bindgen({module_or_path: 'vendor/qdk/qcare_qdk_estimator_bg.wasm'}).then(() => {
+          if (QDK.state !== 'loading') return;
+          QDK.api = wasm_bindgen;
+          const probe = JSON.parse(wasm_bindgen.physical_estimates('{"numQubits":100,"cczCount":1000000}', '[{"errorBudget":0.1}]'))[0];
+          if (!probe || !probe.physicalCounts) throw new Error('self-test failed');
+          QDK.commit = wasm_bindgen.qdk_commit(); QDK.state = 'ready'; done();
+        }).catch(e => fail('its WebAssembly file could not be loaded or started: ' + String(e && e.message || e).slice(0, 120)));
+      } catch (e) { fail(String(e && e.message || e).slice(0, 120)); }
+    };
+    document.head.appendChild(sc);
+    setTimeout(() => fail('loading timed out'), 20000);
+  } catch (e) { fail(String(e && e.message || e).slice(0, 120)); }
 }
 function initEstimator() {
   fillSelect($('alg'), Object.entries(ALGS).map(([k, a]) => [k, a.name]));
+  fillSelect($('qModel'), Object.entries(QDK_MODELS).map(([k, m]) => [k, m.label]));
+  syncQec();
+  $('deployed').innerHTML = '<option value="">Custom selection</option>' + DEPLOYED.map(g => `<optgroup label="${g.grp}">${g.items.map(d => `<option value="${d.id}">${d.label}</option>`).join('')}</optgroup>`).join('');
   $('presets').innerHTML = PRESETS.map((p, i) => `<button type="button" data-preset="${i}">${p.label}</button>`).join('');
   $('presets').addEventListener('click', e => { const b = e.target.closest('[data-preset]'); if (b) applyPreset(PRESETS[+b.dataset.preset].s); });
   renderAnchorsTable('rsa');
+  $('deployed').addEventListener('change', e => { if (e.target.value) applyDeployed(e.target.value); });
+  $('cmpTbl').addEventListener('click', e => { const b = e.target.closest('[data-deploy]'); if (b) { applyDeployed(b.dataset.deploy); $('estimator').querySelector('.ctrl-grid').scrollIntoView({block: 'start'}); } });
   $('alg').addEventListener('change', () => { syncAlgUI(); renderAll(); });
   $('variant').addEventListener('change', () => { syncKeys(); renderAll(); });
+  $('qModel').addEventListener('change', () => { syncQec(); renderAll(); });
   $('seg').addEventListener('click', e => { const b = e.target.closest('[data-setting-id]'); if (b) { SETTING = b.dataset.settingId; renderAll(); } });
+  $('engSeg').addEventListener('click', e => { const b = e.target.closest('[data-engine-id]'); if (b) { ENGINE_WANT = b.dataset.engineId; renderAll(); } });
+  $('qdkReproCopy').addEventListener('click', () => {
+    const pre = $('qdkReproCode'), btn = $('qdkReproCopy');
+    const selectIt = () => { const rg = document.createRange(); rg.selectNodeContents(pre); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(rg); btn.textContent = 'Selected: press Ctrl/Cmd + C'; };
+    try { navigator.clipboard.writeText(pre.textContent).then(() => { btn.textContent = 'Copied'; }, selectIt); } catch (e) { selectIt(); }
+    setTimeout(() => { btn.textContent = 'Copy the snippet'; }, 2500);
+  });
   initTradeoffHover();
-  document.querySelector('#estimator').addEventListener('input', e => { if (e.target.id !== 'alg' && e.target.id !== 'variant') renderAll(); });
+  document.querySelector('#estimator').addEventListener('input', e => { if (!['alg', 'variant', 'qModel', 'deployed'].includes(e.target.id)) renderAll(); });
   applyPreset(PRESETS[0].s);
+  DEPLOY_ID = '';
+  loadQdk();
 }
-

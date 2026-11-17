@@ -1,0 +1,243 @@
+{
+ "note": "Per-run logical counts Q-CARE feeds the QDK estimator; one Toffoli of the source count is one CCZ.",
+ "targets": [
+  {
+   "id": "rsa:ge2021:2048",
+   "alg": "rsa",
+   "variant": "ge2021",
+   "keyBits": 2048,
+   "src": "Gidney and Ekerå 2021, Tables 1 and 3",
+   "unit": "Toffoli + T/2",
+   "runs": 1.4,
+   "scaled": false,
+   "counts": {
+    "numQubits": 6189,
+    "cczCount": 2624225018
+   }
+  },
+  {
+   "id": "rsa:cfs2024:2048",
+   "alg": "rsa",
+   "variant": "cfs2024",
+   "keyBits": 2048,
+   "src": "Chevignard, Fouque, Schrottenloher 2024/25, abstract",
+   "unit": "Toffoli",
+   "runs": 40,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1730,
+    "cczCount": 68719476736
+   }
+  },
+  {
+   "id": "rsa:g2025:2048",
+   "alg": "rsa",
+   "variant": "g2025",
+   "keyBits": 2048,
+   "src": "Gidney 2025, Table 5",
+   "unit": "Toffoli",
+   "runs": 9.2,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1399,
+    "cczCount": 706521739
+   }
+  },
+  {
+   "id": "ecc:roetteler:256",
+   "alg": "ecc",
+   "variant": "roetteler",
+   "keyBits": 256,
+   "src": "Roetteler et al. 2017, Table 2",
+   "unit": "Toffoli",
+   "runs": 1,
+   "scaled": false,
+   "counts": {
+    "numQubits": 2330,
+    "cczCount": 128748355584
+   }
+  },
+  {
+   "id": "ecc:luo2026:256",
+   "alg": "ecc",
+   "variant": "luo2026",
+   "keyBits": 256,
+   "src": "Luo et al. 2026, §6.4, leading-order formula",
+   "unit": "Toffoli",
+   "runs": 1,
+   "scaled": false,
+   "counts": {
+    "numQubits": 835,
+    "cczCount": 2214592512
+   }
+  },
+  {
+   "id": "ecc:cfs2026:256",
+   "alg": "ecc",
+   "variant": "cfs2026",
+   "keyBits": 256,
+   "src": "Chevignard, Fouque, Schrottenloher 2026, abstract",
+   "unit": "Toffoli",
+   "runs": 22,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1193,
+    "cczCount": 542187163142
+   }
+  },
+  {
+   "id": "ecc:schrott2026:256",
+   "alg": "ecc",
+   "variant": "schrott2026",
+   "keyBits": 256,
+   "src": "Schrottenloher 2026, Tables 1–2, any prime, space-optimised",
+   "unit": "Toffoli (CCX + CCZ + And)",
+   "runs": 2,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1208,
+    "cczCount": 106037550
+   }
+  },
+  {
+   "id": "ecc:babbush2026:256",
+   "alg": "ecc",
+   "variant": "babbush2026",
+   "keyBits": 256,
+   "src": "Babbush et al. 2026, abstract (stated as upper bounds)",
+   "unit": "Toffoli",
+   "runs": 1,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1450,
+    "cczCount": 70000000
+   }
+  },
+  {
+   "id": "ecc:ionq2026:256",
+   "alg": "ecc",
+   "variant": "ionq2026",
+   "keyBits": 256,
+   "src": "Häner et al. (IonQ) 2026, Table I",
+   "unit": "Toffoli",
+   "runs": 2,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1450,
+    "cczCount": 40000000
+   }
+  },
+  {
+   "id": "ffdlp:safe:2048",
+   "alg": "ffdlp",
+   "variant": "safe",
+   "keyBits": 2048,
+   "src": "Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)",
+   "unit": "Toffoli + T/2",
+   "runs": 1,
+   "scaled": true,
+   "counts": {
+    "numQubits": 6189,
+    "cczCount": 3483218477
+   }
+  },
+  {
+   "id": "ffdlp:short:2048",
+   "alg": "ffdlp",
+   "variant": "short",
+   "keyBits": 2048,
+   "src": "Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)",
+   "unit": "Toffoli + T/2",
+   "runs": 1,
+   "scaled": true,
+   "counts": {
+    "numQubits": 6189,
+    "cczCount": 329101869
+   }
+  },
+  {
+   "id": "rsa:g2025:1024",
+   "alg": "rsa",
+   "variant": "g2025",
+   "keyBits": 1024,
+   "src": "Gidney 2025, Table 5",
+   "unit": "Toffoli",
+   "runs": 9.2,
+   "scaled": true,
+   "counts": {
+    "numQubits": 700,
+    "cczCount": 119565217
+   }
+  },
+  {
+   "id": "rsa:g2025:3072",
+   "alg": "rsa",
+   "variant": "g2025",
+   "keyBits": 3072,
+   "src": "Gidney 2025, Table 5",
+   "unit": "Toffoli",
+   "runs": 9.2,
+   "scaled": true,
+   "counts": {
+    "numQubits": 2099,
+    "cczCount": 2065217391
+   }
+  },
+  {
+   "id": "rsa:g2025:4096",
+   "alg": "rsa",
+   "variant": "g2025",
+   "keyBits": 4096,
+   "src": "Gidney 2025, Table 5",
+   "unit": "Toffoli",
+   "runs": 9.2,
+   "scaled": true,
+   "counts": {
+    "numQubits": 2798,
+    "cczCount": 4347826087
+   }
+  },
+  {
+   "id": "ecc:luo2026:384",
+   "alg": "ecc",
+   "variant": "luo2026",
+   "keyBits": 384,
+   "src": "Luo et al. 2026, §6.4, leading-order formula",
+   "unit": "Toffoli",
+   "runs": 1,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1219,
+    "cczCount": 6964969016
+   }
+  },
+  {
+   "id": "ecc:luo2026:521",
+   "alg": "ecc",
+   "variant": "luo2026",
+   "keyBits": 521,
+   "src": "Luo et al. 2026, §6.4, leading-order formula",
+   "unit": "Toffoli",
+   "runs": 1,
+   "scaled": false,
+   "counts": {
+    "numQubits": 1636,
+    "cczCount": 16547148394
+   }
+  },
+  {
+   "id": "ffdlp:short:3072",
+   "alg": "ffdlp",
+   "variant": "short",
+   "keyBits": 3072,
+   "src": "Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)",
+   "unit": "Toffoli + T/2",
+   "runs": 1,
+   "scaled": true,
+   "counts": {
+    "numQubits": 9287,
+    "cczCount": 892705725
+   }
+  }
+ ]
+}

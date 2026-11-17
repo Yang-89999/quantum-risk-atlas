@@ -45,6 +45,7 @@ p { margin: 0; max-width: 64ch; }
 .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .eyebrow { font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
 .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+[hidden] { display: none !important; }
 .muted { color: var(--muted); }
 .small { font-size: .84rem; }
 
@@ -445,6 +446,37 @@ section.mod:not(.hero) .pill { font-weight: 500; }
 @media (max-width: 900px) {
   #estimator .anch-tbl { font-size: .76rem; }
 }
+/* Q-CARE additions: engine switch, six tiles, comparison table, QDK report */
+#estimator .qc-full { font-family: var(--mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+#estimator .est-top { align-items: flex-start; }
+#estimator .est-top p { max-width: 78ch; line-height: 1.55; }
+#estimator .engine-bar { margin-bottom: 18px; }
+#estimator .engine-bar .seg button { font-family: var(--body); font-size: .84rem; }
+#estimator #engStatus { flex: 1 1 28ch; min-width: 0; }
+#estimator .tiles6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#estimator .tile .sub { line-height: 1.4; overflow-wrap: anywhere; }
+#estimator .linkish { font: inherit; font-weight: 500; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+#estimator .linkish:hover { text-decoration-thickness: 2px; }
+#estimator .linkish:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+#estimator .cmp-tbl td.name { min-width: 15ch; }
+#estimator .cmp-tbl td:nth-child(2) { min-width: 20ch; }
+#estimator .cmp-tbl td.num { min-width: 9ch; }
+#estimator .cmp-tbl td:nth-child(6) { min-width: 15ch; }
+#estimator .cmp-tbl th, #estimator .cmp-tbl td { padding-left: 8px; padding-right: 8px; }
+#estimator .cmp-tbl .pill, #estimator .anch-tbl .pill { white-space: nowrap; font-size: .66rem; }
+#estimator .rep-tbl td.name { min-width: 20ch; max-width: 30ch; }
+#estimator .rep-tbl td.num { min-width: 14ch; }
+#estimator pre.code { font-family: var(--mono); font-size: .78rem; line-height: 1.55; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; margin: 0 0 12px; overflow-x: auto; white-space: pre; color: var(--fg); }
+#estimator pre.code:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+#estimator code { font-family: var(--mono); font-size: .9em; }
+.chart .mk.q { stroke: var(--blue); fill: var(--blue); fill-opacity: .25; }
+.legend i.q { width: 8px; height: 8px; border: 2px solid var(--blue); transform: rotate(45deg); margin-right: 8px; }
+@media (max-width: 900px) {
+  #estimator .tiles6 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  #estimator .tiles6 { grid-template-columns: minmax(0, 1fr); }
+}
 /* ---- readiness index introduction (page 02) ---- */
 .index-intro { margin: 4px 0 40px; max-width: 72ch; }
 .index-intro p { font-size: 1rem; line-height: 1.6; color: var(--muted); }
@@ -615,7 +647,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
   <div class="brand">Quantum <span>Risk</span> Atlas</div>
   <nav class="nav" aria-label="Pages">
     <a href="#home" data-route="home"><b>00</b><span>Overview</span></a>
-    <a href="#estimator" data-route="estimator"><b>01</b><span>Resource estimator</span></a>
+    <a href="#estimator" data-route="estimator"><b>01</b><span>Q-CARE estimator</span></a>
     <a href="#migration" data-route="migration"><b>02</b><span>Migration &amp; readiness</span></a>
     <a href="#products" data-route="products"><b>03</b><span>Products</span></a>
     <a href="#pqc" data-route="pqc"><b>04</b><span>Post-quantum algorithms</span></a>
@@ -634,7 +666,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <span class="eyebrow">Security desk · Quantum risk</span>
     <h1>How soon does a quantum<br> computer break<br> <span class="l2"><em>your</em> cryptography?</span></h1>
     <p class="lede">A tunable estimate of the machine an attacker needs, a readiness index for the migration ahead, and the products that fall out of both. Every figure is computed live from the parameters you set and anchored to published resource estimates.</p>
-    <a class="cta" href="#estimator">Open the resource estimator <span aria-hidden="true">↗</span></a>
+    <a class="cta" href="#estimator">Open Q-CARE, the resource estimator <span aria-hidden="true">↗</span></a>
   </div>
   <article class="feature">
     <a class="feature-img" href="#estimator">
@@ -648,7 +680,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <div class="feature-cap"><span>The 10 mK stage: gold-plated copper plates, coaxial lines with attenuators and filters, and a mounted qubit array.</span><span class="credit">Photograph: supplied by the project · credit to be confirmed</span></div>
   </article>
   <nav class="hero-idx" aria-label="Section index">
-    <a href="#estimator"><b>01</b><span>Resource estimator</span></a>
+    <a href="#estimator"><b>01</b><span>Q-CARE resource estimation</span></a>
     <a href="#migration"><b>02</b><span>Migration &amp; readiness</span></a>
     <a href="#products"><b>03</b><span>Quantum-safe products</span></a>
     <a href="#pqc"><b>04</b><span>Post-quantum algorithms</span></a>
@@ -657,19 +689,25 @@ section.mod:not(.hero) .pill { font-weight: 500; }
   </nav>
 </div></section>
 
-<!-- ============ 01 RESOURCE ESTIMATOR ============ -->
+<!-- ============ 01 Q-CARE (RESOURCE ESTIMATION) ============ -->
 <section class="mod" id="estimator" data-module="estimator"><div class="wrap">
   <div class="sec-head">
     <div class="n">01</div>
     <div>
-      <h2>Resource estimator</h2>
-      <p>What size of fault-tolerant machine does the attack need, and when does hardware get there? Choose the target cryptosystem and the attacker's assumptions; the model scales published logical-level estimates and then wraps them in a surface-code layer.</p>
+      <h2>Q-CARE</h2>
+      <div class="qc-full">Quantum Cryptography Analysis &amp; Resource Estimation</div>
+      <p>What size of fault-tolerant machine does an attack need, and when does hardware get there? Pick the algorithm you run and a published attack circuit. Q-CARE takes the circuit's logical qubit and gate counts as the paper reports them and prices the physical machine with the open-source Microsoft QDK resource estimator, running in your browser.</p>
     </div>
   </div>
 
   <div class="est-top">
-    <p class="small muted"><span class="pill warn">Provisional outputs</span>&nbsp; The fault-tolerance layer is a placeholder model so the page reads as it will when finished; the computation is isolated in one <code>estimate()</code> function and will be replaced. The logical-level inputs, the anchors and the sub-operation counts were refreshed on 3 November 2026 from the project literature review (search date 1 November 2026) and are quoted in each paper's own units, with per-run and expected costs kept apart.</p>
+    <p class="small muted" id="engNote"></p>
     <div class="presets-row"><span class="eyebrow">Start from a published scenario</span><div class="presets" id="presets" aria-label="Presets"></div></div>
+  </div>
+  <div class="setting-bar engine-bar">
+    <span class="eyebrow">Estimation engine</span>
+    <div class="seg" id="engSeg" role="tablist" aria-label="Estimation engine"><button type="button" role="tab" data-engine-id="qdk">QDK resource estimator</button><button type="button" role="tab" data-engine-id="builtin">Built-in model</button></div>
+    <span class="small muted" id="engStatus" aria-live="polite"></span>
   </div>
   <div class="setting-bar">
     <span class="eyebrow">Estimation setting</span>
@@ -686,6 +724,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <div class="panel">
       <div class="ctrl-group">
         <span class="eyebrow">Target</span>
+        <div class="ctrl"><label for="deployed">Deployed algorithm<small>Quick pick: sets the family, circuit and size below.</small></label><select id="deployed"></select></div>
         <div class="ctrl"><label for="alg">Algorithm family</label><select id="alg"></select></div>
         <div class="ctrl"><label for="variant">Published circuit (variant)<small id="variantHint"></small></label><select id="variant"></select></div>
         <div class="ctrl"><label for="keyBits">Key / field size<small id="keyHint"></small></label><select id="keyBits"></select></div>
@@ -695,7 +734,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
       <div class="ctrl-group">
         <span class="eyebrow">Attacker's algorithmic assumptions</span>
         <div class="ctrl"><label for="arithOpt">Future gate-count improvement<small>Divides the Toffoli/iteration count. 1 = as published.</small></label><div class="rv"><input type="range" id="arithOpt" min="1" max="20" step="1" value="1"><output for="arithOpt" id="arithOptV">1×</output></div></div>
-        <div class="ctrl"><label for="parallel">Toffoli parallelism<small>Concurrent non-Clifford ops (Shor only).</small></label><input type="number" id="parallel" min="1" max="64" step="1" value="1"></div>
+        <div class="ctrl" data-engine="builtin"><label for="parallel">Toffoli parallelism<small>Concurrent non-Clifford ops (Shor only).</small></label><input type="number" id="parallel" min="1" max="64" step="1" value="1"></div>
         <div class="ctrl" data-only="aes"><label for="machines">Parallel machines<small>Grover gains only √P from P machines.</small></label><input type="number" id="machines" min="1" max="1000000" step="1" value="1"></div>
         <div class="ctrl" data-setting="I"><label for="window">Attack time budget<small>One run must finish within this window.</small></label><select id="window"><option value="0">No limit</option><option value="3600">1 hour</option><option value="86400">1 day</option><option value="604800">1 week</option><option value="2592000">30 days</option><option value="31536000">1 year</option></select></div>
       </div>
@@ -704,22 +743,29 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <div class="panel">
       <div class="ctrl-group">
         <span class="eyebrow">Hardware &amp; error correction</span>
-        <div class="ctrl"><label for="pPhys">Physical error rate<small>Per gate / cycle. Threshold assumed 1%.</small></label><div class="rv"><input type="range" id="pPhys" min="0" max="100" step="1" value="50"><output for="pPhys" id="pPhysV">1.0e-3</output></div></div>
-        <div class="ctrl"><label for="cycleUs">Surface-code cycle time (µs)<small>~1 superconducting · ~100–1000 ions/atoms</small></label><input type="number" id="cycleUs" min="0.1" step="0.1" value="1"></div>
-        <div class="ctrl"><label for="reactionUs">Reaction time (µs)<small>Decode + feed-forward per logical op.</small></label><input type="number" id="reactionUs" min="1" step="1" value="10"></div>
-        <div class="ctrl"><label for="dAuto">Choose code distance automatically</label><input type="checkbox" id="dAuto" checked></div>
-        <div class="ctrl"><label for="d">Code distance d<small>Odd. Used when auto is off.</small></label><input type="number" id="d" min="3" max="201" step="2" value="27"></div>
-        <div class="ctrl"><label for="eps">Allowed failure probability<small>Per run from logical errors; retries = 1/(1−ε).</small></label><select id="eps"><option value="0.5">50%</option><option value="0.1" selected>10%</option><option value="0.01">1%</option></select></div>
+        <div class="ctrl" data-engine="qdk"><label for="qModel">Qubit model<small id="qModelHint">Predefined in the QDK.</small></label><select id="qModel"></select></div>
+        <div class="ctrl" data-engine="qdk-custom"><label for="qGate">Gate time (ns)<small>One- and two-qubit gates and T gates.</small></label><input type="number" id="qGate" min="1" max="100000000" step="1" value="50"></div>
+        <div class="ctrl" data-engine="qdk-custom"><label for="qMeas">Measurement time (ns)</label><input type="number" id="qMeas" min="1" max="100000000" step="1" value="100"></div>
+        <div class="ctrl" data-engine="builtin qdk-custom"><label for="pPhys">Physical error rate<small>Per gate / cycle. Threshold assumed 1%.</small></label><div class="rv"><input type="range" id="pPhys" min="0" max="100" step="1" value="50"><output for="pPhys" id="pPhysV">1.0e-3</output></div></div>
+        <div class="ctrl" data-engine="qdk"><label for="qec">Error-correction scheme<small>Floquet code needs Majorana qubits.</small></label><select id="qec"></select></div>
+        <div class="ctrl" data-engine="builtin"><label for="cycleUs">Surface-code cycle time (µs)<small>~1 superconducting · ~100–1000 ions/atoms</small></label><input type="number" id="cycleUs" min="0.1" step="0.1" value="1"></div>
+        <div class="ctrl" data-engine="builtin"><label for="reactionUs">Reaction time (µs)<small>Decode + feed-forward per logical op.</small></label><input type="number" id="reactionUs" min="1" step="1" value="10"></div>
+        <div class="ctrl" data-engine="builtin"><label for="dAuto">Choose code distance automatically</label><input type="checkbox" id="dAuto" checked></div>
+        <div class="ctrl" data-engine="builtin"><label for="d">Code distance d<small>Odd. Used when auto is off.</small></label><input type="number" id="d" min="3" max="201" step="2" value="27"></div>
+        <div class="ctrl"><label for="eps"><span data-engine="qdk">Error budget</span><span data-engine="builtin">Allowed failure probability</span><small><span data-engine="qdk">Per run; the QDK splits it between logical errors and T states.</span><span data-engine="builtin">Per run from logical errors; retries = 1/(1−ε).</span></small></label><select id="eps"><option value="0.5">50%</option><option value="0.1" selected>10%</option><option value="0.01">1%</option><option value="0.001">0.1%</option></select></div>
       </div>
 
     </div>
     <div class="panel">
       <div class="ctrl-group">
         <span class="eyebrow">Architecture</span>
-        <div class="ctrl"><label for="factories">Magic-state factories<small>More factories: faster, bigger.</small></label><input type="number" id="factories" min="1" max="500" step="1" value="28"></div>
-        <div class="ctrl"><label for="magic">Magic-state production</label><select id="magic"><option value="distill">Distillation (Litinski-style)</option><option value="cultivate">Cultivation (Gidney et al. 2024)</option></select></div>
-        <div class="ctrl"><label for="storage">Idle-qubit storage</label><select id="storage"><option value="surface">Plain surface code</option><option value="yoked">Yoked surface codes (≈3× denser)</option></select></div>
-        <div class="ctrl"><label for="routing">Routing / layout overhead</label><div class="rv"><input type="range" id="routing" min="1" max="2" step="0.05" value="1.4"><output for="routing" id="routingV">1.40×</output></div></div>
+        <div class="ctrl" data-engine="qdk"><label for="maxTF">Maximum T factories<small>0 = as many as the algorithm consumes.</small></label><input type="number" id="maxTF" min="0" max="10000" step="1" value="0"></div>
+        <div class="ctrl" data-engine="qdk"><label for="depthFactor">Logical depth factor<small>1 = fastest. Larger slows the run and needs fewer factories.</small></label><input type="number" id="depthFactor" min="1" max="1000" step="0.5" value="1"></div>
+        <div class="ctrl" data-engine="builtin"><label for="factories">Magic-state factories<small>More factories: faster, bigger.</small></label><input type="number" id="factories" min="1" max="500" step="1" value="28"></div>
+        <div class="ctrl" data-engine="builtin"><label for="magic">Magic-state production</label><select id="magic"><option value="distill">Distillation (Litinski-style)</option><option value="cultivate">Cultivation (Gidney et al. 2024)</option></select></div>
+        <div class="ctrl" data-engine="builtin"><label for="storage">Idle-qubit storage</label><select id="storage"><option value="surface">Plain surface code</option><option value="yoked">Yoked surface codes (≈3× denser)</option></select></div>
+        <div class="ctrl" data-engine="builtin"><label for="routing">Routing / layout overhead</label><div class="rv"><input type="range" id="routing" min="1" max="2" step="0.05" value="1.4"><output for="routing" id="routingV">1.40×</output></div></div>
+        <p class="variant-note small muted" data-engine="qdk">The QDK fixes the rest of the architecture: its own qubit layout, 2d² physical qubits per logical qubit and T-state distillation in up to three 15-to-1 rounds.</p>
       </div>
 
       <div class="ctrl-group">
@@ -731,23 +777,35 @@ section.mod:not(.hero) .pill { font-weight: 500; }
   </div>
 
   <div class="results">
-      <div class="tiles">
+      <div class="tiles tiles6">
         <div class="tile"><span class="eyebrow" id="tPhysL">Physical qubits</span><div class="v" id="tPhys">—</div><div class="sub" id="tPhysSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tTimeL">Runtime per run</span><div class="v" id="tTime">—</div><div class="sub" id="tTimeSub"></div></div>
+        <div class="tile" id="tExpTile"><span class="eyebrow" id="tExpL">Expected total</span><div class="v" id="tExp">—</div><div class="sub" id="tExpSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tLL">Logical qubits</span><div class="v" id="tL">—</div><div class="sub" id="tLSub"></div></div>
+        <div class="tile" id="tGTile"><span class="eyebrow" id="tGL">Gate count per run</span><div class="v" id="tG">—</div><div class="sub" id="tGSub"></div></div>
         <div class="tile"><span class="eyebrow" id="tDL">Code distance</span><div class="v" id="tD">—</div><div class="sub" id="tDSub"></div></div>
       </div>
       <div class="verdict" id="verdict"></div>
 
+      <details open id="cmpBox">
+        <summary>Algorithm comparison under the current hardware assumptions</summary>
+        <p class="small muted anch-intro" id="cmpIntro"></p>
+        <div class="tbl-wrap"><table id="cmpTbl" class="anch-tbl cmp-tbl">
+          <thead><tr><th>Algorithm</th><th>Attack · circuit used</th><th>Logical qubits</th><th>Gates per run</th><th>Physical qubits</th><th>Runtime</th><th>Status</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <p class="small muted anch-intro">Select an algorithm name to load it into the estimator above. Status is the year the largest machine reaches the required size on the hardware trajectory you set; it moves with every assumption on this page. Hash functions (SHA-2 and SHA-3 preimage search), ChaCha20 and 3DES are not costed: the project literature review has not covered them, so no number is shown.</p>
+      </details>
+
       <figure class="wide">
-        <figcaption><b>Runtime vs physical qubits.</b> The space–time frontier for the complete attack on the current target: each point on the curve is a different number of magic-state factories (parallel machines for Grover). Other key sizes of the family are shown at the current factory count. Published anchors are plotted at the runtime each paper reports (per run or expected, as listed in the table below). Hover the curve to read values.</figcaption>
+        <figcaption id="capTO"></figcaption>
         <div class="chart-wrap"><svg class="chart" id="chartTO" viewBox="0 0 1040 400" role="img" aria-label="Runtime against physical qubits for the complete attack"></svg><div class="tip" id="tipTO" hidden></div></div>
-        <div class="legend"><span><i class="a"></i>Frontier, current target</span><span><i class="b"></i>Other key sizes</span><span><i class="g"></i>Published anchors</span><span><i class="f"></i>Largest machine today</span></div>
+        <div class="legend"><span><i class="a"></i>Frontier, current target</span><span><i class="b"></i>Other key sizes</span><span><i class="g"></i>Published anchors</span><span><i class="f"></i>Largest machine today</span><span id="legQre" hidden><i class="q"></i>qdk.qre reference runs (computed offline)</span></div>
       </figure>
 
       <div class="charts">
         <figure>
-          <figcaption><b>Physical qubits vs physical error rate</b> for the complete attack (setting I). Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.</figcaption>
+          <figcaption id="capP"></figcaption>
           <svg class="chart" id="chartP" viewBox="0 0 520 300" role="img" aria-label="Physical qubits needed as a function of physical error rate"></svg>
           <div class="legend"><span><i class="a"></i>This configuration</span><span><i class="g"></i>Published anchors</span></div>
         </figure>
@@ -757,6 +815,28 @@ section.mod:not(.hero) .pill { font-weight: 500; }
           <div class="legend"><span><i class="b"></i>Hardware trajectory</span><span><i class="a"></i>Qubits required</span><span><i class="g"></i>NIST deprecation (2030) / disallow (2035)</span></div>
         </figure>
       </div>
+
+      <details id="qdkReport">
+        <summary>Full QDK report for this configuration</summary>
+        <p class="small muted anch-intro">The complete result the QDK returns for the current target and hardware, with the QDK's own labels: the same table the QDK shows in VS Code and Jupyter. Values are for one run of the circuit.</p>
+        <div id="qdkReportBody"></div>
+      </details>
+
+      <details id="qdkRepro">
+        <summary>Reproduce this estimate with the QDK Python package</summary>
+        <p class="small muted anch-intro">Q-CARE passes the QDK two JSON documents: the logical counts of one run and the job parameters. The same two documents give the same result in the QDK's Python package (<code>pip install qdk</code>), so every figure above can be checked outside this page.</p>
+        <pre class="code" id="qdkReproCode" tabindex="0"></pre>
+        <button type="button" class="btn" id="qdkReproCopy">Copy the snippet</button>
+      </details>
+
+      <details id="qreBox">
+        <summary>Reference runs with the newer QDK estimator (qdk.qre)</summary>
+        <p class="small muted anch-intro" id="qreIntro"></p>
+        <div class="tbl-wrap"><table id="qreTbl" class="anch-tbl">
+          <thead><tr><th>Target · circuit</th><th>Counts fed in (one run)</th><th>Qubit model</th><th>Fastest result</th><th>Smallest result</th><th>Results on the frontier</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </details>
 
       <details open>
         <summary>Published anchors (literature review, search date 1 November 2026)</summary>
@@ -798,9 +878,11 @@ section.mod:not(.hero) .pill { font-weight: 500; }
         <ul class="notes">
           <li><b>Logical layer.</b> Each variant is one published circuit, costed per run in the paper's unit: RSA by Gidney–Ekerå 2021 windowed arithmetic (3n + 0.002 n log₂n qubits, 0.3n³ + 0.0005 n³ log₂n Toffoli + T/2, ≈1.4 expected runs at n = 2048), Chevignard–Fouque–Schrottenloher 2024 residue arithmetic (1,730 qubits, 2³⁶ Toffoli per run, 40 runs) or Gidney 2025 approximate residue arithmetic (1,399 qubits, Table 5 Toffoli totals spread over 9.2 shots). ECC by Roetteler et al. 2017 (9n + 2⌈log₂n⌉ + 10 qubits, 448n³log₂n + 4090n³ Toffoli), Luo et al. 2026 (3n + 6⌊log₂n⌋ + 19 qubits, 1056 n³/log₂n Toffoli), Chevignard et al. 2026 (3.12n qubits, 2^38.98 Toffoli per run, 22 runs) or, for 256-bit curves only, the 28-windowed-addition circuits of Schrottenloher 2026, Babbush et al. 2026 and IonQ 2026 at their published counts. Finite-field DLP reuses the Gidney–Ekerå arithmetic with the exponent length set by the variant (a project scaling with no published count). AES uses Grassl et al. 2016 logical qubits and per-iteration T-depth with ⌈π/4·√(2ⁿ/P)⌉ Grover iterations; the review did not cover symmetric key search.</li>
           <li><b>Key sizes the source does not tabulate</b> are extrapolated with the paper's own leading-order formula and flagged "scaled" under the variant; the 256-bit-only variants offer no other size.</li>
-          <li><b>Fault-tolerance layer (placeholder).</b> Logical error per cycle p_L = 0.1·(p/p_th)^((d+1)/2) with p_th = 1%. The distance is the smallest odd d such that L × cycles × p_L stays below the allowed failure probability. Physical qubits = L·2d²·storage·routing + factories × footprint·d² (footprint 300d² for distillation, 30d² for cultivation). Runtime per run = T × max(reaction time / parallelism, 10·d·t_cycle / factories). Expected total = runtime × stated runs / (1 − ε). This layer does not reproduce any paper's physical number: it is a uniform surface-code wrapper applied to every circuit so that the variants can be compared under one set of hardware assumptions.</li>
-          <li><b>Settings II–IV.</b> Where the review records a published count for the operation (ECDSA.Fail point additions, Schrottenloher's windowed addition, Häner et al.'s controlled addition, Kahanamoku-Meyer and Yao's modular multiplication) it is listed under the setting table. The live figure is still derived from the complete attack: for the windowed 256-bit circuits by the published rule Toffoli_ECDLP ≈ (2n/w − 4) × (Toffoli_PA + 3·2^w) with w = 16, so that one window-selected addition is 1/28 of the attack and the classical-addend addition of setting IV is that divided by the benchmark's measured 1.296 windowing overhead; for the other circuits by placeholder ratios (one controlled operation is 1/(2n) of the attack, a window-selected one w times that with w = 16 for curves and 5 for modular arithmetic, a fixed one 0.9 of a controlled one; one Grover iteration is total T-depth / iterations, the oracle 97% of an iteration, one reversible AES evaluation the oracle divided by 2 × pairs).</li>
-          <li><b>Known gaps.</b> No modelling of layout-specific routing costs, decoder throughput limits, qLDPC or cat-qubit codes, or multimode memories; the physical anchors that use them (Pinnacle, Cain et al., Gouzien et al., Pappalardo et al.) therefore sit far from the model's curve by construction. Grover numbers ignore the MAXDEPTH limit that NIST imposes; with it, AES-128 is already out of reach. Treat all outputs as order-of-magnitude.</li>
+          <li><b>Physical layer: QDK resource estimator.</b> The default engine is the estimator crate of the open-source Microsoft Quantum Development Kit [45], compiled unmodified to WebAssembly and run in the browser; its model is described by Beverland et al. [46]. Q-CARE passes it the logical qubits and the gate count of one run, charging each Toffoli (or CCZ, or And) of the paper's count as one CCZ magic state. The QDK then lays the algorithm out on 2n + ⌈√(8n)⌉ + 1 logical qubits, charges three logical cycles and four T states per CCZ, chooses the smallest odd code distance d for which the logical error per qubit and cycle, 0.03·(p/0.01)^((d+1)/2) for the gate-based surface code, fits half of the error budget, counts 2d² physical qubits per logical qubit and a cycle of (4·t_gate + 2·t_meas)·d, and builds T factories from up to three rounds of 15-to-1 distillation that fit the other half. The frontier chart is the QDK's own space–time frontier (fewer factories, longer runtime). Expected total = runtime × stated runs / (1 − error budget), an upper bound on retries.</li>
+          <li><b>Why QDK figures differ from the papers' own physical numbers.</b> Each paper prices its circuit on its own architecture: Gidney 2025 reaches 897,864 qubits with yoked cold storage, magic-state cultivation and a hand-built layout; Pinnacle and Cain et al. use qLDPC codes; IonQ uses qLDPC blocks on ions. The QDK applies one generic architecture to every circuit, so its figures are larger than the best published ones and are comparable with each other, not with the anchors. The newer QDK estimator described on Microsoft Learn [47] (<code>qdk.qre</code>) models cultivation, 8T-to-CCX factories and yoked memory, but it is a Python library with a native core and cannot run inside a web page; its reference runs above were computed offline.</li>
+          <li><b>Built-in model (fallback).</b> Used for AES key search, whose Grover counts exceed the 64-bit integers the QDK takes, when the QDK module cannot load, and when selected by hand. Logical error per cycle p_L = 0.1·(p/p_th)^((d+1)/2) with p_th = 1%. The distance is the smallest odd d such that L × cycles × p_L stays below the allowed failure probability. Physical qubits = L·2d²·storage·routing + factories × footprint·d² (footprint 300d² for distillation, 30d² for cultivation). Runtime per run = T × max(reaction time / parallelism, 10·d·t_cycle / factories). Expected total = runtime × stated runs / (1 − ε). It is a placeholder: a uniform surface-code wrapper that reproduces no paper's physical number.</li>
+          <li><b>Settings II–IV.</b> Where the review records a published count for the operation (ECDSA.Fail point additions, Schrottenloher's windowed addition, Häner et al.'s controlled addition, Kahanamoku-Meyer and Yao's modular multiplication) it is listed under the setting table. The live figure is still derived from the complete attack, by time in proportion to gate count: for the windowed 256-bit circuits by the published rule Toffoli_ECDLP ≈ (2n/w − 4) × (Toffoli_PA + 3·2^w) with w = 16, so that one window-selected addition is 1/28 of the attack and the classical-addend addition of setting IV is that divided by the benchmark's measured 1.296 windowing overhead; for the other circuits by placeholder ratios (one controlled operation is 1/(2n) of the attack, a window-selected one w times that with w = 16 for curves and 5 for modular arithmetic, a fixed one 0.9 of a controlled one; one Grover iteration is total T-depth / iterations, the oracle 97% of an iteration, one reversible AES evaluation the oracle divided by 2 × pairs).</li>
+          <li><b>Known gaps.</b> Neither engine models layout-specific routing costs, decoder throughput limits, qLDPC or cat-qubit codes, or multimode memories; the physical anchors that use them (Pinnacle, Cain et al., Gouzien et al., Pappalardo et al.) therefore sit far from the curve by construction. The QDK engine counts runtime in 64-bit nanoseconds, so a run longer than about 585 years is reported as having no estimate. Grover numbers ignore the MAXDEPTH limit that NIST imposes; with it, AES-128 is already out of reach. Treat all outputs as order-of-magnitude.</li>
         </ul>
       </details>
   </div>
@@ -920,7 +1002,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <div class="stat"><div class="big accent">6</div><div class="lbl">Product concepts</div><div class="note">One or two per migration phase.</div></div>
     <div class="stat"><div class="big">4</div><div class="lbl">Migration phases covered</div><div class="note">Discover, prioritise, transform, operate.</div></div>
     <div class="stat"><div class="big">3</div><div class="lbl">Reference tools</div><div class="note">IBM Quantum Safe Explorer, Advisor, Remediator.</div></div>
-    <div class="stat"><div class="big">2</div><div class="lbl">Shared engines</div><div class="note">The estimator (01) and the readiness index (02) feed every product.</div></div>
+    <div class="stat"><div class="big">2</div><div class="lbl">Shared engines</div><div class="note">Q-CARE (01) and the readiness index (02) feed every product.</div></div>
   </div>
   <div class="cards" id="cards"></div>
 </div></section>
@@ -1021,7 +1103,8 @@ section.mod:not(.hero) .pill { font-weight: 500; }
       <li>Harvest-now-decrypt-later exposure by data class (ties shelf life to the inventory from phase 1).</li>
       <li>Layer A computation for the PQC estimator (04): lattice, hash-based and code-based attack cost models.</li>
       <li>PQC performance benchmarks (handshake and signing cost per scheme on target platforms).</li>
-      <li>Scenario comparison: save and diff several estimator configurations side by side.</li>
+      <li>Scenario comparison: save and diff several Q-CARE configurations side by side.</li>
+      <li>Q-CARE: run the newer <code>qdk.qre</code> architectures (cultivation, yoked memory) live once they can execute in a browser, and cost SHA-2 and SHA-3 preimage search, ChaCha20 and 3DES once the literature review covers them.</li>
       <li>Sector benchmarks for the readiness index (finance, telecom, public sector).</li>
     </ul>
   </div>
@@ -1188,7 +1271,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <li>IBM Institute for Business Value, “2025 Quantum-safe readiness” report; IBM Research, “Quantum-safe migration” project resources.</li>
     <li>NIST, “Submission requirements and evaluation criteria for the Post-Quantum Cryptography standardization process” (security categories 1–5, MAXDEPTH); NIST IR 8545, status report on the fourth round (HQC selected, 2025); NIST additional digital signature round (UOV, MAYO, SQIsign).</li>
     <li>M. Albrecht, R. Player, S. Scott, “On the concrete hardness of Learning with Errors” (lattice estimator), JMC 2015, with the maintained estimator; E. Alkim et al., core-SVP methodology (NewHope, USENIX 2016).</li>
-    <li>Microsoft Quantum, “Resource estimator for quantum cryptography” (reference tool this estimator extends).</li>
+    <li>Microsoft Quantum, “Resource estimator for quantum cryptography” (reference tool that Q-CARE extends; the engine itself is entry 45).</li>
     <!-- refs-lit-review: entries 17 onward added 2026-11-03 from the project literature review -->
     <li>T. Häner, M. Roetteler, K. Svore, “Factoring using 2n+2 qubits with Toffoli based modular multiplication”, Quantum Inf. Comput. 17 (2017); arXiv:1611.07995.</li>
     <li>C. Chevignard, P.-A. Fouque, A. Schrottenloher, “Reducing the number of qubits in quantum factoring”, CRYPTO 2025; IACR ePrint 2024/222 (revision of 31 December 2025).</li>
@@ -1218,6 +1301,9 @@ section.mod:not(.hero) .pill { font-weight: 500; }
     <li>A. Esser, E. Bellini, “Syndrome decoding estimator”, PKC 2022; IACR ePrint 2021/1243; HQC specifications of 22 August 2025 and 12 October 2026, §6.</li>
     <li>Kim, Jang, Seo, physical-level estimate for HQC-128 information-set decoding, IACR ePrint 2026/1411 (July 2026); abstract only was readable to the review.</li>
     <li>Project document, “Quantum Cryptanalysis Resource Estimates: Literature Review”, search date 1 November 2026: the source of every anchor, sub-operation count and comparability rule on page 01, with its own list of unverified numbers and open discrepancies.</li>
+    <li>Microsoft, Quantum Development Kit (QDK), open source under the MIT licence, github.com/microsoft/qdk. Q-CARE runs the resource-estimator crate (<code>source/resource_estimator</code>) at commit c25ff3d of 16 November 2026, compiled unmodified to WebAssembly (<a href="vendor/qdk/LICENSE-QDK.txt">licence text</a>, <a href="vendor/qdk/THIRD-PARTY-CRATES.txt">bundled Rust crates</a>); the Python package <code>qdk</code> exposes the same engine as <code>qdk.estimator</code> (results checked against version 1.34.0).</li>
+    <li>M. E. Beverland, P. Murali, M. Troyer, K. M. Svore, T. Hoefler, V. Kliuchnikov, G. H. Low, M. Soeken, A. Sundaram, A. Vaschillo, “Assessing requirements to scale to practical quantum advantage”, arXiv:2211.07629 (2022): the model behind the QDK resource estimator.</li>
+    <li>Microsoft Learn, “Introduction to the Microsoft Quantum resource estimator”, learn.microsoft.com/azure/quantum/intro-to-resource-estimation (updated 22 October 2026): describes the newer <code>qdk.qre</code> estimator, installed with <code>pip install qdk[qre]</code>.</li>
   </ol>
   <p class="muted small" style="margin-top:16px">Quantum Risk Atlas · v0.1 · all figures are model outputs for discussion, not vendor commitments.</p>
 </div></section>
@@ -1226,6 +1312,7 @@ section.mod:not(.hero) .pill { font-weight: 500; }
 </div>
 
 <!-- PQC-DATA-START: data module, mirrored at data/pqc-benchmark.json -->
+<script type="application/json" id="qre-data">{"generated":"2026-11-17","qdkVersion":"1.34.0","settings":{"maxError":0.1,"distances":[3,49],"slowDownFactors":[1.0,1.5,2.0,3.0,5.0,8.0],"description":"surface code at distances 3 to 49, round-based T distillation feeding the 8T-to-CCX factory of Gidney, Shutty and Jones (2024, Fig. 24), PSSPC layout with lattice surgery at slow-down factors 1 to 8, and a total error budget of 0.1 per run."},"runs":[{"id":"rsa:ge2021:2048","alg":"rsa","variant":"ge2021","keyBits":2048,"src":"Gidney and Ekerå 2021, Tables 1 and 3","counts":{"numQubits":6189,"cczCount":2624225018},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":18519694,"runtime_s":74396.7792603,"error":0.09096590509215047,"factories":"15×CCX"},{"qubits":18475270,"runtime_s":111595.16889045,"error":0.054832688396806654,"factories":"9×CCX"},{"qubits":18448534,"runtime_s":148793.5585206,"error":0.06410276327289166,"factories":"5×CCX"},{"qubits":18421066,"runtime_s":223190.3377809,"error":0.09437634792554328,"factories":"4×CCX"}]},{"id":"rsa:ge2021:2048","alg":"rsa","variant":"ge2021","keyBits":2048,"src":"Gidney and Ekerå 2021, Tables 1 and 3","counts":{"numQubits":6189,"cczCount":2624225018},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":4267118,"runtime_s":35820.6714957,"error":0.03876649401506981,"factories":"7×CCX"},{"qubits":4261334,"runtime_s":53731.00724355,"error":0.05364821166964601,"factories":"5×CCX"},{"qubits":4258442,"runtime_s":71641.3429914,"error":0.06852992932422222,"factories":"4×CCX"},{"qubits":4254962,"runtime_s":107462.0144871,"error":0.09268172185488342,"factories":"2×CCX"}]},{"id":"rsa:cfs2024:2048","alg":"rsa","variant":"cfs2024","keyBits":2048,"src":"Chevignard, Fouque, Schrottenloher 2024/25, abstract","counts":{"numQubits":1730,"cczCount":68719476736},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":6256107,"runtime_s":2092508.0666112,"error":0.04307758189643829,"factories":"16×CCX"},{"qubits":6181167,"runtime_s":3138762.0999168,"error":0.05414519722215477,"factories":"11×CCX"},{"qubits":6136203,"runtime_s":4185016.1332224,"error":0.06521281254787126,"factories":"8×CCX"},{"qubits":6103719,"runtime_s":6277524.1998336,"error":0.07398897692182584,"factories":"5×CCX"}]},{"id":"rsa:cfs2024:2048","alg":"rsa","variant":"cfs2024","keyBits":2048,"src":"Chevignard, Fouque, Schrottenloher 2024/25, abstract","counts":{"numQubits":1730,"cczCount":68719476736},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":1627191,"runtime_s":1082331.758592,"error":0.0910231054478631,"factories":"5×CCX"},{"qubits":1623135,"runtime_s":1623497.637888,"error":0.09066036968991212,"factories":"3×CCX"},{"qubits":1619103,"runtime_s":2164663.517184,"error":0.09323662851300639,"factories":"3×CCX"},{"qubits":1615059,"runtime_s":3246995.275776,"error":0.09545015157814969,"factories":"2×CCX"},{"qubits":1611015,"runtime_s":5411658.79296,"error":0.09987719770843628,"factories":"1×CCX"}]},{"id":"rsa:g2025:2048","alg":"rsa","variant":"g2025","keyBits":2048,"src":"Gidney 2025, Table 5","counts":{"numQubits":1399,"cczCount":706521739},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":3797497,"runtime_s":18546.19564875,"error":0.03494958999354779,"factories":"16×CCX"},{"qubits":3742501,"runtime_s":27819.2934775,"error":0.030450812824822787,"factories":"9×CCX"},{"qubits":3712921,"runtime_s":37092.3912975,"error":0.05342160085970281,"factories":"8×CCX"},{"qubits":3688297,"runtime_s":55638.58694625,"error":0.056785350859081804,"factories":"4×CCX"},{"qubits":3666397,"runtime_s":92730.97824375,"error":0.09510285085200783,"factories":"3×CCX"}]},{"id":"rsa:g2025:2048","alg":"rsa","variant":"g2025","keyBits":2048,"src":"Gidney 2025, Table 5","counts":{"numQubits":1399,"cczCount":706521739},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":999229,"runtime_s":9644.02173735,"error":0.0042711001995321424,"factories":"7×CCX"},{"qubits":993445,"runtime_s":14466.0326083,"error":0.0051947007432756424,"factories":"5×CCX"},{"qubits":990553,"runtime_s":19288.0434747,"error":0.006118301286147643,"factories":"4×CCX"},{"qubits":987073,"runtime_s":28932.06521205,"error":0.006454676286085543,"factories":"2×CCX"},{"qubits":984373,"runtime_s":48220.10868675,"error":0.010133970198449768,"factories":"1×CCX"},{"qubits":981877,"runtime_s":77152.1738988,"error":0.017201507805840646,"factories":"1×CCX"}]},{"id":"ecc:roetteler:256","alg":"ecc","variant":"roetteler","keyBits":256,"src":"Roetteler et al. 2017, Table 2","counts":{"numQubits":2330,"cczCount":128748355584},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":8305246,"runtime_s":3920387.4275328,"error":0.09483234622033632,"factories":"16×CCX"},{"qubits":8240278,"runtime_s":5880581.1412992,"error":0.09760172334894816,"factories":"10×CCX"}]},{"id":"ecc:roetteler:256","alg":"ecc","variant":"roetteler","keyBits":256,"src":"Roetteler et al. 2017, Table 2","counts":{"numQubits":2330,"cczCount":128748355584},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":2194742,"runtime_s":2027786.600448,"error":0.00835747320175075,"factories":"10×CCX"},{"qubits":2182610,"runtime_s":3041679.900672,"error":0.011137278947164896,"factories":"7×CCX"},{"qubits":2174522,"runtime_s":4055573.200896,"error":0.013917084692579039,"factories":"5×CCX"},{"qubits":2170466,"runtime_s":6083359.801344,"error":0.016723541347599073,"factories":"3×CCX"},{"qubits":2162390,"runtime_s":10138933.00224,"error":0.030595919165063906,"factories":"2×CCX"},{"qubits":2159690,"runtime_s":16222292.803584,"error":0.04452159880174052,"factories":"1×CCX"}]},{"id":"ecc:luo2026:256","alg":"ecc","variant":"luo2026","keyBits":256,"src":"Luo et al. 2026, §6.4, leading-order formula","counts":{"numQubits":835,"cczCount":2214592512},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":2358649,"runtime_s":58133.05344,"error":0.0865886006610494,"factories":"16×CCX"},{"qubits":2303653,"runtime_s":87199.58016,"error":0.06100673525868139,"factories":"9×CCX"},{"qubits":2278285,"runtime_s":116266.10688,"error":0.07847654828959338,"factories":"7×CCX"}]},{"id":"ecc:luo2026:256","alg":"ecc","variant":"luo2026","keyBits":256,"src":"Luo et al. 2026, §6.4, leading-order formula","counts":{"numQubits":835,"cczCount":2214592512},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":611005,"runtime_s":30229.1877888,"error":0.011091674791098821,"factories":"7×CCX"},{"qubits":605221,"runtime_s":45343.7816832,"error":0.01283865609419002,"factories":"5×CCX"},{"qubits":602329,"runtime_s":60458.3755776,"error":0.014585637397281222,"factories":"4×CCX"},{"qubits":598849,"runtime_s":90687.5633664,"error":0.01334391537580282,"factories":"2×CCX"},{"qubits":596149,"runtime_s":151145.938944,"error":0.020284483741891013,"factories":"1×CCX"},{"qubits":593653,"runtime_s":241833.5023104,"error":0.03554941303437563,"factories":"1×CCX"}]},{"id":"ecc:cfs2026:256","alg":"ecc","variant":"cfs2026","keyBits":256,"src":"Chevignard, Fouque, Schrottenloher 2026, abstract","counts":{"numQubits":1193,"cczCount":542187163142},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":5000977,"runtime_s":17648192.1602721,"error":0.07195708504344592,"factories":"13×CCX"},{"qubits":4931041,"runtime_s":26472288.240408152,"error":0.07802009299528134,"factories":"9×CCX"},{"qubits":4894717,"runtime_s":35296384.3205442,"error":0.07354298249563626,"factories":"6×CCX"},{"qubits":4854373,"runtime_s":52944576.480816305,"error":0.08566899839930711,"factories":"4×CCX"},{"qubits":4843621,"runtime_s":88240960.8013605,"error":0.09327074067701008,"factories":"4×CCX"}]},{"id":"ecc:cfs2026:256","alg":"ecc","variant":"cfs2026","keyBits":256,"src":"Chevignard, Fouque, Schrottenloher 2026, abstract","counts":{"numQubits":1193,"cczCount":542187163142},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":1156205,"runtime_s":8539447.8194865,"error":0.023908416517859264,"factories":"10×CCX"},{"qubits":1144073,"runtime_s":12809171.72922975,"error":0.02997142446969468,"factories":"7×CCX"},{"qubits":1135985,"runtime_s":17078895.638973,"error":0.036034432421530094,"factories":"5×CCX"},{"qubits":1131929,"runtime_s":25618343.4584595,"error":0.0365663180285724,"factories":"3×CCX"},{"qubits":1123853,"runtime_s":42697239.097432494,"error":0.07241248013254259,"factories":"2×CCX"},{"qubits":1121153,"runtime_s":68315582.555892,"error":0.09719639754692656,"factories":"1×CCX"}]},{"id":"ecc:schrott2026:256","alg":"ecc","variant":"schrott2026","keyBits":256,"src":"Schrottenloher 2026, Tables 1–2, any prime, space-optimised","counts":{"numQubits":1208,"cczCount":106037550},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":2763236,"runtime_s":2560.8068325,"error":0.06083186557036503,"factories":"12×CCX"},{"qubits":2728628,"runtime_s":3841.21024875,"error":0.07283743698136504,"factories":"8×CCX"},{"qubits":2711324,"runtime_s":5121.613665,"error":0.08484300839236505,"factories":"6×CCX"},{"qubits":2697464,"runtime_s":7682.4204975,"error":0.08617908152236504,"factories":"3×CCX"}]},{"id":"ecc:schrott2026:256","alg":"ecc","variant":"schrott2026","keyBits":256,"src":"Schrottenloher 2026, Tables 1–2, any prime, space-optimised","counts":{"numQubits":1208,"cczCount":106037550},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":625676,"runtime_s":1224.7337025,"error":0.04705000078716007,"factories":"10×CCX"},{"qubits":619880,"runtime_s":1837.10055375,"error":0.05905557219816007,"factories":"7×CCX"},{"qubits":616016,"runtime_s":2449.467405,"error":0.07106114360916008,"factories":"5×CCX"},{"qubits":614084,"runtime_s":3674.2011075,"error":0.09507228643116009,"factories":"4×CCX"}]},{"id":"ecc:babbush2026:256","alg":"ecc","variant":"babbush2026","keyBits":256,"src":"Babbush et al. 2026, abstract (stated as upper bounds)","counts":{"numQubits":1450,"cczCount":70000000},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":3284337,"runtime_s":1690.5,"error":0.04326366100000002,"factories":"12×CCX"},{"qubits":3249729,"runtime_s":2535.75,"error":0.052742011000000026,"factories":"8×CCX"},{"qubits":3232425,"runtime_s":3381.0,"error":0.06222036100000003,"factories":"6×CCX"},{"qubits":3215121,"runtime_s":5071.5,"error":0.08117706100000005,"factories":"4×CCX"}]},{"id":"ecc:babbush2026:256","alg":"ecc","variant":"babbush2026","keyBits":256,"src":"Babbush et al. 2026, abstract (stated as upper bounds)","counts":{"numQubits":1450,"cczCount":70000000},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":744489,"runtime_s":808.5,"error":0.034165652466001006,"factories":"10×CCX"},{"qubits":738693,"runtime_s":1212.75,"error":0.043644002466001,"factories":"7×CCX"},{"qubits":734829,"runtime_s":1617.0,"error":0.05312235246600101,"factories":"5×CCX"},{"qubits":732897,"runtime_s":2425.5,"error":0.072079052466001,"factories":"4×CCX"},{"qubits":730953,"runtime_s":4042.5,"error":0.09502365246600102,"factories":"2×CCX"}]},{"id":"ecc:ionq2026:256","alg":"ecc","variant":"ionq2026","keyBits":256,"src":"Häner et al. (IonQ) 2026, Table I","counts":{"numQubits":1450,"cczCount":40000000},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":3284337,"runtime_s":966.0,"error":0.02472209200000001,"factories":"12×CCX"},{"qubits":3249729,"runtime_s":1449.0,"error":0.030138292000000014,"factories":"8×CCX"},{"qubits":3232425,"runtime_s":1932.0,"error":0.03555449200000002,"factories":"6×CCX"},{"qubits":3215121,"runtime_s":2898.0,"error":0.04638689200000003,"factories":"4×CCX"},{"qubits":3205881,"runtime_s":4830.0,"error":0.05949809200000003,"factories":"2×CCX"},{"qubits":3197997,"runtime_s":7728.0,"error":0.09190975600000005,"factories":"1×CCX"}]},{"id":"ecc:ionq2026:256","alg":"ecc","variant":"ionq2026","keyBits":256,"src":"Häner et al. (IonQ) 2026, Table I","counts":{"numQubits":1450,"cczCount":40000000},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":744489,"runtime_s":462.0,"error":0.019523229980572,"factories":"10×CCX"},{"qubits":738693,"runtime_s":693.0,"error":0.024939429980572005,"factories":"7×CCX"},{"qubits":734829,"runtime_s":924.0,"error":0.030355629980572008,"factories":"5×CCX"},{"qubits":732897,"runtime_s":1386.0,"error":0.04118802998057201,"factories":"4×CCX"},{"qubits":729033,"runtime_s":2310.0,"error":0.06285282998057201,"factories":"2×CCX"},{"qubits":728061,"runtime_s":3696.0,"error":0.08679642998057202,"factories":"1×CCX"}]},{"id":"ffdlp:safe:2048","alg":"ffdlp","variant":"safe","keyBits":2048,"src":"Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)","counts":{"numQubits":6189,"cczCount":3483218477},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":18525982,"runtime_s":98749.24382295,"error":0.046256834851334055,"factories":"11×CCX"},{"qubits":18475270,"runtime_s":148123.86573915,"error":0.07278119523373168,"factories":"9×CCX"},{"qubits":18448534,"runtime_s":197498.4876459,"error":0.08508566450184388,"factories":"5×CCX"}]},{"id":"ffdlp:safe:2048","alg":"ffdlp","variant":"safe","keyBits":2048,"src":"Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)","counts":{"numQubits":6189,"cczCount":3483218477},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":4267118,"runtime_s":47545.93221105,"error":0.05145601742060714,"factories":"7×CCX"},{"qubits":4261334,"runtime_s":71318.89831885,"error":0.07120900108371675,"factories":"5×CCX"},{"qubits":4258442,"runtime_s":95091.8644221,"error":0.09096198474304575,"factories":"4×CCX"}]},{"id":"ffdlp:short:2048","alg":"ffdlp","variant":"short","keyBits":2048,"src":"Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)","counts":{"numQubits":6189,"cczCount":329101869},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":15845618,"runtime_s":8638.92406125,"error":0.08762676237050074,"factories":"10×CCX"},{"qubits":15814838,"runtime_s":12958.38609625,"error":0.09925228591182875,"factories":"5×CCX"}]},{"id":"ffdlp:short:2048","alg":"ffdlp","variant":"short","keyBits":2048,"src":"Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)","counts":{"numQubits":6189,"cczCount":329101869},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":4264262,"runtime_s":4492.24051185,"error":0.07523681732201119,"factories":"9×CCX"},{"qubits":4258466,"runtime_s":6738.36077005,"error":0.07710312111281359,"factories":"6×CCX"},{"qubits":4256534,"runtime_s":8984.4810237,"error":0.07896942489983538,"factories":"5×CCX"},{"qubits":4252670,"runtime_s":13476.72153555,"error":0.08270203247765959,"factories":"3×CCX"},{"qubits":4250738,"runtime_s":22461.20255925,"error":0.090167247633308,"factories":"2×CCX"},{"qubits":4249766,"runtime_s":35937.9240948,"error":0.030989926699820574,"factories":"1×CCX"}]},{"id":"rsa:g2025:1024","alg":"rsa","variant":"g2025","keyBits":1024,"src":"Gidney 2025, Table 5","counts":{"numQubits":700,"cczCount":119565217},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":1663956,"runtime_s":2887.49999055,"error":0.05740114437735913,"factories":"12×CCX"},{"qubits":1629348,"runtime_s":4331.24998985,"error":0.06534266611263914,"factories":"8×CCX"},{"qubits":1612044,"runtime_s":5774.9999811,"error":0.07328418780363914,"factories":"6×CCX"},{"qubits":1594740,"runtime_s":8662.49997165,"error":0.08916723122991915,"factories":"4×CCX"},{"qubits":1585500,"runtime_s":14437.49995275,"error":0.09536549207919916,"factories":"2×CCX"}]},{"id":"rsa:g2025:1024","alg":"rsa","variant":"g2025","keyBits":1024,"src":"Gidney 2025, Table 5","counts":{"numQubits":700,"cczCount":119565217},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":375036,"runtime_s":1380.97825635,"error":0.041861067739709934,"factories":"10×CCX"},{"qubits":369240,"runtime_s":2071.46738645,"error":0.04980258947498993,"factories":"7×CCX"},{"qubits":365376,"runtime_s":2761.9565127,"error":0.05774411116598994,"factories":"5×CCX"},{"qubits":363444,"runtime_s":4142.93476905,"error":0.07362715459226994,"factories":"4×CCX"},{"qubits":361500,"runtime_s":6904.89128175,"error":0.07982541544154993,"factories":"2×CCX"}]},{"id":"rsa:g2025:3072","alg":"rsa","variant":"g2025","keyBits":3072,"src":"Gidney 2025, Table 5","counts":{"numQubits":2099,"cczCount":2065217391},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":5584497,"runtime_s":54211.95651375,"error":0.08848033998696084,"factories":"14×CCX"}]},{"id":"rsa:g2025:3072","alg":"rsa","variant":"g2025","keyBits":3072,"src":"Gidney 2025, Table 5","counts":{"numQubits":2099,"cczCount":2065217391},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":1479117,"runtime_s":28190.21738715,"error":0.015131537038172268,"factories":"7×CCX"},{"qubits":1473333,"runtime_s":42285.326083,"error":0.019154683777359165,"factories":"5×CCX"},{"qubits":1470441,"runtime_s":56380.4347743,"error":0.02317783051524737,"factories":"4×CCX"},{"qubits":1466961,"runtime_s":84570.65216145,"error":0.02680786312340807,"factories":"2×CCX"},{"qubits":1464261,"runtime_s":140951.08693575,"error":0.042856287468869124,"factories":"1×CCX"},{"qubits":1461765,"runtime_s":225521.7390972,"error":0.07145559137769797,"factories":"1×CCX"}]},{"id":"rsa:g2025:4096","alg":"rsa","variant":"g2025","keyBits":4096,"src":"Gidney 2025, Table 5","counts":{"numQubits":2798,"cczCount":4347826087},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":8538247,"runtime_s":123260.86956645,"error":0.030914834782917865,"factories":"11×CCX"},{"qubits":8487535,"runtime_s":184891.3043544,"error":0.050611139131802985,"factories":"9×CCX"},{"qubits":8460799,"runtime_s":246521.7391329,"error":0.052557878261395186,"factories":"5×CCX"},{"qubits":8433331,"runtime_s":369782.60869935,"error":0.0758913565224981,"factories":"4×CCX"}]},{"id":"rsa:g2025:4096","alg":"rsa","variant":"g2025","keyBits":4096,"src":"Gidney 2025, Table 5","counts":{"numQubits":2798,"cczCount":4347826087},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":1956983,"runtime_s":59347.82608755,"error":0.03740456310602623,"factories":"7×CCX"},{"qubits":1951199,"runtime_s":89021.7391336,"error":0.04864869354178333,"factories":"5×CCX"},{"qubits":1948307,"runtime_s":118695.6521751,"error":0.059892823975816335,"factories":"4×CCX"},{"qubits":1944827,"runtime_s":178043.47826265,"error":0.07308369354116563,"factories":"2×CCX"}]},{"id":"ecc:luo2026:384","alg":"ecc","variant":"luo2026","keyBits":384,"src":"Luo et al. 2026, §6.4, leading-order formula","counts":{"numQubits":1219,"cczCount":6964969016},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":3862734,"runtime_s":197456.8716036,"error":0.02940827225588501,"factories":"11×CCX"},{"qubits":3812022,"runtime_s":296185.3074054,"error":0.05090286313616263,"factories":"9×CCX"},{"qubits":3785286,"runtime_s":394913.7432072,"error":0.04396366450552182,"factories":"5×CCX"},{"qubits":3757818,"runtime_s":592370.6148108,"error":0.06122703670857943,"factories":"4×CCX"},{"qubits":3732834,"runtime_s":987284.358018,"error":0.09169181118456346,"factories":"2×CCX"}]},{"id":"ecc:luo2026:384","alg":"ecc","variant":"luo2026","keyBits":384,"src":"Luo et al. 2026, §6.4, leading-order formula","counts":{"numQubits":1219,"cczCount":6964969016},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":875550,"runtime_s":95071.8270684,"error":0.03980444629510376,"factories":"7×CCX"},{"qubits":869766,"runtime_s":142607.7406026,"error":0.04775913740827736,"factories":"5×CCX"},{"qubits":866874,"runtime_s":190143.6541368,"error":0.05571382852145096,"factories":"4×CCX"},{"qubits":863394,"runtime_s":285215.4812052,"error":0.05672932100398376,"factories":"2×CCX"},{"qubits":860694,"runtime_s":475359.135342,"error":0.08839914655924001,"factories":"1×CCX"}]},{"id":"ecc:luo2026:521","alg":"ecc","variant":"luo2026","keyBits":521,"src":"Luo et al. 2026, §6.4, leading-order formula","counts":{"numQubits":1636,"cczCount":16547148394},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":5101184,"runtime_s":469111.6569699,"error":0.08252579175117698,"factories":"11×CCX"}]},{"id":"ecc:luo2026:521","alg":"ecc","variant":"luo2026","keyBits":521,"src":"Luo et al. 2026, §6.4, leading-order formula","counts":{"numQubits":1636,"cczCount":16547148394},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":1166020,"runtime_s":225868.5755781,"error":0.07184026407302074,"factories":"6×CCX"},{"qubits":1157932,"runtime_s":338802.86336715,"error":0.09706804651451316,"factories":"4×CCX"}]},{"id":"ffdlp:short:3072","alg":"ffdlp","variant":"short","keyBits":3072,"src":"Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)","counts":{"numQubits":9287,"cczCount":892705725},"arch":"ns_e3","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻³","results":[{"qubits":27620116,"runtime_s":25308.20730375,"error":0.03596292865581123,"factories":"15×CCX"},{"qubits":27567256,"runtime_s":37962.31096035,"error":0.04353450153579844,"factories":"10×CCX"},{"qubits":27546112,"runtime_s":50616.4146075,"error":0.051106074410131236,"factories":"8×CCX"},{"qubits":27514396,"runtime_s":75924.62191125,"error":0.06624922016445126,"factories":"5×CCX"},{"qubits":27493252,"runtime_s":126541.03651875,"error":0.09653551167309127,"factories":"3×CCX"}]},{"id":"ffdlp:short:3072","alg":"ffdlp","variant":"short","keyBits":3072,"src":"Gidney–Ekerå 2021 arithmetic with the exponent length of the variant (project scaling, no published count)","counts":{"numQubits":9287,"cczCount":892705725},"arch":"ns_e4","archLabel":"GateBased, 50 ns gates, 100 ns measurement, error 10⁻⁴","results":[{"qubits":6372020,"runtime_s":12185.43314625,"error":0.01820579548677658,"factories":"7×CCX"},{"qubits":6366236,"runtime_s":18278.14972165,"error":0.02577736836676378,"factories":"5×CCX"},{"qubits":6363344,"runtime_s":24370.8662925,"error":0.03334894124109659,"factories":"4×CCX"},{"qubits":6359864,"runtime_s":36556.29943875,"error":0.04658312507307658,"factories":"2×CCX"},{"qubits":6357164,"runtime_s":60927.16573125,"error":0.07685032696249318,"factories":"1×CCX"}]}]}</script>
 <script type="application/json" id="pqc-data">{"schemaVersion":"0.1.0","updated":"2026-10-28","notice":"Project-level research framework. Not a NIST standard; no result here is NIST-endorsed. Records marked pending or illustrative carry no verified numbers.","families":{"lattice":{"name":"Lattice-based","problem":"Module-LWE / Module-SIS / NTRU"},"hash":{"name":"Hash-based","problem":"Preimage and collision resistance of SHA-2 / SHAKE"},"code":{"name":"Code-based","problem":"Syndrome decoding of random or structured codes"},"multivariate":{"name":"Multivariate","problem":"Solving multivariate quadratic systems; MinRank"},"isogeny":{"name":"Isogeny-based","problem":"Finding isogenies between supersingular curves"}},"statusLabels":{"standardized":"Standardized","draft":"Draft standard","selected":"Selected for standardization","candidate":"Candidate (under evaluation)","illustrative":"Illustrative entry"},"schemes":[{"id":"ml-kem","name":"ML-KEM","familyId":"lattice","status":"standardized","standard":"FIPS 203 (August 2024)","foundation":"Module-LWE over the ring Z_q[X]/(X^256+1), q = 3329","objective":"Key encapsulation","assumptions":["Hardness of decisional Module-LWE for the chosen (k, η) parameters","Fujisaki–Okamoto transform modelled in the (quantum) random-oracle model"],"parameterSets":[{"id":"ml-kem-512","name":"ML-KEM-512","category":1,"sizes":{"publicKey":800,"output":768,"outputKind":"ciphertext"},"params":{"k":2,"n":256,"q":3329,"η1/η2":"3 / 2"}},{"id":"ml-kem-768","name":"ML-KEM-768","category":3,"sizes":{"publicKey":1184,"output":1088,"outputKind":"ciphertext"},"params":{"k":3,"n":256,"q":3329,"η1/η2":"2 / 2"}},{"id":"ml-kem-1024","name":"ML-KEM-1024","category":5,"sizes":{"publicKey":1568,"output":1568,"outputKind":"ciphertext"},"params":{"k":4,"n":256,"q":3329,"η1/η2":"2 / 2"}}],"evidenceStatus":"documented","referenceIds":["ref-fips203","ref-kyber-spec"],"limitations":"Interpretation pending: literature-reported core-SVP figures are recorded but not reproduced by this project."},{"id":"ml-dsa","name":"ML-DSA","familyId":"lattice","status":"standardized","standard":"FIPS 204 (August 2024)","foundation":"Module-LWE and Module-SIS over Z_q[X]/(X^256+1), q = 8380417","objective":"Digital signature","assumptions":["Module-LWE (key recovery) and Module-SIS / SelfTargetMSIS (forgery)","Fiat–Shamir with aborts in the (quantum) random-oracle model"],"parameterSets":[{"id":"ml-dsa-44","name":"ML-DSA-44","category":2,"sizes":{"publicKey":1312,"output":2420,"outputKind":"signature"},"params":{"(k, ℓ)":"(4, 4)","q":8380417,"η":2,"τ":39}},{"id":"ml-dsa-65","name":"ML-DSA-65","category":3,"sizes":{"publicKey":1952,"output":3309,"outputKind":"signature"},"params":{"(k, ℓ)":"(6, 5)","q":8380417,"η":4,"τ":49}},{"id":"ml-dsa-87","name":"ML-DSA-87","category":5,"sizes":{"publicKey":2592,"output":4627,"outputKind":"signature"},"params":{"(k, ℓ)":"(8, 7)","q":8380417,"η":2,"τ":60}}],"evidenceStatus":"partial","referenceIds":["ref-fips204"],"limitations":"No benchmark case for ML-DSA has a recorded estimate yet."},{"id":"slh-dsa","name":"SLH-DSA","familyId":"hash","status":"standardized","standard":"FIPS 205 (August 2024)","foundation":"Stateless hash-based signatures (SPHINCS+): FORS few-time signatures under a hypertree of WOTS+ / XMSS","objective":"Digital signature","assumptions":["(Multi-target) preimage, second-preimage and collision resistance of the underlying hash function","Bounded number of signatures per key pair (2^64)"],"parameterSets":[{"id":"slh-dsa-128s","name":"SLH-DSA-128s","category":1,"sizes":{"publicKey":32,"output":7856,"outputKind":"signature"},"params":{"n":16,"h":63,"d":7,"(k, a)":"(14, 12)"}},{"id":"slh-dsa-128f","name":"SLH-DSA-128f","category":1,"sizes":{"publicKey":32,"output":17088,"outputKind":"signature"},"params":{"n":16,"h":66,"d":22,"(k, a)":"(33, 6)"}},{"id":"slh-dsa-192s","name":"SLH-DSA-192s","category":3,"sizes":{"publicKey":48,"output":16224,"outputKind":"signature"},"params":{"n":24,"h":63,"d":7,"(k, a)":"(17, 14)"}},{"id":"slh-dsa-192f","name":"SLH-DSA-192f","category":3,"sizes":{"publicKey":48,"output":35664,"outputKind":"signature"},"params":{"n":24,"h":66,"d":22,"(k, a)":"(33, 8)"}},{"id":"slh-dsa-256s","name":"SLH-DSA-256s","category":5,"sizes":{"publicKey":64,"output":29792,"outputKind":"signature"},"params":{"n":32,"h":64,"d":8,"(k, a)":"(22, 14)"}},{"id":"slh-dsa-256f","name":"SLH-DSA-256f","category":5,"sizes":{"publicKey":64,"output":49856,"outputKind":"signature"},"params":{"n":32,"h":68,"d":17,"(k, a)":"(35, 9)"}}],"evidenceStatus":"partial","referenceIds":["ref-fips205","ref-sphincs-spec"],"limitations":"Generic hash-attack bounds apply; depth-limited quantum costing (MAXDEPTH) still to be recorded."},{"id":"fn-dsa","name":"FN-DSA (Falcon)","familyId":"lattice","status":"draft","standard":"FIPS 206 (draft)","foundation":"NTRU lattices; short-vector sampling via fast Fourier lattice trapdoors","objective":"Digital signature","assumptions":["NTRU / SIS over NTRU lattices","Correct floating-point Gaussian sampling (implementation-sensitive)"],"parameterSets":[{"id":"falcon-512","name":"Falcon-512","category":1,"sizes":{"publicKey":897,"output":666,"outputKind":"signature"},"params":{"n":512,"q":12289}},{"id":"falcon-1024","name":"Falcon-1024","category":5,"sizes":{"publicKey":1793,"output":1280,"outputKind":"signature"},"params":{"n":1024,"q":12289}}],"evidenceStatus":"pending","referenceIds":["ref-fips206-draft"],"limitations":"Draft standard; parameter details to be confirmed against the final text."},{"id":"hqc","name":"HQC","familyId":"code","status":"selected","standard":"Selected March 2025 (NIST IR 8545); draft standard expected","foundation":"Quasi-cyclic syndrome decoding (QCSD) with a concatenated Reed–Muller / Reed–Solomon decoder","objective":"Key encapsulation","assumptions":["Hardness of QCSD for the chosen (n, w)","Decryption-failure rate below 2^-128 (reaction attacks otherwise)"],"parameterSets":[{"id":"hqc-128","name":"HQC-128","category":1,"sizes":{"publicKey":2249,"output":4497,"outputKind":"ciphertext"},"params":{"n":17669,"w":66,"w_r":75}},{"id":"hqc-192","name":"HQC-192","category":3,"sizes":{"publicKey":4522,"output":9042,"outputKind":"ciphertext"},"params":{"n":35851,"w":100,"w_r":114}},{"id":"hqc-256","name":"HQC-256","category":5,"sizes":{"publicKey":7245,"output":14469,"outputKind":"ciphertext"},"params":{"n":57637,"w":131,"w_r":149}}],"evidenceStatus":"pending","referenceIds":["ref-nist-ir8545","ref-hqc-spec"],"limitations":"No ISD cost has been recorded by this project yet."},{"id":"classic-mceliece","name":"Classic McEliece","familyId":"code","status":"candidate","standard":"NIST round 4 (not selected); ISO/IEC standardization track","foundation":"Syndrome decoding of binary Goppa codes","objective":"Key encapsulation","assumptions":["Indistinguishability of Goppa codes from random codes","Hardness of syndrome decoding at weight t"],"parameterSets":[{"id":"mceliece348864","name":"mceliece348864","category":1,"sizes":{"publicKey":261120,"output":96,"outputKind":"ciphertext"},"params":{"n":3488,"k":2720,"t":64}},{"id":"mceliece6688128","name":"mceliece6688128","category":5,"sizes":{"publicKey":1044992,"output":208,"outputKind":"ciphertext"},"params":{"n":6688,"k":5024,"t":128}}],"evidenceStatus":"pending","referenceIds":["ref-mceliece-spec"],"limitations":"Only two of the five parameter sets are recorded."},{"id":"mayo","name":"MAYO","familyId":"multivariate","status":"candidate","standard":"NIST additional signature round (round 2)","foundation":"Oil-and-vinegar multivariate quadratic maps with whipped-up public key","objective":"Digital signature","assumptions":["Hardness of the (whipped) UOV key-recovery and MQ forgery problems"],"parameterSets":[{"id":"mayo-1","name":"MAYO-1","category":1,"sizes":{"publicKey":1420,"output":454,"outputKind":"signature"},"params":{"n":86,"m":78,"o":8,"q":16}},{"id":"mayo-5","name":"MAYO-5","category":5,"sizes":{"publicKey":5488,"output":964,"outputKind":"signature"},"params":{"n":142,"m":142,"o":12,"q":16}}],"evidenceStatus":"pending","referenceIds":["ref-mayo-spec"],"limitations":"Parameters follow the round-2 submission; MAYO parameters were revised during the competition, so verify the version."},{"id":"sqisign","name":"SQIsign","familyId":"isogeny","status":"candidate","standard":"NIST additional signature round (round 2)","foundation":"Supersingular isogeny path / endomorphism-ring problems","objective":"Digital signature","assumptions":["Hardness of computing endomorphism rings of supersingular curves","Zero-knowledge of the identification protocol under heuristic assumptions"],"parameterSets":[{"id":"sqisign-1","name":"SQIsign-I","category":1,"sizes":{"publicKey":65,"output":148,"outputKind":"signature"},"params":{"log2 p":248}},{"id":"sqisign-5","name":"SQIsign-V","category":5,"sizes":{"publicKey":129,"output":292,"outputKind":"signature"},"params":{"log2 p":500}}],"evidenceStatus":"pending","referenceIds":["ref-sqisign-spec"],"limitations":"Candidate; sizes follow the round-2 submission."}],"attacks":[{"id":"atk-primal-usvp","name":"Primal attack (uSVP embedding) via BKZ","model":"classical","technique":"Lattice reduction","targetGoal":"Key recovery","description":"Embed the LWE instance into a lattice whose unique shortest vector reveals the secret, then find it with BKZ at block size β. Cost is dominated by the SVP oracle calls inside BKZ.","assumptions":["Core-SVP or gate-count model for one SVP call in dimension β","Geometric-series assumption for the BKZ profile","Success probability targeted by the chosen β"],"applicability":[{"schemeId":"ml-kem","parameterSetIds":"all","conditions":"Standard LWE embedding; k·n + 1 dimensional lattice"},{"schemeId":"ml-dsa","parameterSetIds":"all","conditions":"Key recovery from the public key (MLWE); forgery needs the SIS route instead"},{"schemeId":"fn-dsa","parameterSetIds":"all","conditions":"NTRU key-recovery lattice of dimension 2n"}],"referenceIds":["ref-adps16","ref-albrecht-estimator"],"estimationStatus":"literature","validationStatus":"literature-reported"},{"id":"atk-dual","name":"Dual attack via BKZ","model":"classical","technique":"Lattice reduction","targetGoal":"Key recovery / distinguishing","description":"Find short vectors in the dual lattice to distinguish LWE samples from uniform, then recover the secret; modern variants add guessing and FFT post-processing.","assumptions":["Dual-lattice BKZ cost model","Statistical assumptions under active scrutiny (2023–24 dual-attack debate)"],"applicability":[{"schemeId":"ml-kem","parameterSetIds":"all","conditions":"Applies to the MLWE public key"},{"schemeId":"ml-dsa","parameterSetIds":"all","conditions":"Applies to the MLWE key-recovery problem only"}],"referenceIds":["ref-albrecht-estimator"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-quantum-sieve","name":"BKZ with quantum sieving","model":"hybrid","technique":"Lattice reduction with quantum SVP subroutine","targetGoal":"Key recovery","description":"Same reduction strategy as the primal or dual attack, but the SVP oracle uses Grover-accelerated sieving (asymptotically 2^0.265β instead of 2^0.292β in the core-SVP model). Quantum memory and depth are charged separately.","assumptions":["Quantum random-access memory for the sieve lists","Depth not limited, or MAXDEPTH applied explicitly","Core-SVP exponent 0.265β or a gate-level quantum model"],"applicability":[{"schemeId":"ml-kem","parameterSetIds":"all","conditions":"Replaces the SVP oracle in the primal attack"},{"schemeId":"ml-dsa","parameterSetIds":"all","conditions":"Replaces the SVP oracle in the primal attack"},{"schemeId":"fn-dsa","parameterSetIds":"all","conditions":"Replaces the SVP oracle in the NTRU key-recovery attack"}],"referenceIds":["ref-laarhoven-quantum-sieve","ref-adps16"],"estimationStatus":"literature","validationStatus":"literature-reported"},{"id":"atk-grover-preimage","name":"Grover preimage search on the hash function","model":"quantum","technique":"Quantum search","targetGoal":"Forgery via preimage","description":"Search for a preimage of an n-bit hash output with about π/4·2^(n/2) oracle iterations; the only generic quantum speed-up against hash-based signatures. Under a depth limit the attacker must parallelise, losing the square-root gain.","assumptions":["Reversible circuit for the hash function","MAXDEPTH budget (2^40, 2^64 or 2^96) when following NIST's metric","Multi-target variant where many hash outputs are available"],"applicability":[{"schemeId":"slh-dsa","parameterSetIds":"all","conditions":"Against WOTS+ chains, FORS leaves or the message digest; parameters n = 16/24/32 bytes set the search space"}],"referenceIds":["ref-grover","ref-nist-criteria","ref-sphincs-spec"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-collision-vow","name":"Parallel collision search (van Oorschot–Wiener)","model":"classical","technique":"Generic collision search","targetGoal":"Forgery via collision","description":"Memory-efficient parallel collision finding on the hash function at about 2^(n/2) evaluations; relevant where SLH-DSA's security bound involves collision resistance of the tweakable hash.","assumptions":["Random-function behaviour of the hash","Distinguished-point memory trade-off"],"applicability":[{"schemeId":"slh-dsa","parameterSetIds":"all","conditions":"Only for components whose bound rests on collision resistance; SLH-DSA is designed to rely mainly on (second-)preimage resistance"}],"referenceIds":["ref-vow"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-bht-collision","name":"Quantum collision finding (BHT)","model":"quantum","technique":"Quantum search with quantum memory","targetGoal":"Forgery via collision","description":"Brassard–Høyer–Tapp collision finding in about 2^(n/3) queries, but requiring 2^(n/3) quantum-accessible memory; its practical advantage over classical parallel collision search is disputed once memory is costed.","assumptions":["Large quantum random-access memory","No depth limit"],"applicability":[{"schemeId":"slh-dsa","parameterSetIds":"all","conditions":"Same components as the classical collision attack"}],"referenceIds":["ref-bht"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-isd-bjmm","name":"Information-set decoding (Stern / BJMM family)","model":"classical","technique":"Information-set decoding","targetGoal":"Message recovery / key recovery","description":"Guess an information set in which the error vector has low weight and solve by Gaussian elimination, with birthday-style improvements (Stern, MMT, BJMM, May–Ozerov) in the enumeration step.","assumptions":["Random-code behaviour of the public code","Memory limits for the list-based variants","For quasi-cyclic codes, a √n DOOM speed-up"],"applicability":[{"schemeId":"hqc","parameterSetIds":"all","conditions":"Against the QCSD problem; DOOM factor applies"},{"schemeId":"classic-mceliece","parameterSetIds":"all","conditions":"Against syndrome decoding at weight t; no quasi-cyclic speed-up"}],"referenceIds":["ref-bjmm"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-quantum-isd","name":"Quantum information-set decoding (Grover-accelerated Prange)","model":"hybrid","technique":"Information-set decoding with quantum search","targetGoal":"Message recovery / key recovery","description":"Use Grover search over information sets inside Prange's algorithm, roughly halving the exponent of the simplest ISD; advanced ISD variants gain much less once quantum memory and depth are charged.","assumptions":["Reversible Gaussian elimination circuit","Depth and memory accounting per NIST's metrics"],"applicability":[{"schemeId":"hqc","parameterSetIds":"all","conditions":"Same instance as classical ISD"},{"schemeId":"classic-mceliece","parameterSetIds":"all","conditions":"Same instance as classical ISD"}],"referenceIds":["ref-bernstein-quantum-isd"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-xl-direct","name":"Direct algebraic attack (XL / Gröbner basis)","model":"classical","technique":"Algebraic system solving","targetGoal":"Forgery","description":"Solve the public quadratic system for a preimage of the target digest with XL or F4/F5 Gröbner-basis algorithms, usually with hybrid guessing of some variables.","assumptions":["Semi-regularity of the system (degree of regularity estimate)","Linear-algebra constant for sparse Wiedemann"],"applicability":[{"schemeId":"mayo","parameterSetIds":"all","conditions":"Against the whipped public map; system size depends on k·o"}],"referenceIds":["ref-mayo-spec"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-kipnis-shamir","name":"Kipnis–Shamir / reconciliation key recovery","model":"classical","technique":"Structural (oil-space recovery)","targetGoal":"Key recovery","description":"Recover the secret oil subspace from the public map by exploiting the rank structure of the quadratic forms; cost grows with the vinegar-to-oil ratio.","assumptions":["Generic behaviour of the public quadratic forms","No additional structure beyond UOV"],"applicability":[{"schemeId":"mayo","parameterSetIds":"all","conditions":"Applies to the underlying UOV map with the small oil space o; MAYO's whipping changes the effective parameters"}],"referenceIds":["ref-kipnis-shamir","ref-mayo-spec"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-isogeny-path-classical","name":"Classical isogeny-path / endomorphism-ring computation","model":"classical","technique":"Meet-in-the-middle over isogeny graphs","targetGoal":"Key recovery","description":"Find a path in the supersingular ℓ-isogeny graph (or compute the endomorphism ring directly) in roughly p^(1/2) operations; Delfs–Galbraith style algorithms.","assumptions":["Generic graph-walk cost","No special structure in the challenge curve"],"applicability":[{"schemeId":"sqisign","parameterSetIds":"all","conditions":"Against the secret endomorphism ring; parameter log2 p sets the cost"}],"referenceIds":["ref-sqisign-spec"],"estimationStatus":"pending","validationStatus":"unvalidated"},{"id":"atk-isogeny-path-quantum","name":"Quantum isogeny-path computation","model":"quantum","technique":"Quantum walk / claw finding","targetGoal":"Key recovery","description":"Quantum algorithms (Biasse–Jao–Sankar, Tani-style claw finding) lower the exponent to roughly p^(1/4) under generous quantum-memory assumptions.","assumptions":["Quantum random-access memory","No depth limit"],"applicability":[{"schemeId":"sqisign","parameterSetIds":"all","conditions":"Same problem as the classical path-finding attack"}],"referenceIds":["ref-sqisign-spec"],"estimationStatus":"pending","validationStatus":"unvalidated"}],"benchmarkCases":[{"id":"BC-0001","schemeId":"ml-kem","parameterSetId":"ml-kem-512","attackId":"atk-primal-usvp","model":"classical","targetGoal":"Key recovery","attackParams":{"β (block size)":"as reported by the Kyber specification","success probability":"per core-SVP convention"},"estimationMethod":"Core-SVP (0.292β)","assumptions":{"costModel":"core-SVP, gate-count agnostic","memory":"not charged"},"evidenceStatus":"literature","validationStatus":"literature-reported, not reproduced","resourceEstimateIds":["RE-0001","RE-0002"],"referenceIds":["ref-kyber-spec","ref-adps16"],"notes":"Reference case. The reported exponent is copied from the CRYSTALS-Kyber round-3 specification and has not been re-derived by this project.","illustrative":false},{"id":"BC-0002","schemeId":"ml-kem","parameterSetId":"ml-kem-768","attackId":"atk-primal-usvp","model":"classical","targetGoal":"Key recovery","attackParams":{"β (block size)":"as reported by the Kyber specification"},"estimationMethod":"Core-SVP (0.292β)","assumptions":{"costModel":"core-SVP, gate-count agnostic","memory":"not charged"},"evidenceStatus":"literature","validationStatus":"literature-reported, not reproduced","resourceEstimateIds":["RE-0003"],"referenceIds":["ref-kyber-spec"],"notes":"Reference case; see BC-0001.","illustrative":false},{"id":"BC-0003","schemeId":"ml-kem","parameterSetId":"ml-kem-512","attackId":"atk-quantum-sieve","model":"hybrid","targetGoal":"Key recovery","attackParams":{"β (block size)":"as reported by the Kyber specification"},"estimationMethod":"Core-SVP (0.265β, quantum sieve)","assumptions":{"costModel":"core-SVP quantum exponent","memory":"QRAM assumed free","depth":"unlimited"},"evidenceStatus":"literature","validationStatus":"literature-reported, not reproduced","resourceEstimateIds":["RE-0004"],"referenceIds":["ref-kyber-spec","ref-laarhoven-quantum-sieve"],"notes":"Companion to BC-0001 under the quantum-sieve exponent.","illustrative":false},{"id":"BC-0004","schemeId":"ml-kem","parameterSetId":"ml-kem-512","attackId":"atk-dual","model":"classical","targetGoal":"Key recovery","attackParams":{},"estimationMethod":"Gate count (classical), pending","assumptions":{"costModel":"to be chosen"},"evidenceStatus":"pending","validationStatus":"unvalidated","resourceEstimateIds":[],"referenceIds":["ref-albrecht-estimator"],"notes":"Open case: no estimate recorded.","illustrative":false},{"id":"BC-0005","schemeId":"ml-dsa","parameterSetId":"ml-dsa-65","attackId":"atk-primal-usvp","model":"classical","targetGoal":"Key recovery","attackParams":{},"estimationMethod":"Core-SVP (0.292β), pending","assumptions":{"costModel":"core-SVP"},"evidenceStatus":"pending","validationStatus":"unvalidated","resourceEstimateIds":[],"referenceIds":["ref-fips204"],"notes":"Open case: no estimate recorded.","illustrative":false},{"id":"BC-0006","schemeId":"slh-dsa","parameterSetId":"slh-dsa-128s","attackId":"atk-grover-preimage","model":"quantum","targetGoal":"Forgery via preimage","attackParams":{"MAXDEPTH":"2^64","targets":"single"},"estimationMethod":"Depth-limited quantum gate count, pending","assumptions":{"costModel":"NIST MAXDEPTH metric","hardware":"logical level only"},"evidenceStatus":"pending","validationStatus":"unvalidated","resourceEstimateIds":["RE-0005"],"referenceIds":["ref-nist-criteria","ref-grover"],"notes":"Open case with one pending estimator run.","illustrative":false},{"id":"BC-0007","schemeId":"slh-dsa","parameterSetId":"slh-dsa-128s","attackId":"atk-collision-vow","model":"classical","targetGoal":"Forgery via collision","attackParams":{},"estimationMethod":"Classical operation count, pending","assumptions":{"costModel":"hash evaluations"},"evidenceStatus":"pending","validationStatus":"unvalidated","resourceEstimateIds":[],"referenceIds":["ref-vow"],"notes":"Open case.","illustrative":false},{"id":"BC-0008","schemeId":"hqc","parameterSetId":"hqc-128","attackId":"atk-isd-bjmm","model":"classical","targetGoal":"Message recovery","attackParams":{"variant":"BJMM","DOOM":"applied"},"estimationMethod":"ISD bit-operation count, pending","assumptions":{"costModel":"bit operations","memory":"to be recorded"},"evidenceStatus":"pending","validationStatus":"unvalidated","resourceEstimateIds":[],"referenceIds":["ref-bjmm","ref-hqc-spec"],"notes":"Open case.","illustrative":false},{"id":"BC-0009","schemeId":"hqc","parameterSetId":"hqc-128","attackId":"atk-quantum-isd","model":"hybrid","targetGoal":"Message recovery","attackParams":{"variant":"Grover–Prange"},"estimationMethod":"Quantum gate count + depth, pending","assumptions":{"costModel":"to be chosen"},"evidenceStatus":"pending","validationStatus":"unvalidated","resourceEstimateIds":[],"referenceIds":["ref-bernstein-quantum-isd"],"notes":"Open case.","illustrative":false},{"id":"BC-0010","schemeId":"mayo","parameterSetId":"mayo-1","attackId":"atk-xl-direct","model":"classical","targetGoal":"Forgery","attackParams":{"hybrid guesses":"to be chosen"},"estimationMethod":"Gröbner-basis complexity, pending","assumptions":{"costModel":"field operations"},"evidenceStatus":"pending","validationStatus":"unvalidated","resourceEstimateIds":[],"referenceIds":["ref-mayo-spec"],"notes":"Open case.","illustrative":false},{"id":"BC-9001","schemeId":"ml-kem","parameterSetId":"ml-kem-512","attackId":"atk-primal-usvp","model":"classical","targetGoal":"Key recovery","attackParams":{"β (block size)":"estimator-chosen"},"estimationMethod":"Gate count (classical), estimator run","assumptions":{"costModel":"to be defined by the project estimator"},"evidenceStatus":"placeholder","validationStatus":"unvalidated","resourceEstimateIds":["RE-9001"],"referenceIds":[],"notes":"Illustrative example: shows how an estimator-produced run will sit beside a literature value for the same instance. Contains no numbers.","illustrative":true}],"resourceEstimates":[{"id":"RE-0001","benchmarkCaseId":"BC-0001","source":"literature","estimatorVersion":null,"inputConfig":{"model":"core-SVP classical"},"metrics":{"classicalCostLog2":118,"classicalMemoryLog2":null,"logicalQubits":null,"gateCountLog2":null,"depthLog2":null,"runtime":null,"physicalQubits":null,"successProbability":null},"hardwareAssumptions":null,"status":"literature-reported","limitations":"Exponent as stated in the CRYSTALS-Kyber round-3 specification (Table 4); not reproduced here. Verify against the current FIPS 203 security analysis before citing."},{"id":"RE-0002","benchmarkCaseId":"BC-0001","source":"estimator","estimatorVersion":"not connected","inputConfig":{},"metrics":{"classicalCostLog2":null,"classicalMemoryLog2":null,"logicalQubits":null,"gateCountLog2":null,"depthLog2":null,"runtime":null,"physicalQubits":null,"successProbability":null},"hardwareAssumptions":null,"status":"pending","limitations":"Awaiting the project estimator."},{"id":"RE-0003","benchmarkCaseId":"BC-0002","source":"literature","estimatorVersion":null,"inputConfig":{"model":"core-SVP classical"},"metrics":{"classicalCostLog2":183,"classicalMemoryLog2":null,"logicalQubits":null,"gateCountLog2":null,"depthLog2":null,"runtime":null,"physicalQubits":null,"successProbability":null},"hardwareAssumptions":null,"status":"literature-reported","limitations":"Exponent as stated in the CRYSTALS-Kyber round-3 specification; not reproduced here."},{"id":"RE-0004","benchmarkCaseId":"BC-0003","source":"literature","estimatorVersion":null,"inputConfig":{"model":"core-SVP quantum sieve"},"metrics":{"classicalCostLog2":null,"classicalMemoryLog2":null,"logicalQubits":null,"gateCountLog2":107,"depthLog2":null,"runtime":null,"physicalQubits":null,"successProbability":null},"hardwareAssumptions":"QRAM assumed; no depth limit","status":"literature-reported","limitations":"Core-SVP 'quantum' exponent (2^0.265β) recorded under gate count for want of a better slot; it is not a gate count. From the CRYSTALS-Kyber round-3 specification; not reproduced here."},{"id":"RE-0005","benchmarkCaseId":"BC-0006","source":"estimator","estimatorVersion":"not connected","inputConfig":{"MAXDEPTH":"2^64"},"metrics":{"classicalCostLog2":null,"classicalMemoryLog2":null,"logicalQubits":null,"gateCountLog2":null,"depthLog2":null,"runtime":null,"physicalQubits":null,"successProbability":null},"hardwareAssumptions":null,"status":"pending","limitations":"Awaiting the project estimator."},{"id":"RE-9001","benchmarkCaseId":"BC-9001","source":"estimator","estimatorVersion":"not connected","inputConfig":{},"metrics":{"classicalCostLog2":null,"classicalMemoryLog2":null,"logicalQubits":null,"gateCountLog2":null,"depthLog2":null,"runtime":null,"physicalQubits":null,"successProbability":null},"hardwareAssumptions":null,"status":"pending","limitations":"Illustrative placeholder run."}],"references":[{"id":"ref-fips203","type":"standard","citation":"NIST, FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism Standard, August 2024."},{"id":"ref-fips204","type":"standard","citation":"NIST, FIPS 204: Module-Lattice-Based Digital Signature Standard, August 2024."},{"id":"ref-fips205","type":"standard","citation":"NIST, FIPS 205: Stateless Hash-Based Digital Signature Standard, August 2024."},{"id":"ref-fips206-draft","type":"standard","citation":"NIST, FIPS 206 (draft): FN-DSA, FFT over NTRU-Lattice-Based Digital Signature Standard."},{"id":"ref-nist-ir8545","type":"report","citation":"NIST IR 8545, Status Report on the Fourth Round of the NIST PQC Standardization Process (HQC selected), March 2025."},{"id":"ref-nist-criteria","type":"report","citation":"NIST, Submission Requirements and Evaluation Criteria for the Post-Quantum Cryptography Standardization Process (security categories 1–5, MAXDEPTH), 2016."},{"id":"ref-kyber-spec","type":"specification","citation":"R. Avanzi et al., CRYSTALS-Kyber Algorithm Specifications and Supporting Documentation (round 3), 2021, Table 4 (core-SVP hardness)."},{"id":"ref-sphincs-spec","type":"specification","citation":"J.-P. Aumasson et al., SPHINCS+ Submission to the NIST PQC project (round 3), 2020."},{"id":"ref-hqc-spec","type":"specification","citation":"C. Aguilar Melchor et al., HQC: Hamming Quasi-Cyclic, round-4 submission, 2023."},{"id":"ref-mceliece-spec","type":"specification","citation":"M. Albrecht et al., Classic McEliece: conservative code-based cryptography, round-4 submission, 2022."},{"id":"ref-mayo-spec","type":"specification","citation":"W. Beullens et al., MAYO specification, NIST additional signature round 2, 2025."},{"id":"ref-sqisign-spec","type":"specification","citation":"J. Chavez-Saab et al., SQIsign specification, NIST additional signature round 2, 2025."},{"id":"ref-adps16","type":"paper","citation":"E. Alkim, L. Ducas, T. Pöppelmann, P. Schwabe, Post-quantum key exchange: a new hope (core-SVP methodology), USENIX Security 2016."},{"id":"ref-albrecht-estimator","type":"tool","citation":"M. Albrecht, R. Player, S. Scott, On the concrete hardness of Learning with Errors, J. Math. Cryptology 2015; maintained Lattice Estimator."},{"id":"ref-laarhoven-quantum-sieve","type":"paper","citation":"T. Laarhoven, Search problems in cryptography: from fingerprinting to lattice sieving (quantum sieving, 2^0.265n), PhD thesis 2015."},{"id":"ref-grover","type":"paper","citation":"L. Grover, A fast quantum mechanical algorithm for database search, STOC 1996."},{"id":"ref-bht","type":"paper","citation":"G. Brassard, P. Høyer, A. Tapp, Quantum cryptanalysis of hash and claw-free functions, LATIN 1998."},{"id":"ref-vow","type":"paper","citation":"P. van Oorschot, M. Wiener, Parallel collision search with cryptanalytic applications, J. Cryptology 1999."},{"id":"ref-bjmm","type":"paper","citation":"A. Becker, A. Joux, A. May, A. Meurer, Decoding random binary linear codes in 2^(n/20), EUROCRYPT 2012."},{"id":"ref-bernstein-quantum-isd","type":"paper","citation":"D. J. Bernstein, Grover vs. McEliece, PQCrypto 2010."},{"id":"ref-kipnis-shamir","type":"paper","citation":"A. Kipnis, A. Shamir, Cryptanalysis of the oil and vinegar signature scheme, CRYPTO 1998."}]}</script>
 <!-- PQC-DATA-END -->
 <script>
@@ -1296,6 +1383,95 @@ function estimate(s) {
     phys: perMachine * P, perMachine, P, pLogical: isFinite(d) ? pL(s.pPhys, d, pth) : 1,
     fail, windowFactories, windowFeasible, windowPhys};
 }
+/* ---------- QDK resource estimator (open source, microsoft/qdk, MIT) ----------
+   vendor/qdk/qcare_qdk_estimator_bg.wasm is the QDK's own estimator crate (source/resource_estimator), unmodified,
+   compiled to WebAssembly behind a one-function wrapper (qdk-wasm/). It takes logical counts as 64-bit integers and
+   returns the same JSON the QDK Python package returns from LogicalCounts.estimate(). */
+const QDK = {state: 'loading', api: null, commit: '', error: '', cache: new Map()};
+const QDK_MODELS = {
+  qubit_gate_ns_e3: {label: 'ns gates, 10⁻³ · qubit_gate_ns_e3', kind: 'gate', p: 1e-3, tFree: false, note: 'gate-based, 50 ns gates, 100 ns measurement: superconducting or spin-qubit regime'},
+  qubit_gate_ns_e4: {label: 'ns gates, 10⁻⁴ · qubit_gate_ns_e4', kind: 'gate', p: 1e-4, tFree: false, note: 'gate-based, 50 ns gates, 100 ns measurement: superconducting or spin-qubit regime, optimistic'},
+  qubit_gate_us_e3: {label: 'µs gates, 10⁻³ · qubit_gate_us_e3', kind: 'gate', p: 1e-3, tFree: true, note: 'gate-based, 100 µs operations, T gates at 10⁻⁶: trapped-ion regime'},
+  qubit_gate_us_e4: {label: 'µs gates, 10⁻⁴ · qubit_gate_us_e4', kind: 'gate', p: 1e-4, tFree: true, note: 'gate-based, 100 µs operations, T gates at 10⁻⁶: trapped-ion regime, optimistic'},
+  qubit_maj_ns_e4: {label: 'Majorana, 10⁻⁴ · qubit_maj_ns_e4', kind: 'maj', p: 1e-4, note: 'Majorana, 100 ns measurements: topological qubits'},
+  qubit_maj_ns_e6: {label: 'Majorana, 10⁻⁶ · qubit_maj_ns_e6', kind: 'maj', p: 1e-6, note: 'Majorana, 100 ns measurements: topological qubits, optimistic'},
+  custom: {label: 'Custom gate-based qubit', kind: 'gate', custom: true, note: 'your own gate time, measurement time and error rate'},
+};
+const QDK_QEC = {surface_code: 'Surface code', floquet_code: 'Floquet (Hastings–Haah) code'};
+const qdkQecFor = m => (QDK_MODELS[m] || QDK_MODELS.qubit_gate_ns_e3).kind === 'maj' ? ['surface_code', 'floquet_code'] : ['surface_code'];
+const qdkNominalP = s => s.qModel === 'custom' ? s.pPhys : (QDK_MODELS[s.qModel] || QDK_MODELS.qubit_gate_ns_e3).p;
+/* Which engine prices the physical layer for these settings. Grover counts exceed 64-bit integers, so AES stays on the built-in model. */
+const engineFor = s => s.engine === 'qdk' && QDK.state === 'ready' && s.alg !== 'aes' ? 'qdk' : 'builtin';
+
+/* Job parameters in the QDK's own JSON format. o.p overrides every Clifford-level error rate (used by the error-rate sweep). */
+function qdkParams(s, o = {}) {
+  const m = QDK_MODELS[s.qModel] || QDK_MODELS.qubit_gate_ns_e3;
+  let qp;
+  if (m.custom) {
+    const p = o.p != null ? o.p : s.pPhys, g = Math.max(1, Math.round(s.qGate || 50)) + ' ns', ms = Math.max(1, Math.round(s.qMeas || 100)) + ' ns';
+    qp = {instructionSet: 'GateBased', oneQubitMeasurementTime: ms, oneQubitGateTime: g, twoQubitGateTime: g, tGateTime: g,
+      oneQubitMeasurementErrorRate: p, oneQubitGateErrorRate: p, twoQubitGateErrorRate: p, tGateErrorRate: p, idleErrorRate: p};
+  } else {
+    qp = {name: s.qModel in QDK_MODELS ? s.qModel : 'qubit_gate_ns_e3'};
+    if (o.p != null) {
+      if (m.kind === 'maj') Object.assign(qp, {oneQubitMeasurementErrorRate: o.p, twoQubitJointMeasurementErrorRate: o.p, idleErrorRate: o.p});
+      else { Object.assign(qp, {oneQubitMeasurementErrorRate: o.p, oneQubitGateErrorRate: o.p, twoQubitGateErrorRate: o.p, idleErrorRate: o.p}); if (!m.tFree) qp.tGateErrorRate = o.p; }
+    }
+  }
+  const qec = qdkQecFor(s.qModel).includes(s.qec) ? s.qec : 'surface_code';
+  const cons = {};
+  if (s.maxTF > 0) cons.maxTFactories = Math.round(s.maxTF);
+  if (s.depthFactor > 1) cons.logicalDepthFactor = s.depthFactor;
+  if (o.maxDurationS) cons.maxDuration = Math.round(o.maxDurationS * 1e9) + ' ns';
+  const out = {qubitParams: qp, qecScheme: {name: qec}, errorBudget: s.eps};
+  if (Object.keys(cons).length) out.constraints = cons;
+  if (o.frontier) out.estimateType = 'frontier';
+  return out;
+}
+/* One Toffoli (or CCZ, or And) of the paper's count is charged as one CCZ magic state. */
+const qdkCounts = c => ({numQubits: Math.max(1, Math.round(c.L)), cczCount: Math.max(1, Math.round(c.T))});
+function qdkCall(counts, params) {
+  if (!(counts.cczCount <= 1e15) || !(counts.numQubits <= 1e8)) return {code: 'Qcare.OutOfRange', message: 'counts are outside the range the QDK engine handles reliably'};
+  const key = JSON.stringify(counts) + '|' + JSON.stringify(params);
+  if (QDK.cache.has(key)) return QDK.cache.get(key);
+  let out;
+  try { out = JSON.parse(QDK.api.physical_estimates(JSON.stringify(counts), JSON.stringify([params])))[0]; }
+  catch (e) { out = {code: 'Qcare.CallFailed', message: String(e && e.message || e)}; }
+  if (QDK.cache.size > 600) QDK.cache.clear();
+  QDK.cache.set(key, out);
+  return out;
+}
+/* Normalise one QDK result (or one frontier entry). The engine counts runtime in 64-bit nanoseconds; beyond about 585 years it wraps, which is detected here. */
+function qdkPoint(x) {
+  const pc = x.physicalCounts, b = pc.breakdown, lq = x.logicalQubit;
+  const expectNs = b.logicalDepth * lq.logicalCycleTime;
+  return {phys: pc.physicalQubits, runtime: pc.runtime / 1e9, d: lq.codeDistance, factories: b.numTfactories, Llayout: b.algorithmicLogicalQubits,
+    depth: b.logicalDepth, tstates: b.numTstates, cycleNs: lq.logicalCycleTime, pLogical: lq.logicalErrorRate,
+    physAlg: b.physicalQubitsForAlgorithm, physFac: b.physicalQubitsForTfactories,
+    overflow: !(expectNs < 1.8e19) || Math.abs(pc.runtime - expectNs) > 1e-6 * expectNs};
+}
+/* Same shape as estimate(): the published logical counts of one run, priced by the QDK. */
+function estimateQdk(s, o = {}) {
+  const c = logicalCost(s);
+  const counts = qdkCounts(c), params = qdkParams(s, o);
+  const base = {L: c.L, T: c.T, kind: c.kind, runs: c.runs || 1, unit: c.unit, scaled: c.scaled, src: c.src, Lnote: c.Lnote, engine: 'qdk', counts, params, P: 1, windowFeasible: true, windowFactories: null, windowPhys: null};
+  const fail = msg => ({...base, d: Infinity, phys: Infinity, perMachine: Infinity, runtime: Infinity, expected: Infinity, fail: 1, pLogical: 1, err: msg});
+  if (c.kind !== 'shor') return fail('Grover counts exceed the 64-bit integers the QDK engine takes');
+  const x = qdkCall(counts, params);
+  if (!x || !x.physicalCounts) return fail(x && (x.message || x.code) || 'the QDK returned no result');
+  const q = qdkPoint(x);
+  if (q.overflow) return fail('the runtime exceeds the 64-bit nanosecond clock of the QDK engine (about 585 years)');
+  return {...base, ...q, perMachine: q.phys, fail: s.eps, expected: q.runtime * base.runs / (1 - s.eps), raw: x};
+}
+/* The QDK's space–time frontier for the same counts: fewer T factories, longer runtime. */
+function qdkFrontier(s) {
+  const c = logicalCost(s);
+  if (c.kind !== 'shor') return [];
+  const x = qdkCall(qdkCounts(c), qdkParams(s, {frontier: true}));
+  return (x && x.frontierEntries || []).map(qdkPoint).filter(q => !q.overflow);
+}
+const estimateAny = (s, o) => engineFor(s) === 'qdk' ? estimateQdk(s, o) : {...estimate(s), engine: 'builtin'};
+
 function qDay(need, q0, year0, doubling) {
   if (!isFinite(need)) return Infinity;
   return need <= q0 ? year0 : year0 + doubling * LOG2(need / q0);
@@ -1308,7 +1484,7 @@ const fmtN = x => {
   if (x < 1e3) return x.toFixed(0);
   const u = [['k',1e3],['M',1e6],['B',1e9],['T',1e12]];
   if (x >= 1e15) return x.toExponential(2).replace('e+', '·10^');
-  for (let i = u.length - 1; i >= 0; i--) if (x >= u[i][1]) return (x / u[i][1]).toPrecision(3).replace(/\.?0+$/, '') + ' ' + u[i][0];
+  for (let i = u.length - 1; i >= 0; i--) if (x >= u[i][1]) { let v = (x / u[i][1]).toPrecision(3); if (v.includes('e')) v = String(Math.round(x / u[i][1])); return (v.includes('.') ? v.replace(/\.?0+$/, '') : v) + ' ' + u[i][0]; }
   return x.toExponential(2);
 };
 const fmtSci = x => isFinite(x) ? x.toExponential(2).replace('e+', '·10^') : '∞';
@@ -1353,17 +1529,51 @@ const ALGS = {
 };
 const variantOf = (alg, id) => ALGS[alg].variants.find(v => v.id === id) || ALGS[alg].variants[0];
 const keysFor = (alg, id) => variantOf(alg, id).keys || ALGS[alg].keys;
-const HW = {pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1};
+const HW = {pPhys: 1e-3, cycleUs: 1, reactionUs: 10, factories: 28, magic: 'distill', storage: 'surface', routing: 1.4, eps: 0.1, parallel: 1, arithOpt: 1, window: 0, machines: 1,
+  qModel: 'qubit_gate_ns_e3', qec: 'surface_code', qGate: 50, qMeas: 100, maxTF: 0, depthFactor: 1};
 const PRESETS = [
   {label: 'Gidney–Ekerå 2021 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'ge2021'}},
   {label: 'Gidney 2025 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'g2025', factories: 6, magic: 'cultivate', storage: 'yoked', routing: 1.2}},
   {label: 'Chevignard et al. 2024 · RSA-2048', s: {...HW, alg: 'rsa', keyBits: 2048, variant: 'cfs2024', factories: 4, magic: 'cultivate', storage: 'yoked', routing: 1.2}},
   {label: 'Babbush et al. 2026 · secp256k1', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'babbush2026', magic: 'cultivate', routing: 1.2}},
-  {label: 'IonQ 2026 · secp256k1 · ions', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'ionq2026', pPhys: 1e-4, cycleUs: 1000, reactionUs: 1000, factories: 4}},
+  {label: 'IonQ 2026 · secp256k1 · ions', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'ionq2026', pPhys: 1e-4, cycleUs: 1000, reactionUs: 1000, factories: 4, qModel: 'qubit_gate_us_e4'}},
   {label: 'Luo et al. 2026 · P-256', s: {...HW, alg: 'ecc', keyBits: 256, variant: 'luo2026'}},
   {label: 'DH-2048 short exponent', s: {...HW, alg: 'ffdlp', keyBits: 2048, variant: 'short'}},
   {label: 'AES-128 · Grover', s: {...HW, alg: 'aes', keyBits: 128, variant: 'grassl'}},
 ];
+/* Deployed algorithms, each mapped to the hard problem behind it and the published circuit used to cost it.
+   `note` flags a mapping that is the project's own and not a published count for that exact algorithm. */
+const DEPLOYED = [
+  {grp: 'Public-key · broken by Shor’s algorithm', items: [
+    {id: 'rsa1024', label: 'RSA-1024', alg: 'rsa', variant: 'g2025', keyBits: 1024, attack: 'Shor, factoring'},
+    {id: 'rsa2048', label: 'RSA-2048', alg: 'rsa', variant: 'g2025', keyBits: 2048, attack: 'Shor, factoring'},
+    {id: 'rsa3072', label: 'RSA-3072', alg: 'rsa', variant: 'g2025', keyBits: 3072, attack: 'Shor, factoring'},
+    {id: 'rsa4096', label: 'RSA-4096', alg: 'rsa', variant: 'g2025', keyBits: 4096, attack: 'Shor, factoring'},
+    {id: 'p256', label: 'ECDSA / ECDH P-256', alg: 'ecc', variant: 'schrott2026', keyBits: 256, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'k256', label: 'ECDSA secp256k1', alg: 'ecc', variant: 'babbush2026', keyBits: 256, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'c25519', label: 'Ed25519 / X25519', alg: 'ecc', variant: 'schrott2026', keyBits: 256, attack: 'Shor, elliptic-curve discrete log', note: 'project mapping: the 255-bit curve is costed with the circuit for any 256-bit prime; the review records no Curve25519-specific circuit'},
+    {id: 'p384', label: 'ECDSA / ECDH P-384', alg: 'ecc', variant: 'luo2026', keyBits: 384, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'p521', label: 'ECDSA / ECDH P-521', alg: 'ecc', variant: 'luo2026', keyBits: 521, attack: 'Shor, elliptic-curve discrete log'},
+    {id: 'dh2048s', label: 'DH-2048 / DSA-2048', alg: 'ffdlp', variant: 'short', keyBits: 2048, attack: 'Shor, discrete log with a short exponent or small subgroup'},
+    {id: 'dh3072s', label: 'DH-3072', alg: 'ffdlp', variant: 'short', keyBits: 3072, attack: 'Shor, discrete log with a short exponent'},
+    {id: 'elg2048', label: 'ElGamal-2048 / DH-2048, full exponent', alg: 'ffdlp', variant: 'safe', keyBits: 2048, attack: 'Shor, discrete log in a safe-prime group'},
+  ]},
+  {grp: 'Symmetric · weakened by Grover’s algorithm', items: [
+    {id: 'aes128', label: 'AES-128', alg: 'aes', variant: 'grassl', keyBits: 128, attack: 'Grover key search'},
+    {id: 'aes192', label: 'AES-192', alg: 'aes', variant: 'grassl', keyBits: 192, attack: 'Grover key search'},
+    {id: 'aes256', label: 'AES-256', alg: 'aes', variant: 'grassl', keyBits: 256, attack: 'Grover key search'},
+  ]},
+];
+const DEPLOYED_FLAT = DEPLOYED.flatMap(g => g.items);
+let DEPLOY_ID = '';
+let ENGINE_WANT = 'qdk';
+/* Reference runs of the newer QDK estimator (qdk.qre), computed offline by tools/qre_reference_runs.py and embedded as JSON. */
+const QRE = (() => { try { return JSON.parse(document.getElementById('qre-data').textContent); } catch (e) { return {runs: []}; } })();
+const QRE_ARCH = {qubit_gate_ns_e3: 'ns_e3', qubit_gate_ns_e4: 'ns_e4'};
+const escH = s => String(s == null ? '' : s).replace(/[&<>"]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[ch]));
+const plural = (n, one, many) => n === 1 ? one : many;
+const fmtCycle = ns => ns >= 1e6 ? (ns / 1e6).toPrecision(3) + ' ms' : ns >= 1e3 ? (ns / 1e3).toPrecision(3) + ' µs' : ns + ' ns';
+const fmtDur = sec => { const t = fmtT(sec); return (t.v + ' ' + t.u).trim(); };
 /* Published anchors, quoted in each paper's units. Chart fields: p (gate error rate), q (physical qubits), t (runtime in seconds, as published). */
 const ANCHORS = [
   {grp: 'RSA-2048', alg: 'rsa', tag: 'Häner 17', src: 'Häner, Roetteler, Svore 2017 [17]', target: 'RSA-n', cov: 'Complete, one run (formula)', L: '2n + 2', T: '64 n³ log₂n + O(n³) Toffoli (formula; GE21 cites 5.2·10¹² for n = 2048)', phys: '—', time: '—', hw: 'logical level', ev: 'Implemented and simulated in LIQUi|⟩ up to 8,192-bit inputs; no n = 2048 table in the paper'},
@@ -1473,6 +1683,8 @@ function readSettings() {
     manualD: !$('dAuto').checked, d: +$('d').value, eps: +$('eps').value,
     factories: +$('factories').value, magic: $('magic').value, storage: $('storage').value, routing: +$('routing').value,
     q0: +$('q0').value, doubling: +$('doubling').value,
+    engine: ENGINE_WANT, qModel: $('qModel').value, qec: $('qec').value, qGate: +$('qGate').value, qMeas: +$('qMeas').value,
+    maxTF: +$('maxTF').value, depthFactor: +$('depthFactor').value,
   };
 }
 function fillSelect(sel, pairs, keep) {
@@ -1493,7 +1705,30 @@ function syncAlgUI() {
   syncKeys();
   document.querySelectorAll('[data-only]').forEach(el => el.hidden = el.dataset.only !== $('alg').value);
 }
+function syncQec() {
+  fillSelect($('qec'), qdkQecFor($('qModel').value).map(k => [k, QDK_QEC[k]]), true);
+  const qm = $('qModel').value; $('qModelHint').textContent = (QDK_MODELS[qm].custom ? 'Uses ' : 'QDK preset ' + qm + ': ') + QDK_MODELS[qm].note + '.';
+}
+/* Keep the quick-pick select in step with the family / circuit / size controls. */
+function syncDeployed() {
+  const alg = $('alg').value, variant = $('variant').value, keyBits = +$('keyBits').value;
+  const cur = DEPLOYED_FLAT.find(d => d.id === DEPLOY_ID);
+  if (!cur || cur.alg !== alg || cur.variant !== variant || cur.keyBits !== keyBits) {
+    const m = DEPLOYED_FLAT.find(d => d.alg === alg && d.variant === variant && d.keyBits === keyBits);
+    DEPLOY_ID = m ? m.id : '';
+  }
+  $('deployed').value = DEPLOY_ID;
+}
+function applyDeployed(id) {
+  const d = DEPLOYED_FLAT.find(x => x.id === id); if (!d) return;
+  DEPLOY_ID = id;
+  $('alg').value = d.alg; syncAlgUI();
+  $('variant').value = d.variant; syncKeys();
+  $('keyBits').value = d.keyBits;
+  if (document.body.dataset.ready) renderAll();
+}
 function applyPreset(s) {
+  $('qModel').value = s.qModel; syncQec(); $('qec').value = s.qec; $('qGate').value = s.qGate; $('qMeas').value = s.qMeas; $('maxTF').value = s.maxTF; $('depthFactor').value = s.depthFactor;
   $('alg').value = s.alg; syncAlgUI();
   $('variant').value = s.variant; syncKeys();
   $('keyBits').value = s.keyBits;
@@ -1509,8 +1744,8 @@ const svgEl = (tag, attrs, text) => { let s = `<${tag}`; for (const k in attrs) 
 const logTicks = (lo, hi) => { const t = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) t.push(Math.pow(10, e)); return t; };
 const sup = e => '10' + String(e).replace(/-/g, '⁻').replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
 /* Place anchor labels so that they do not overlap each other (greedy: try a few offsets, then push down). */
-function placeLabels(items, W) {
-  const boxes = [], out = [];
+function placeLabels(items, W, obstacles = []) {
+  const boxes = obstacles.map(o => ({x0: o.x - o.r, x1: o.x + o.r, y0: o.y - o.r, y1: o.y + o.r})), out = [];
   const cands = [[9, -7, 'start'], [9, 15, 'start'], [-9, -7, 'end'], [-9, 15, 'end'], [9, 27, 'start'], [-9, 27, 'end']];
   const hits = (x0, x1, y0, y1) => boxes.some(b => !(x1 < b.x0 || x0 > b.x1 || y1 < b.y0 || y0 > b.y1));
   items.forEach(it => {
@@ -1529,10 +1764,12 @@ function placeLabels(items, W) {
 
 function chartP(s, cur) {
   const W = 520, H = 300, m = {l: 54, r: 16, t: 24, b: 36};
-  const xs = [], pts = [];
-  for (let i = 0; i <= 60; i++) { const p = Math.pow(10, -4 + 1.9 * i / 60); const r = estimate({...s, pPhys: p, manualD: false}); if (isFinite(r.phys)) pts.push([p, r.phys]); }
+  const xs = [], pts = [], qdk = cur.engine === 'qdk', N = qdk ? 24 : 60;
+  for (let i = 0; i <= N; i++) { const p = Math.pow(10, -4 + 1.9 * i / N); const r = qdk ? estimateQdk(s, {p}) : estimate({...s, pPhys: p, manualD: false}); if (isFinite(r.phys)) pts.push([p, r.phys]); }
+  const pNow = qdk ? qdkNominalP(s) : s.pPhys;
   const anchors = ANCHORS.filter(a => a.q && a.p && a.alg === s.alg);
   const ys = pts.map(p => p[1]).concat(anchors.map(a => a.q), [cur.phys].filter(isFinite));
+  if (!ys.length) { $('chartP').innerHTML = svgEl('text', {x: W / 2, y: H / 2, 'text-anchor': 'middle', class: 'lbl'}, 'No finite estimate in this range'); return; }
   const ylo = Math.pow(10, Math.floor(Math.log10(Math.min(...ys)))), yhi = Math.pow(10, Math.ceil(Math.log10(Math.max(...ys))));
   const X = p => m.l + (Math.log10(p) + 4) / 2 * (W - m.l - m.r);
   const Y = q => H - m.b - (Math.log10(q) - Math.log10(ylo)) / (Math.log10(yhi) - Math.log10(ylo)) * (H - m.t - m.b);
@@ -1547,7 +1784,7 @@ function chartP(s, cur) {
     g += svgEl('path', {class: 'ln a', d: pts.map((p, i) => (i ? 'L' : 'M') + X(p[0]) + ',' + Y(p[1])).join(' ')});
   }
   placeLabels(anchors.map(a => ({x: X(a.p), y: Y(a.q), text: a.tag})), W).forEach(a => { g += svgEl('circle', {class: 'mk g', cx: a.x, cy: a.y, r: 4.5}); g += svgEl('text', {class: 'lbl', x: a.lx, y: a.ly, 'text-anchor': a.anchor}, a.text); });
-  if (isFinite(cur.phys)) { g += svgEl('circle', {class: 'mk a', cx: X(s.pPhys), cy: Y(cur.phys), r: 5}); g += svgEl('text', {class: 'lbl', x: X(s.pPhys) - 8, y: Y(cur.phys) - 8, 'text-anchor': 'end'}, fmtN(cur.phys)); }
+  if (isFinite(cur.phys) && pNow >= 1e-4 && pNow <= 1e-2) { const left = X(pNow) < m.l + 60; g += svgEl('circle', {class: 'mk a', cx: X(pNow), cy: Y(cur.phys), r: 5}); g += svgEl('text', {class: 'lbl', x: X(pNow) + (left ? 8 : -8), y: Y(cur.phys) - 8, 'text-anchor': left ? 'start' : 'end'}, fmtN(cur.phys)); }
   $('chartP').innerHTML = g;
 }
 function chartQ(s, cur) {
@@ -1575,9 +1812,10 @@ const TIME_TICKS = [[1, '1 s'], [60, '1 min'], [3600, '1 h'], [86400, '1 d'], [6
 /* Space–time frontier: runtime (x) against physical qubits (y) for the complete attack, traced by the factory count (machines for Grover). */
 function chartTO(s, cur) {
   const W = 1040, H = 400, m = {l: 64, r: 24, t: 26, b: 40};
-  const grover = cur.kind === 'grover';
+  const grover = cur.kind === 'grover', qdk = cur.engine === 'qdk';
   const sweep = []; const seen = new Set();
-  for (let i = 0; i <= 60; i++) {
+  if (qdk) qdkFrontier(s).forEach(q => sweep.push({F: q.factories, x: q.runtime, y: q.phys}));
+  else for (let i = 0; i <= 60; i++) {
     const k = Math.round(Math.pow(10, (grover ? 6 : 3) * i / 60));
     if (seen.has(k)) continue; seen.add(k);
     const r = estimate(grover ? {...s, machines: k, manualD: false} : {...s, factories: k, manualD: false});
@@ -1586,11 +1824,13 @@ function chartTO(s, cur) {
     if (prev && r.runtime > prev.x * 0.99) break;            // reaction-time floor reached: more factories only add qubits
     sweep.push({F: k, x: r.runtime, y: r.phys});
   }
-  const others = keysFor(s.alg, s.variant).filter(k => k !== s.keyBits).map(k => { const r = estimate({...s, keyBits: k, manualD: false}); return {k, x: r.runtime, y: r.phys}; }).filter(o => isFinite(o.x) && isFinite(o.y));
+  const others = keysFor(s.alg, s.variant).filter(k => k !== s.keyBits).map(k => { const r = estimateAny({...s, keyBits: k, manualD: false}); return {k, x: r.runtime, y: r.phys}; }).filter(o => isFinite(o.x) && isFinite(o.y));
   const anchors = ANCHORS.filter(a => a.q && a.t && a.alg === s.alg);
   const curOk = isFinite(cur.phys) && isFinite(cur.runtime);
-  const xs = sweep.map(p => p.x).concat(others.map(o => o.x), anchors.map(a => a.t), curOk ? [cur.runtime] : []);
-  const ys = sweep.map(p => p.y).concat(others.map(o => o.y), anchors.map(a => a.q), [s.q0], curOk ? [cur.phys] : []);
+  const qre = qdk && s.arithOpt === 1 ? qreRunsFor(s).filter(x => x.arch === QRE_ARCH[s.qModel]).flatMap(x => x.results) : [];
+  $('legQre').hidden = !qre.length;
+  const xs = sweep.map(p => p.x).concat(others.map(o => o.x), anchors.map(a => a.t), qre.map(q => q.runtime_s), curOk ? [cur.runtime] : []);
+  const ys = sweep.map(p => p.y).concat(others.map(o => o.y), anchors.map(a => a.q), qre.map(q => q.qubits), [s.q0], curOk ? [cur.phys] : []);
   if (!xs.length) { $('chartTO').innerHTML = svgEl('text', {x: W / 2, y: H / 2, 'text-anchor': 'middle', class: 'lbl'}, 'No finite estimate at this error rate'); window.__to = null; return; }
   const lg = Math.log10;
   const xlo = Math.pow(10, Math.floor(lg(Math.min(...xs)))), xhi = Math.pow(10, Math.ceil(lg(Math.max(...xs))));
@@ -1607,19 +1847,25 @@ function chartTO(s, cur) {
   // largest machine today
   g += svgEl('line', {x1: m.l, x2: W - m.r, y1: Y(s.q0), y2: Y(s.q0), stroke: 'var(--muted)', 'stroke-dasharray': '2 4', 'stroke-width': 1.5});
   g += svgEl('text', {x: m.l + 6, y: Y(s.q0) - 6, 'text-anchor': 'start'}, `largest machine today · ${fmtN(s.q0)}`);
+  let endLabel = null;
   if (sweep.length) {
     const pts = sweep.slice().sort((a, b) => a.x - b.x);
     g += svgEl('path', {class: 'area', d: `M${X(pts[0].x)},${H - m.b} ` + pts.map(p => `L${X(p.x)},${Y(p.y)}`).join(' ') + ` L${X(pts[pts.length - 1].x)},${H - m.b} Z`});
     g += svgEl('path', {class: 'ln a', d: pts.map((p, i) => (i ? 'L' : 'M') + X(p.x) + ',' + Y(p.y)).join(' ')});
-    const e2 = pts[pts.length - 1];
-    g += svgEl('text', {x: X(e2.x) - 8, y: Y(e2.y) + 18, 'text-anchor': 'end', class: 'lbl'}, `${e2.F} ${grover ? 'machine' : 'factory'}${e2.F > 1 ? 's' : ''} (slowest)`);
+    if (pts.length > 1) { const e2 = pts[pts.length - 1]; endLabel = {x: X(e2.x), y: Y(e2.y), text: `${e2.F} ${grover ? plural(e2.F, 'machine', 'machines') : (qdk ? 'T ' : '') + plural(e2.F, 'factory', 'factories')} (slowest)`}; }
   }
-  others.forEach(o => { g += svgEl('circle', {class: 'mk b', cx: X(o.x), cy: Y(o.y), r: 5}); g += svgEl('text', {class: 'lbl', x: X(o.x) + 9, y: Y(o.y) + 4}, `${o.k}-bit`); });
-  placeLabels(anchors.map(a => ({x: X(a.t), y: Y(a.q), text: a.tag})), W).forEach(a => { g += svgEl('circle', {class: 'mk g', cx: a.x, cy: a.y, r: 5}); g += svgEl('text', {class: 'lbl', x: a.lx, y: a.ly, 'text-anchor': a.anchor}, a.text); });
-  if (curOk) { g += svgEl('circle', {class: 'mk a', cx: X(cur.runtime), cy: Y(cur.phys), r: 6}); g += svgEl('text', {class: 'lbl', x: X(cur.runtime) - 12, y: Y(cur.phys) - 12, 'text-anchor': 'end'}, `${ALGS[s.alg].name.split(' (')[0]}-${s.keyBits} · ${fmtN(cur.phys)} qubits · ${fmtT(cur.runtime).v} ${fmtT(cur.runtime).u}`); }
+  /* markers first, then every label placed so that it clears the markers and the other labels */
+  const labels = [], obstacles = [];
+  if (curOk) { labels.push({x: X(cur.runtime), y: Y(cur.phys), text: `${ALGS[s.alg].name.split(' (')[0]}-${s.keyBits} · ${fmtN(cur.phys)} qubits · ${fmtDur(cur.runtime)}`}); obstacles.push({x: X(cur.runtime), y: Y(cur.phys), r: 8}); }
+  if (endLabel) labels.push(endLabel);
+  others.forEach(o => { g += svgEl('circle', {class: 'mk b', cx: X(o.x), cy: Y(o.y), r: 5}); labels.push({x: X(o.x), y: Y(o.y), text: `${o.k}-bit`}); obstacles.push({x: X(o.x), y: Y(o.y), r: 7}); });
+  anchors.forEach(a => { g += svgEl('circle', {class: 'mk g', cx: X(a.t), cy: Y(a.q), r: 5}); labels.push({x: X(a.t), y: Y(a.q), text: a.tag}); obstacles.push({x: X(a.t), y: Y(a.q), r: 7}); });
+  qre.forEach(q => { const cx = X(q.runtime_s), cy = Y(q.qubits); g += svgEl('path', {class: 'mk q', d: `M${cx},${cy - 5} L${cx + 5},${cy} L${cx},${cy + 5} L${cx - 5},${cy} Z`}); obstacles.push({x: cx, y: cy, r: 7}); });
+  if (curOk) g += svgEl('circle', {class: 'mk a', cx: X(cur.runtime), cy: Y(cur.phys), r: 6});
+  placeLabels(labels, W, obstacles).forEach(l => { g += svgEl('text', {class: 'lbl', x: l.lx, y: l.ly, 'text-anchor': l.anchor}, l.text); });
   g += svgEl('circle', {id: 'toHover', class: 'mk a', r: 6, hidden: ''});
   $('chartTO').innerHTML = g;
-  window.__to = {sweep, X, Y, unit: grover ? 'machines' : 'factories'};
+  window.__to = {sweep, X, Y, unit: grover ? 'machines' : qdk ? 'T factories' : 'factories'};
 }
 function initTradeoffHover() {
   const svg = $('chartTO'), tip = $('tipTO');
@@ -1663,18 +1909,137 @@ function renderAnchorsTable(alg) {
     return head + `<tr class="${a.alg === alg ? 'sel' : ''}"><td class="name">${a.src}<span class="sm">${a.target} · ${a.cov}</span></td><td class="num">${a.L}</td><td class="num">${a.T}</td><td class="num">${a.phys}</td><td class="num">${a.time}</td><td class="muted">${a.hw}<span class="sm">Evidence: ${a.ev}</span></td></tr>`;
   }).join('');
 }
+const qreRunsFor = s => QRE.runs.filter(x => x.alg === s.alg && x.variant === s.variant && x.keyBits === s.keyBits);
+const targetName = (alg, keyBits) => ALGS[alg].name.split(' (')[0] + '-' + keyBits;
+
+/* Show the controls of the active engine and say which engine is pricing the physical layer, and why. */
+function syncEngineUI(s) {
+  const eng = engineFor(s), custom = s.qModel === 'custom';
+  document.querySelectorAll('#estimator [data-engine]').forEach(el => { const t = el.dataset.engine.split(' '); el.hidden = !(t.includes(eng) || (eng === 'qdk' && custom && t.includes('qdk-custom'))); });
+  document.querySelectorAll('#engSeg [data-engine-id]').forEach(b => b.setAttribute('aria-selected', b.dataset.engineId === ENGINE_WANT));
+  const c7 = QDK.commit ? QDK.commit.slice(0, 7) : '';
+  let st;
+  if (ENGINE_WANT !== 'qdk') st = 'Built-in placeholder model selected.';
+  else if (QDK.state === 'loading') st = 'Loading the QDK estimator (0.6 MB)… built-in figures are shown until it is ready.';
+  else if (QDK.state === 'failed') st = `The QDK estimator is not running in this copy of the page (${QDK.error}); the built-in model is shown instead.`;
+  else if (s.alg === 'aes') st = 'AES key search runs on the built-in model: Grover counts exceed the 64-bit integers the QDK takes.';
+  else st = `QDK estimator running in this browser tab · microsoft/qdk @ ${c7} · MIT licence`;
+  $('engStatus').textContent = st;
+  $('engNote').innerHTML = eng === 'qdk'
+    ? `<span class="pill good">QDK engine</span>&nbsp; Physical qubits, runtime, code distance and T factories are computed in your browser by the open-source Microsoft QDK resource estimator [45] from the logical counts of the chosen circuit. They describe the QDK's generic architecture, so they differ from the physical numbers each paper reports for its own. Logical counts, anchors and sub-operation counts come from the project literature review (search date 1 November 2026) and are quoted in each paper's own units.`
+    : `<span class="pill warn">Provisional outputs</span>&nbsp; The physical layer shown is Q-CARE's built-in placeholder model, a uniform surface-code wrapper that reproduces no paper's physical number. Logical counts, anchors and sub-operation counts come from the project literature review (search date 1 November 2026) and are quoted in each paper's own units, with per-run and expected costs kept apart.`;
+  $('capTO').innerHTML = eng === 'qdk'
+    ? `<b>Runtime vs physical qubits.</b> The QDK's space–time frontier for the complete attack on the current target: each point further along the curve runs with fewer T factories and takes longer. Other key sizes of the family are shown at the QDK's fastest configuration. Published anchors are plotted at the qubits and runtime each paper reports for its own architecture (per run or expected, as listed in the table below). Hover the curve to read values.`
+    : `<b>Runtime vs physical qubits.</b> The space–time frontier for the complete attack on the current target: each point on the curve is a different number of magic-state factories (parallel machines for Grover). Other key sizes of the family are shown at the current factory count. Published anchors are plotted at the runtime each paper reports (per run or expected, as listed in the table below). Hover the curve to read values.`;
+  $('capP').innerHTML = eng === 'qdk'
+    ? `<b>Physical qubits vs physical error rate</b> for the complete attack (setting I): the QDK rerun with the qubit model's gate, measurement and idle error rates set to each value. Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.`
+    : `<b>Physical qubits vs physical error rate</b> for the complete attack (setting I). Anchors with a stated gate error rate are shown; cat-qubit and photonic-memory estimates have no comparable rate and are left out.`;
+  return eng;
+}
+
+/* The reference function: every deployed algorithm priced under the current hardware assumptions. */
+function renderComparison(s) {
+  const pageEng = engineFor({...s, alg: 'rsa'});
+  const cell = (main, sub) => `${main}${sub ? `<span class="sm">${sub}</span>` : ''}`;
+  let html = '';
+  DEPLOYED.forEach(g => {
+    html += `<tr class="grp"><td colspan="7">${g.grp}</td></tr>`;
+    g.items.forEach(it => {
+      const si = {...s, alg: it.alg, variant: it.variant, keyBits: it.keyBits, manualD: false, machines: 1};
+      const r = estimateAny(si), ok = isFinite(r.phys) && isFinite(r.runtime);
+      const flags = [r.src, r.scaled && !it.note ? 'scaled from the published size' : '', it.note || ''].filter(Boolean).join(' · ');
+      let status;
+      if (!ok) status = cell('<span class="pill warn">No estimate</span>', escH(r.err || 'no code distance suffices at this error rate'));
+      else if (r.kind === 'grover') status = cell('<span class="pill good">Holds</span>', 'Grover gives a quadratic speed-up only');
+      else { const qd = qDay(r.phys, s.q0, YEAR0, s.doubling); status = cell(`<span class="pill ${qd <= 2032 ? 'bad' : qd <= 2040 ? 'warn' : ''}">Vulnerable by ≈ ${qd.toFixed(0)}</span>`, `when ${fmtN(r.phys)} qubits exist`); }
+      const ex = ok && r.kind !== 'grover' ? `${r.runs} expected ${plural(r.runs, 'run', 'runs')} → ${r.engine === 'qdk' ? '≤ ' : ''}${fmtDur(r.expected)}` : '';
+      html += `<tr class="${it.id === DEPLOY_ID ? 'sel' : ''}"><td class="name"><button type="button" class="linkish" data-deploy="${it.id}">${it.label}</button></td>`
+        + `<td>${cell(it.attack, flags)}</td>`
+        + `<td class="num">${cell(r.L.toLocaleString(), r.engine === 'qdk' && ok ? r.Llayout.toLocaleString() + ' after QDK layout' : '')}</td>`
+        + `<td class="num">${cell(fmtSci(r.T), r.unit)}</td>`
+        + `<td class="num">${ok ? cell(fmtN(r.phys), `d = ${r.d}${r.engine === 'qdk' ? ` · ${r.factories} T ${plural(r.factories, 'factory', 'factories')}` : pageEng === 'qdk' ? ' · built-in model' : ''}`) : '—'}</td>`
+        + `<td class="num">${ok ? cell(fmtDur(r.runtime) + (r.kind === 'grover' ? '' : ' per run'), ex) : '—'}</td>`
+        + `<td>${status}</td></tr>`;
+    });
+  });
+  html += `<tr class="grp"><td colspan="7">Post-quantum · no known quantum break</td></tr>`
+    + `<tr><td class="name">ML-KEM, ML-DSA, SLH-DSA, HQC</td><td>${cell('No quantum attack below the claimed security level is known', 'the review found subroutine circuits and model-based security levels only; see “Beyond RSA and ECC” below and the <a href="#pqc">PQC Benchmark Suite</a>')}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>${cell('<span class="pill good">No known quantum break</span>', 'no complete attack exists to price')}</td></tr>`;
+  $('cmpTbl').querySelector('tbody').innerHTML = html;
+  const m = QDK_MODELS[s.qModel] || QDK_MODELS.qubit_gate_ns_e3;
+  $('cmpIntro').innerHTML = pageEng === 'qdk'
+    ? `Each deployed algorithm is mapped to the hard problem behind it and to one published circuit, and the logical counts of that circuit are priced by the QDK with the settings above: qubit model <code>${escH(s.qModel)}</code>, ${QDK_QEC[qdkQecFor(s.qModel).includes(s.qec) ? s.qec : 'surface_code'].toLowerCase()}, error budget ${s.eps * 100}%${s.maxTF > 0 ? `, at most ${s.maxTF} T factories` : ''}${s.depthFactor > 1 ? `, logical depth factor ${s.depthFactor}` : ''}. AES rows use the built-in model. Rows marked as project mapping or scaling are not published counts for that exact algorithm.`
+    : `Each deployed algorithm is mapped to the hard problem behind it and to one published circuit, and the logical counts of that circuit are priced by the built-in placeholder model with the hardware settings above. Rows marked as project mapping or scaling are not published counts for that exact algorithm.`;
+}
+
+/* The QDK's own report, with its labels and formatted values. */
+function renderQdkReport(r) {
+  const box = $('qdkReport');
+  if (r.engine !== 'qdk' || !r.raw || !r.raw.reportData) { box.hidden = true; return; }
+  box.hidden = false;
+  const x = r.raw, get = path => path.split('/').reduce((o, k) => o == null ? o : o[k], x);
+  const rows = x.reportData.groups.map(g => `<tr class="grp"><td colspan="3">${escH(g.title)}</td></tr>` + g.entries.map(e => {
+    const v = get(e.path);
+    return `<tr><td class="name">${escH(e.label)}</td><td class="num">${escH(v == null ? '—' : Array.isArray(v) ? v.join(', ') : v)}</td><td class="muted">${escH(e.description)}</td></tr>`;
+  }).join('')).join('');
+  const md = a => escH(a).replace(/^_(.*)_$/, '$1').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[(.+?)\]\((https:[^)\s]+)\)/g, '<a href="$2">$1</a>');
+  $('qdkReportBody').innerHTML = `<div class="tbl-wrap"><table class="anch-tbl rep-tbl"><thead><tr><th>Quantity</th><th>Value</th><th>What it is</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    + `<p class="small muted anch-intro"><b>Assumptions the QDK states for every estimate</b></p><ul class="notes">${(x.reportData.assumptions || []).map(a => `<li>${md(a)}</li>`).join('')}</ul>`;
+}
+function renderQdkRepro(r) {
+  const box = $('qdkRepro');
+  if (r.engine !== 'qdk') { box.hidden = true; return; }
+  box.hidden = false;
+  $('qdkReproCode').textContent = `# pip install qdk
+from qdk.estimator import LogicalCounts
+
+# logical counts of one run: ${r.src}
+counts = LogicalCounts(${JSON.stringify(r.counts).replace(/([:,])/g, '$1 ')})
+result = counts.estimate(${JSON.stringify(r.params, null, 2)})
+
+pc = result["physicalCounts"]
+print(pc["physicalQubits"], "physical qubits")
+print(pc["runtime"] / 3.6e12, "hours per run")
+print("code distance", result["logicalQubit"]["codeDistance"])
+print(pc["breakdown"]["numTfactories"], "T factories")`;
+}
+function renderQre(s) {
+  const one = q => q ? `${q.qubits.toLocaleString()} qubits<span class="sm">${fmtDur(q.runtime_s)} · ${escH(q.factories)} · error ${q.error.toPrecision(2)}</span>` : '—';
+  const st = QRE.settings || {};
+  $('qreIntro').innerHTML = QRE.runs.length
+    ? `Microsoft's current documentation [47] describes a second estimator in the QDK, the Python library <code>qdk.qre</code>. It cannot run in a web page, so these runs were computed offline with qdk ${escH(QRE.qdkVersion || '')} on ${escH(QRE.generated || '')} by <code>tools/qre_reference_runs.py</code> in the site repository, from the same per-run logical counts Q-CARE feeds the in-browser engine. Settings: ${escH(st.description || '')} Each run returns several Pareto-optimal results; the fastest and the smallest are listed, and on the frontier chart they appear as diamonds when the target and qubit model match. Rows of the current target are highlighted.`
+    : 'No reference runs are embedded in this copy of the page.';
+  $('qreTbl').querySelector('tbody').innerHTML = QRE.runs.map(x => {
+    const fast = x.results.slice().sort((a, b) => a.runtime_s - b.runtime_s)[0], small = x.results.slice().sort((a, b) => a.qubits - b.qubits)[0];
+    const sel = x.alg === s.alg && x.variant === s.variant && x.keyBits === s.keyBits;
+    return `<tr class="${sel ? 'sel' : ''}"><td class="name">${escH(targetName(x.alg, x.keyBits))}<span class="sm">${escH(x.src)}</span></td><td class="num">${x.counts.numQubits.toLocaleString()} qubits<span class="sm">${fmtSci(x.counts.cczCount)} CCZ</span></td><td class="num">${escH(x.archLabel)}</td><td class="num">${one(fast)}</td><td class="num">${one(small)}</td><td class="num">${x.results.length || 'none'}${x.note ? `<span class="sm">${escH(x.note)}</span>` : ''}</td></tr>`;
+  }).join('');
+}
+
 function renderEstimator() {
-  const s = readSettings(), r = estimate(s);
+  const s = readSettings();
+  syncDeployed();
+  const eng = syncEngineUI(s), qdk = eng === 'qdk';
+  const r = estimateAny(s);
+  const ok = isFinite(r.phys) && isFinite(r.runtime);
   renderSettingUI(s);
   renderAnchorsTable(s.alg);
+  renderComparison(s);
+  renderQdkReport(r); renderQdkRepro(r); renderQre(s);
   const t = fmtT(r.runtime);
   const qd = qDay(r.phys, s.q0, YEAR0, s.doubling);
   window.__qday = qd;
-  const alg = ALGS[s.alg].name.split(' (')[0] + '-' + s.keyBits;
+  const alg = targetName(s.alg, s.keyBits);
   const setting = SETTINGS[s.alg].find(x => x.id === SETTING);
   const scaled = r.scaled ? ' <span class="pill warn">scaled</span>' : '';
-  let v = '';
-  if (SETTING !== 'I' && r.d !== Infinity) {
+  const retry = qdk ? 1 / (1 - s.eps) : 1 / (1 - r.fail);
+  const finish = () => {
+    chartTO(s, r); chartP(s, r); chartQ(s, r);
+    $('d').disabled = $('dAuto').checked; if (!qdk && $('dAuto').checked && isFinite(r.d)) $('d').value = r.d;
+    $('arithOptV').textContent = s.arithOpt + '×'; $('pPhysV').textContent = s.pPhys.toExponential(1); $('routingV').textContent = s.routing.toFixed(2) + '×';
+  };
+  const opMode = SETTING !== 'I' && ok;
+  $('tExpTile').hidden = opMode; $('tGTile').hidden = opMode;
+  if (opMode) {
     const o = opView(s, r);
     const perOp = r.runtime * (o.T / r.T);
     const ot = fmtT(perOp);
@@ -1685,48 +2050,109 @@ function renderEstimator() {
     $('tTimeSub').textContent = `${fmtSci(o.T)} ${o.unit}`;
     $('tLL').textContent = 'Logical qubits'; $('tL').textContent = o.L.toLocaleString(); $('tLSub').textContent = 'working registers';
     $('tDL').textContent = 'Repetitions in attack'; $('tD').textContent = fmtN(o.count); $('tDSub').textContent = o.opsLabel;
-    v = `<span class="pill ${published ? 'good' : 'warn'}">Setting ${SETTING} · ${published ? 'published rule' : 'placeholder'}</span><p><b>${setting.name}.</b> ${setting.task}. One such operation is estimated at <b>${fmtSci(o.T)} ${o.unit}</b> and about <b>${ot.v} ${ot.u}</b> under the current hardware assumptions; the complete attack on ${alg} (setting I, ${r.src}) performs it ${published ? '' : 'roughly '}${fmtN(o.count)} times per run. Derivation: ${o.rule}. Charts below always describe the complete attack.</p>`;
-    $('verdict').innerHTML = v;
-    chartTO(s, r); chartP(s, r); chartQ(s, r);
-    $('d').disabled = $('dAuto').checked; if ($('dAuto').checked && isFinite(r.d)) $('d').value = r.d;
-    $('arithOptV').textContent = s.arithOpt + '×'; $('pPhysV').textContent = s.pPhys.toExponential(1); $('routingV').textContent = s.routing.toFixed(2) + '×';
+    $('verdict').innerHTML = `<span class="pill ${published ? 'good' : 'warn'}">Setting ${SETTING} · ${published ? 'published rule' : 'placeholder'}</span><p><b>${setting.name}.</b> ${setting.task}. One such operation is estimated at <b>${fmtSci(o.T)} ${o.unit}</b> and about <b>${ot.v} ${ot.u}</b> under the current hardware assumptions${qdk ? ' (QDK engine)' : ''}; the complete attack on ${alg} (setting I, ${r.src}) performs it ${published ? '' : 'roughly '}${fmtN(o.count)} times per run. Derivation: ${o.rule}. Charts below always describe the complete attack.</p>`;
+    finish();
     return;
   }
-  $('tPhysL').textContent = 'Physical qubits'; $('tTimeL').textContent = r.kind === 'grover' ? 'Runtime' : 'Runtime per run'; $('tLL').textContent = 'Logical qubits'; $('tDL').textContent = 'Code distance';
-  $('tPhys').textContent = fmtN(r.phys);
-  $('tPhysSub').textContent = r.kind === 'grover' && r.P > 1 ? `${fmtN(r.perMachine)} × ${r.P} machines` : `${r.d === Infinity ? 'above threshold' : 'd = ' + r.d + ', ' + s.factories + ' factories'}`;
-  $('tTime').innerHTML = `${t.v} <small>${t.u}</small>`;
-  $('tTimeSub').textContent = r.kind === 'grover' ? `${fmtSci(r.iters)} Grover iterations` : `${fmtSci(r.T)} ${r.unit} per run · ${r.runs} expected runs`;
+  const grover = r.kind === 'grover';
+  $('tPhysL').textContent = 'Physical qubits'; $('tTimeL').textContent = grover ? 'Runtime' : 'Runtime per run'; $('tLL').textContent = 'Logical qubits'; $('tDL').textContent = 'Code distance';
+  $('tPhys').textContent = ok ? fmtN(r.phys) : '—';
+  $('tTime').innerHTML = ok ? `${t.v} <small>${t.u}</small>` : '—';
   $('tL').textContent = r.L.toLocaleString();
-  $('tLSub').textContent = r.kind === 'grover' ? 'per machine' : (r.Lnote || (r.scaled ? 'scaled from the published size' : 'as published'));
   $('tD').textContent = isFinite(r.d) ? r.d : '—';
-  $('tDSub').textContent = isFinite(r.d) ? `p_L = ${r.pLogical.toExponential(1)} / cycle` : 'no distance suffices';
-  if (r.d === Infinity) v = `<span class="pill bad">Not feasible</span><p>At a physical error rate at or above the 1% threshold no code distance suppresses errors. Lower the error rate.</p>`;
-  else if (r.kind === 'grover') v = `<span class="pill good">Symmetric keys hold</span><p>Breaking ${alg} by Grover search takes ${t.v} ${t.u} on ${r.P > 1 ? r.P + ' machines' : 'one machine'} of ${fmtN(r.perMachine)} physical qubits. Parallelism only buys a square root, so key search stays out of reach; doubling the key length (AES-256) restores the full margin.</p>`;
+  $('tG').textContent = fmtSci(r.T);
+  const ex = fmtT(r.expected);
+  $('tExp').innerHTML = ok && isFinite(r.expected) ? `${ex.v} <small>${ex.u}</small>` : '—';
+  $('tExpL').textContent = grover ? 'Expected total' : qdk ? 'Expected total (upper bound)' : 'Expected total';
+  $('tGL').textContent = grover ? 'T-depth of the search' : 'Gate count per run';
+  if (qdk) {
+    $('tPhysSub').textContent = ok ? `${fmtN(r.physAlg)} algorithm + ${fmtN(r.physFac)} in ${r.factories} T ${plural(r.factories, 'factory', 'factories')}` : 'no estimate';
+    $('tTimeSub').textContent = ok ? `${fmtSci(r.depth)} logical cycles of ${fmtCycle(r.cycleNs)}` : '';
+    $('tExpSub').textContent = ok ? `${r.runs} expected ${plural(r.runs, 'run', 'runs')} · retries ≤ ${retry.toFixed(2)}×` : '';
+    $('tLSub').textContent = (r.Lnote || 'as published') + (ok ? ` · ${r.Llayout.toLocaleString()} after QDK layout` : '');
+    $('tGSub').textContent = r.unit + (ok ? ` · ${fmtSci(r.tstates)} T states in the QDK` : '');
+    $('tDSub').textContent = ok ? `p_L = ${r.pLogical.toExponential(1)} per qubit and cycle` : 'no distance found';
+  } else {
+    $('tPhysSub').textContent = grover && r.P > 1 ? `${fmtN(r.perMachine)} × ${r.P} machines` : `${r.d === Infinity ? 'above threshold' : 'd = ' + r.d + ', ' + s.factories + ' factories'}`;
+    $('tTimeSub').textContent = grover ? `${fmtSci(r.iters)} Grover iterations` : `${fmtSci(r.T)} ${r.unit} per run · ${r.runs} expected runs`;
+    $('tExpSub').textContent = grover ? 'one search' + (isFinite(retry) ? ` · retries ${retry.toFixed(2)}×` : '') : `${r.runs} expected ${plural(r.runs, 'run', 'runs')} · retries ${isFinite(retry) ? retry.toFixed(2) : '∞'}×`;
+    $('tLSub').textContent = grover ? 'per machine' : (r.Lnote || (r.scaled ? 'scaled from the published size' : 'as published'));
+    $('tGSub').textContent = grover ? 'iterations × T-depth per iteration' : r.unit;
+    $('tDSub').textContent = isFinite(r.d) ? `p_L = ${r.pLogical.toExponential(1)} / cycle` : 'no distance suffices';
+  }
+  let v;
+  if (!ok && qdk) v = `<span class="pill bad">No estimate</span><p>The QDK returned no estimate for ${alg} with these settings: ${escH(r.err || 'unknown reason')}. Change the qubit model, the error budget or the constraints, or switch to the built-in model.</p>`;
+  else if (r.d === Infinity) v = `<span class="pill bad">Not feasible</span><p>At a physical error rate at or above the 1% threshold no code distance suppresses errors. Lower the error rate.</p>`;
+  else if (grover) v = `<span class="pill good">Symmetric keys hold</span>${ENGINE_WANT === 'qdk' ? ' <span class="pill warn">built-in model</span>' : ''}<p>Breaking ${alg} by Grover search takes ${t.v} ${t.u} on ${r.P > 1 ? r.P + ' machines' : 'one machine'} of ${fmtN(r.perMachine)} physical qubits. Parallelism only buys a square root, so key search stays out of reach; doubling the key length (AES-256) restores the full margin.</p>`;
   else {
-    const win = s.window ? (r.windowFeasible ? ` To finish one run inside ${fmtT(s.window).v} ${fmtT(s.window).u} the attacker needs ${r.windowFactories} factories and about ${fmtN(r.windowPhys)} physical qubits.` : ` The reaction-time floor alone exceeds the ${fmtT(s.window).v} ${fmtT(s.window).u} budget: one run cannot finish in that window at any factory count.`) : '';
     const cls = qd <= 2032 ? 'bad' : qd <= 2040 ? 'warn' : 'good';
-    const ex = fmtT(r.expected);
-    v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span>${scaled}<p>Breaking ${alg} with the ${r.src} circuit needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per run. The source charges ${r.runs} expected run${r.runs === 1 ? '' : 's'} and this configuration adds ${(1 / (1 - r.fail)).toFixed(2)}× for logical-error retries, so the expected total is <b>${ex.v} ${ex.u}</b>. If the largest machine grows from ${fmtN(s.q0)} qubits doubling every ${s.doubling} years, that size arrives around <b>${isFinite(qd) ? qd.toFixed(0) : '—'}</b>.${win}</p>`;
+    const wl = s.window ? $('window').selectedOptions[0].textContent.toLowerCase() : '';
+    const tail = `If the largest machine grows from ${fmtN(s.q0)} qubits doubling every ${s.doubling} years, that size arrives around <b>${isFinite(qd) ? qd.toFixed(0) : '—'}</b>.`;
+    if (qdk) {
+      let win = '';
+      if (s.window) { const w = estimateQdk(s, {maxDurationS: s.window}); win = isFinite(w.phys) ? ` To finish one run inside ${wl} the QDK needs about ${fmtN(w.phys)} physical qubits with ${w.factories} T ${plural(w.factories, 'factory', 'factories')}.` : ` The QDK finds no configuration that finishes one run inside ${wl}.`; }
+      const m = QDK_MODELS[s.qModel] || QDK_MODELS.qubit_gate_ns_e3;
+      v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span> <span class="pill good">QDK estimate</span>${scaled}<p>Breaking ${alg} with the ${r.src} circuit needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per run on the QDK's architecture: ${m.custom ? `a custom gate-based qubit (${s.qGate} ns gates, ${s.qMeas} ns measurement, error ${s.pPhys.toExponential(1)})` : `qubit model <code>${escH(s.qModel)}</code>`}, ${QDK_QEC[r.params.qecScheme.name].toLowerCase()} at distance ${r.d}, ${r.Llayout.toLocaleString()} logical qubits after layout and ${r.factories} T ${plural(r.factories, 'factory', 'factories')} taking ${(100 * r.physFac / r.phys).toFixed(0)}% of the machine. The source charges ${r.runs} expected ${plural(r.runs, 'run', 'runs')} and the ${s.eps * 100}% error budget allows up to ${retry.toFixed(2)}× for retries, so the expected total is at most <b>${ex.v} ${ex.u}</b>. ${tail}${win}</p>`;
+    } else {
+      const win = s.window ? (r.windowFeasible ? ` To finish one run inside ${wl} the attacker needs ${r.windowFactories} factories and about ${fmtN(r.windowPhys)} physical qubits.` : ` The reaction-time floor alone exceeds the ${wl} budget: one run cannot finish in that window at any factory count.`) : '';
+      v = `<span class="pill ${cls}">Q-day ≈ ${isFinite(qd) ? qd.toFixed(0) : 'beyond horizon'}</span>${scaled}<p>Breaking ${alg} with the ${r.src} circuit needs about <b>${fmtN(r.phys)} physical qubits</b> for <b>${t.v} ${t.u}</b> per run. The source charges ${r.runs} expected run${r.runs === 1 ? '' : 's'} and this configuration adds ${retry.toFixed(2)}× for logical-error retries, so the expected total is <b>${ex.v} ${ex.u}</b>. ${tail}${win}</p>`;
+    }
   }
   $('verdict').innerHTML = v;
-  chartTO(s, r); chartP(s, r); chartQ(s, r);
-  $('d').disabled = $('dAuto').checked; if ($('dAuto').checked && isFinite(r.d)) $('d').value = r.d;
-  $('arithOptV').textContent = s.arithOpt + '×'; $('pPhysV').textContent = s.pPhys.toExponential(1); $('routingV').textContent = s.routing.toFixed(2) + '×';
+  finish();
+}
+
+/* Load the QDK module (a plain script plus its .wasm file, both served next to the page). Any failure leaves the built-in model in charge. */
+function loadQdk() {
+  const done = () => { if (document.body.dataset.ready) renderAll(); };
+  const fail = why => { if (QDK.state !== 'loading') return; QDK.state = 'failed'; QDK.error = why; done(); };
+  try {
+    if (typeof WebAssembly !== 'object') return fail('this browser has no WebAssembly');
+    const sc = document.createElement('script');
+    sc.src = 'vendor/qdk/qcare_qdk_estimator.js';
+    sc.onerror = () => fail('its files are not reachable from this copy of the page');
+    sc.onload = () => {
+      try {
+        wasm_bindgen({module_or_path: 'vendor/qdk/qcare_qdk_estimator_bg.wasm'}).then(() => {
+          if (QDK.state !== 'loading') return;
+          QDK.api = wasm_bindgen;
+          const probe = JSON.parse(wasm_bindgen.physical_estimates('{"numQubits":100,"cczCount":1000000}', '[{"errorBudget":0.1}]'))[0];
+          if (!probe || !probe.physicalCounts) throw new Error('self-test failed');
+          QDK.commit = wasm_bindgen.qdk_commit(); QDK.state = 'ready'; done();
+        }).catch(e => fail('its WebAssembly file could not be loaded or started: ' + String(e && e.message || e).slice(0, 120)));
+      } catch (e) { fail(String(e && e.message || e).slice(0, 120)); }
+    };
+    document.head.appendChild(sc);
+    setTimeout(() => fail('loading timed out'), 20000);
+  } catch (e) { fail(String(e && e.message || e).slice(0, 120)); }
 }
 function initEstimator() {
   fillSelect($('alg'), Object.entries(ALGS).map(([k, a]) => [k, a.name]));
+  fillSelect($('qModel'), Object.entries(QDK_MODELS).map(([k, m]) => [k, m.label]));
+  syncQec();
+  $('deployed').innerHTML = '<option value="">Custom selection</option>' + DEPLOYED.map(g => `<optgroup label="${g.grp}">${g.items.map(d => `<option value="${d.id}">${d.label}</option>`).join('')}</optgroup>`).join('');
   $('presets').innerHTML = PRESETS.map((p, i) => `<button type="button" data-preset="${i}">${p.label}</button>`).join('');
   $('presets').addEventListener('click', e => { const b = e.target.closest('[data-preset]'); if (b) applyPreset(PRESETS[+b.dataset.preset].s); });
   renderAnchorsTable('rsa');
+  $('deployed').addEventListener('change', e => { if (e.target.value) applyDeployed(e.target.value); });
+  $('cmpTbl').addEventListener('click', e => { const b = e.target.closest('[data-deploy]'); if (b) { applyDeployed(b.dataset.deploy); $('estimator').querySelector('.ctrl-grid').scrollIntoView({block: 'start'}); } });
   $('alg').addEventListener('change', () => { syncAlgUI(); renderAll(); });
   $('variant').addEventListener('change', () => { syncKeys(); renderAll(); });
+  $('qModel').addEventListener('change', () => { syncQec(); renderAll(); });
   $('seg').addEventListener('click', e => { const b = e.target.closest('[data-setting-id]'); if (b) { SETTING = b.dataset.settingId; renderAll(); } });
+  $('engSeg').addEventListener('click', e => { const b = e.target.closest('[data-engine-id]'); if (b) { ENGINE_WANT = b.dataset.engineId; renderAll(); } });
+  $('qdkReproCopy').addEventListener('click', () => {
+    const pre = $('qdkReproCode'), btn = $('qdkReproCopy');
+    const selectIt = () => { const rg = document.createRange(); rg.selectNodeContents(pre); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(rg); btn.textContent = 'Selected: press Ctrl/Cmd + C'; };
+    try { navigator.clipboard.writeText(pre.textContent).then(() => { btn.textContent = 'Copied'; }, selectIt); } catch (e) { selectIt(); }
+    setTimeout(() => { btn.textContent = 'Copy the snippet'; }, 2500);
+  });
   initTradeoffHover();
-  document.querySelector('#estimator').addEventListener('input', e => { if (e.target.id !== 'alg' && e.target.id !== 'variant') renderAll(); });
+  document.querySelector('#estimator').addEventListener('input', e => { if (!['alg', 'variant', 'qModel', 'deployed'].includes(e.target.id)) renderAll(); });
   applyPreset(PRESETS[0].s);
+  DEPLOY_ID = '';
+  loadQdk();
 }
-
 /* ---------- 2. Migration module ---------- */
 const PHASES = [
   {k: 'Phase 1', name: 'Discover', items: ['Cryptographic inventory across code, binaries, certificates, protocols and HSMs', 'Generate a Cryptography Bill of Materials (CBOM)', 'Classify data by shelf life and exposure to harvest-now-decrypt-later'], out: 'CBOM · data-sensitivity map', dims: '1–4 (discovery)'},
@@ -1831,7 +2257,7 @@ function initMigration() {
 const PRODUCTS = [
   {tag: 'Phase 1 · Discover', name: 'Crypto inventory & CBOM scanner', what: 'Static and runtime discovery of algorithms, key sizes, certificates and libraries; emits CycloneDX CBOM.', uses: 'Discovery indicators 2 and 4 (02)', ref: 'IBM Quantum Safe Explorer', diff: 'Attach a per-asset Q-day from the estimator, so every finding carries a date, not just a flag.'},
   {tag: 'Phase 2 · Prioritise', name: 'Quantum exposure risk engine', what: 'Scores assets by algorithm, key size, data shelf life and attacker model; produces the risk register and Mosca timeline per data class.', uses: 'Estimator (01) + Mosca inputs (02)', ref: 'IBM Quantum Safe Advisor', diff: 'Tunable attacker assumptions (error rate, factories, algorithmic progress) instead of a fixed Q-day.'},
-  {tag: 'Phase 2 · Advisory', name: 'Resource-estimation service', what: 'This section 01 as an API and report generator: clients submit their cryptographic profile and receive scenario tables and charts.', uses: 'Estimator model (01)', ref: 'Microsoft resource estimator', diff: 'Covers finite-field DLP, Grover with parallel machines, attack-window budgeting, and future-improvement sensitivity.'},
+  {tag: 'Phase 2 · Advisory', name: 'Resource-estimation service', what: 'Q-CARE (section 01) as an API and report generator: clients submit their cryptographic profile and receive scenario tables and charts.', uses: 'Q-CARE (01)', ref: 'Microsoft QDK resource estimator', diff: 'Covers finite-field DLP, Grover with parallel machines, attack-window budgeting, and future-improvement sensitivity.'},
   {tag: 'Phase 3 · Transform', name: 'Crypto-agility gateway', what: 'TLS/SSH termination and KMS proxy that negotiates hybrid ML-KEM + ECDH and ML-DSA signatures by policy, without application changes.', uses: 'Transformation indicators 10 to 12 (02)', ref: 'IBM Quantum Safe Remediator', diff: 'Policy keyed to the risk register: highest-exposure flows migrate first, with rollback.'},
   {tag: 'Phase 3 · Supply chain', name: 'Vendor PQC readiness tracker', what: 'Questionnaire, evidence collection and contractual clause library for third parties; rolls up into the readiness index.', uses: 'Observability indicator 8 (02)', ref: '—', diff: 'Fills the gap most portfolios leave open: third-party cryptography you do not control.'},
   {tag: 'Phase 4 · Operate', name: 'Posture & compliance dashboard', what: 'Continuous CBOM drift detection, readiness index over time, evidence packs for NIST IR 8547, DORA and sector regulators.', uses: 'Readiness index (02)', ref: 'IBM Quantum Safe Advisor (posture)', diff: 'Readiness index recomputed on every CBOM change, with the Q-day assumption versioned alongside.'},
@@ -2077,13 +2503,13 @@ MODULES.forEach(m => m.init());
 document.body.dataset.ready = '1';
 renderAll();
 /* report-style byline under every inner-page title */
-document.querySelectorAll('section.mod:not(.hero) .sec-head > div:nth-child(2)').forEach(d => d.insertAdjacentHTML('beforeend', '<div class="byline">Quantum Risk Atlas · v0.1 · provisional model · updated 3 November 2026</div>'));
+document.querySelectorAll('section.mod:not(.hero) .sec-head > div:nth-child(2)').forEach(d => d.insertAdjacentHTML('beforeend', '<div class="byline">Quantum Risk Atlas · v0.1 · provisional model · updated 17 November 2026</div>'));
 
 /* ---------- pages: one section visible at a time, chosen by the hash ---------- */
 const ROUTES = ['home', 'estimator', 'migration', 'products', 'pqc', 'next', 'quantum-lab', 'refs'];
 function route() {
   const h = (location.hash || '#home').slice(1);
-  const r = ROUTES.includes(h) ? h : 'home';
+  const r = h === 'q-care' ? 'estimator' : ROUTES.includes(h) ? h : 'home';
   document.querySelectorAll('section.mod').forEach(s => { s.hidden = s.id !== r; });
   document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.route === r) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   window.scrollTo(0, 0);
